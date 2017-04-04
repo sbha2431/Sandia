@@ -233,15 +233,16 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0):
             stri += '\n'
             file.write(stri)
 
-    for s in nonbeliefstates:
-        for n in range(gw.nagents):
-            stri = '{} = {} ->'.format(agentletters[n],nonbeliefstates.index(s))
-            for m in range(gw.nagents):
-                if m!= n:
-                    stri += ' !{} = {} /\\'.format(agentletters[m],nonbeliefstates.index(s))
-            stri = stri[:-2]
-            stri += '\n'
-            file.write(stri)
+    if gw.nagents > 1:
+        for s in nonbeliefstates:
+            for n in range(gw.nagents):
+                stri = '{} = {} ->'.format(agentletters[n],nonbeliefstates.index(s))
+                for m in range(gw.nagents):
+                    if m!= n:
+                        stri += ' !{} = {} /\\'.format(agentletters[m],nonbeliefstates.index(s))
+                stri = stri[:-2]
+                stri += '\n'
+                file.write(stri)
 
     # Writing sys_liveness
     file.write('\n[SYS_LIVENESS]\n')

@@ -42,4 +42,4 @@ gwg.draw_state_labels()
 # filename = 'slugs_output_2agents.json'
 # simulateController.userControlled(filename,gwg)
 
-Salty_input.write_to_slugs_belief(gwg,moveobstacles[0],1,2)
+Salty_input.write_to_slugs_belief(gwg,moveobstacles[0],2,2)
