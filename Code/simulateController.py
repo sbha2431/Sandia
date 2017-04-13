@@ -4,6 +4,15 @@ import simplejson as json
 import time
 import copy
 import visibility
+import grid_partition
+
+
+def powerset(s):
+    x = len(s)
+    a = []
+    for i in range(1,1<<x):
+        a.append({s[j] for j in range(x) if (i &(1<<j))})
+    return a
 
 
 def randomControlled(filename,gwg): # No longer supported
@@ -88,6 +97,149 @@ def userControlled(filename,gwg):
                 break
         currstate = nextstate
 
+
+def userControlled_belief(filename,gwg,numbeliefstates):
+    file = open(filename)
+    data = json.load(file)
+    file.close()
+    xstates = list(set(gwg.states) - set(gwg.edges))
+    partitionGrid = grid_partition.partitionGrid(gwg,numbeliefstates)
+    allstates = copy.deepcopy(xstates)
+    beliefcombs = powerset(range(len(partitionGrid.keys())))
+    for i in range(gwg.nstates,gwg.nstates+ len(beliefcombs)):
+        allstates.append(i)
+
+    currstate = 0
+    gridstate = copy.deepcopy(gwg.moveobstacles[0])
+    while True:
+        for v in data['variables']:
+            if 'y' not in v:
+                envsize = data['variables'].index(v)
+                break
+        totstate = data['nodes'][str(currstate)]['state']
+        envstatebin = totstate[0:envsize]
+        agentstatebin = totstate[envsize:len(totstate)]
+        agentstate = [None]*gwg.nagents
+        for n in range(gwg.nagents):
+            singleagentstatebin = agentstatebin[n*len(agentstatebin)/gwg.nagents:(n+1)*len(agentstatebin)/gwg.nagents]
+            agentstate[n] = xstates[int(''.join(str(e) for e in singleagentstatebin)[::-1], 2)]
+
+        gwg.render()
+
+        gwg.moveobstacles[0] = copy.deepcopy(gridstate)
+
+        gwg.render()
+        gwg.current = copy.deepcopy(agentstate)
+        print 'Agent state in grid is ', gwg.current[0]
+        print 'Agent state in automaton is ', xstates.index(gwg.current[0])
+
+
+        gwg.colorstates = set()
+        gwg.colorstates.update(visibility.invis(gwg,agentstate[0]))
+        for n in range(1, gwg.nagents):
+            gwg.colorstates = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
+        time.sleep(0.4)
+        gwg.render()
+        gwg.draw_state_labels()
+        nextstates = data['nodes'][str(currstate)]['trans']
+        nextstatedirn = {'Left':None,'Right':None,'Down':None,'Up':None,'Belief':set()}
+        for n in nextstates:
+            ntotstate = data['nodes'][str(n)]['state']
+            nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
+            if int(''.join(str(e) for e in nenvstatebin)[::-1],2) > 27:
+                a = 1
+            nenvstate = allstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
+            if nenvstate == gwg.moveobstacles[0] - 1:
+                nextstatedirn['Left'] = n
+            if nenvstate == gwg.moveobstacles[0] + 1:
+                nextstatedirn['Right'] = n
+            if nenvstate == gwg.moveobstacles[0] + gwg.ncols:
+                nextstatedirn['Down'] = n
+            if nenvstate == gwg.moveobstacles[0] - gwg.ncols:
+                nextstatedirn['Up'] = n
+            if nenvstate not in xstates:
+                nextstatedirn['Belief'].add(n)
+        while True:
+            nextstate = None
+            while nextstate == None:
+                while True:
+                    arrow = gwg.getkeyinput()
+                    if arrow != None:
+                        break
+                nextstate = nextstatedirn[arrow]
+                if nextstate == None:
+                    if arrow == 'Left':
+                        gridstate = gwg.moveobstacles[0] - 1
+                    elif arrow == 'Right':
+                        gridstate = gwg.moveobstacles[0] + 1
+                    elif arrow == 'Down':
+                        gridstate = gwg.moveobstacles[0] + gwg.ncols
+                    elif arrow == 'Up':
+                        gridstate = gwg.moveobstacles[0] - gwg.ncols
+                    for n in nextstatedirn['Belief']:
+                        ntotstate = data['nodes'][str(n)]['state']
+                        nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
+                        nenvstate = allstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
+                        # print nenvstate
+                        for beliefstate in beliefcombs[len(beliefcombs) - (len(allstates) - allstates.index(nenvstate))]:
+                            # print 'beliefstate is ' , beliefstate
+                            if gridstate in partitionGrid.values()[beliefstate]:
+                                nextstate = n
+                                print 'Environment state in automaton is', allstates.index(nenvstate)
+                                print 'Environment state in grid is', nenvstate
+                else:
+                    ntotstate = data['nodes'][str(nextstate)]['state']
+                    nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
+                    nenvstate = xstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
+                    print 'Environment state in automaton is', allstates.index(nenvstate)
+                    print 'Environment state in grid is', nenvstate
+                    gridstate = copy.deepcopy(nenvstate)
+
+
+            if len(data['nodes'][str(nextstate)]['trans']) > 0:
+                break
+            else:
+                a =1
+
+        print 'Automaton state is ', nextstate
+        currstate = nextstate
+
+def simulate_path(gwg,filename, states):
+    file = open(filename)
+    data = json.load(file)
+    file.close()
+    xstates = list(set(gwg.states) - set(gwg.edges))
+    for currstate in states:
+        for v in data['variables']:
+            if 'y' not in v:
+                envsize = data['variables'].index(v)
+                break
+        totstate = data['nodes'][str(currstate)]['state']
+        envstatebin = totstate[0:envsize]
+        envstate = xstates[int(''.join(str(e) for e in envstatebin)[::-1],2)]
+        agentstatebin = totstate[envsize:len(totstate)]
+        agentstate = [None]*gwg.nagents
+        for n in range(gwg.nagents):
+            singleagentstatebin = agentstatebin[n*len(agentstatebin)/gwg.nagents:(n+1)*len(agentstatebin)/gwg.nagents]
+            agentstate[n] = xstates[int(''.join(str(e) for e in singleagentstatebin)[::-1], 2)]
+
+        gwg.render()
+
+        gwg.moveobstacles[0] = copy.deepcopy(envstate)
+
+        gwg.render()
+        gwg.current = copy.deepcopy(agentstate)
+        print 'Agent state in grid is ', gwg.current[0]
+        print 'Agent state in automaton is ', xstates.index(gwg.current[0])
+
+
+        gwg.colorstates = set()
+        gwg.colorstates.update(visibility.invis(gwg,agentstate[0]))
+        for n in range(1, gwg.nagents):
+            gwg.colorstates = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
+        time.sleep(0.4)
+        gwg.render()
+        gwg.draw_state_labels()
 
 if __name__ == '__main__':
     from gridworld import Gridworld

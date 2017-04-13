@@ -8,23 +8,26 @@ def partitionGrid(gw,number_of_partitions):
         return [gw.states]
     partition = [None]*n
     partcols = int(math.ceil(math.sqrt(n)))
-    partrows = int(math.ceil(n / partcols))
-    width = gw.ncols / partcols
-    height = gw.nrows/ partrows
+    partrows = int(math.ceil(float(n) / partcols))
+    width = int(math.ceil(float(gw.ncols-2) / partcols))
+    height = int(math.ceil(float(gw.nrows-2)/ partrows))
     colstates = dict.fromkeys(range(partcols),None)
     rowstates = dict.fromkeys(range(partrows),None)
     partitiondict = {(x,y): set() for x in range(partrows) for y in range(partcols)}
     for k in range(partcols):
         if k == partcols - 1: # if we are the last column
-            colstates[k] = range(k*width,gw.ncols)
+            colstates[k] = range(k*width,gw.ncols-1)
         else:
             colstates[k] = range(k*width,(k+1)*width)
 
+    for k in colstates.keys():
+        if len(colstates[k]) == 0:
+            colstates.__delitem__(k)
 
     for k in range(partrows):
         rowstates[k] = range(k*height,(k+1)*height)
         if k == partrows - 1: # if we are the last column
-            rowstates[k] = range(k*height, gw.nrows)
+            rowstates[k] = range(k*height, gw.nrows-1)
 
     for s in set(gw.states) - set(gw.walls):
         scoords = gw.coords(s)

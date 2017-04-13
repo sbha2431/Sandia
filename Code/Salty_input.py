@@ -12,6 +12,13 @@ def reach_states(gw,states):
             t.update(set(np.nonzero(gw.prob[action][state])[0]))
     return t
 
+def powerset(s):
+    x = len(s)
+    a = []
+    for i in range(1,1<<x):
+        a.append({s[j] for j in range(x) if (i &(1<<j))})
+    return a
+
 def write_to_slugs(gw,inittarg,vel=1):
     # agentstates = list(set(gw.states)- set(gw.edges))
     # agenttrans = set()
@@ -131,11 +138,12 @@ def write_to_slugs(gw,inittarg,vel=1):
     file.write('y = {}\n'.format(xstates.index(gw.ncols+2)))
     file.close()
 
-def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0):
+def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint = 1):
     nonbeliefstates = list(set(gw.states) - set(gw.edges))
     partitionGrid = grid_partition.partitionGrid(gw,belief_partitions)
     allstates = copy.deepcopy(nonbeliefstates)
-    for i in range(gw.nstates,gw.nstates+ len(partitionGrid.keys())):
+    beliefcombs = powerset(partitionGrid.keys())
+    for i in range(gw.nstates,gw.nstates+ len(beliefcombs)):
         allstates.append(i)
 
     invisibilityset = [dict.fromkeys(set(gw.states) - set(gw.edges),frozenset({gw.nrows*gw.ncols+1}))]*gw.nagents
@@ -144,14 +152,14 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0):
             invisibilityset[n][s] = visibility.invis(gw,s) - set(gw.targets[n])
             if s in gw.obstacles:
                 invisibilityset[n][s] = {-1}
-    filename = 'slugs_input_'+str(gw.nagents)+'agents_1steplookahead.structuredslugs'
+    filename = 'slugs_input_'+str(gw.nagents)+'agents_belief.structuredslugs'
     file = open(filename,'w')
     file.write('[INPUT]\n')
-    file.write('y:0...{}\n'.format(len(allstates)))
+    file.write('y:0...{}\n'.format(len(allstates) - 1))
     file.write('[OUTPUT]\n')
     agentletters = ['x','z','a','b','c']
     for n in range(gw.nagents):
-        file.write(agentletters[n]+':0...{}\n'.format(len(nonbeliefstates)))
+        file.write(agentletters[n]+':0...{}\n'.format(len(nonbeliefstates)-1))
 
     file.write('[ENV_INIT]\n')
     file.write('y = {}\n'.format(allstates.index(inittarg)))
@@ -161,39 +169,64 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0):
 
     # writing env_trans
     file.write('\n[ENV_TRANS]\n')
-    for x in range(len(nonbeliefstates)):
-        sagent = nonbeliefstates[x]
-        for y in range(len(allstates)):
-            stri = " (x = {} /\\ y = {}) -> ".format(x,y)
-            if allstates[y] in nonbeliefstates:
+    for y in range(len(allstates)):
+        if allstates[y] in nonbeliefstates:
+            for x in range(len(nonbeliefstates)):
+                sagent = nonbeliefstates[x]
+                stri = " (x = {} /\\ y = {}) -> ".format(x,y)
                 senv = allstates[y]
+                beliefset = set()
                 for a in range(gw.nactions):
                     for t in np.nonzero(gw.prob[gw.actlist[a]][senv])[0]:
                         if not any(t in invisibilityset[n][sagent] for n in range(gw.nagents)):
                             stri += ' y\' = {} \\/'.format(allstates.index(t))
                         else:
-                            t2 = allstates[len(nonbeliefstates) + [inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]] # maybe don't add 1
-                            stri += ' y\' = {} \\/'.format(allstates.index(t2))
-            else:
-                beliefstate = partitionGrid.keys()[y - len(nonbeliefstates)]
-                for b in partitionGrid[beliefstate]:
-                    if not any(b in invisibilityset[n][sagent] for n in range(gw.nagents)):
-                        stri += ' y\' = {} \\/'.format(b)
-                    else:
-                        b2 = allstates[len(nonbeliefstates) + [inv for inv in range(len(partitionGrid.values())) if b in partitionGrid.values()[inv]][0]]
-                        stri += ' y\' = {} \\/'.format(allstates.index(b2))
-            stri = stri[:-3]
-            stri += '\n'
-            file.write(stri)
-        for n in range(gw.nagents):
-            file.write("{} = {} -> !y' = {}\n".format(agentletters[n],x,allstates.index(sagent)))
+                            t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
+                            beliefset.add(t2)
+                if len(beliefset) > 0:
+                    b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
+                    stri += ' y\' = {} \\/'.format(allstates.index(b2))
+                stri = stri[:-3]
+                stri += '\n'
+                file.write(stri)
+                for n in range(gw.nagents):
+                    file.write("{} = {} -> !y' = {}\n".format(agentletters[n],x,allstates.index(sagent)))
+
+        else:
+            for x in range(len(nonbeliefstates)):
+                sagent = nonbeliefstates[x]
+                invisstates = invisibilityset[0][sagent]
+                beliefcombstate = beliefcombs[y - len(nonbeliefstates)]
+                beliefstates = set()
+                visstates = set(nonbeliefstates) - invisstates
+                for currbeliefstate in beliefcombstate:
+                    beliefstates = beliefstates.union(partitionGrid[currbeliefstate])
+                truebeliefstates = beliefstates - beliefstates.intersection(visstates)
+                if len(truebeliefstates) > 0:
+                    stri = " (x = {} /\\ y = {}) -> ".format(x,y)
+                    for b in truebeliefstates:
+                        beliefset = set()
+                        for a in range(gw.nactions):
+                            for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
+                                if not any(t in invisibilityset[n][sagent] for n in range(gw.nagents)):
+                                    stri += ' y\' = {} \\/'.format(allstates.index(t))
+                                else:
+                                    t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
+                                    beliefset.add(t2)
+                        if len(beliefset) > 0:
+                            b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
+                            stri += ' y\' = {} \\/'.format(allstates.index(b2))
+                    stri = stri[:-3]
+                    stri += '\n'
+                    file.write(stri)
+
 
     # Writing env_safety
     for obs in gw.obstacles:
         file.write('!y = {}\n'.format(allstates.index(obs)))
 
     for n in range(gw.nagents):
-        file.write('!y = {}\n'.format(agentletters[n]))
+        # file.write('!y = {}\n'.format(agentletters[n]))
         file.write('!y = {}\n'.format(allstates.index(gw.targets[n][0])))
 
     # writing sys_trans
@@ -210,24 +243,34 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0):
             stri = stri[:-3]
             stri += '\n'
             file.write(stri)
-        # Writing sys_safety
+    # Writing sys_safety
         for obs in gw.obstacles:
             file.write('!{} = {}\n'.format(agentletters[n],nonbeliefstates.index(obs)))
 
-    for s in set(allstates) - set(nonbeliefstates):
-        for x in nonbeliefstates:
-            stri = 'x = {} /\\ y = {} -> '.format(nonbeliefstates.index(x),allstates.index(s))
+    for s in set(nonbeliefstates):
+        for n in range(gw.nagents):
+            stri = 'y = {} -> !{} = {}\n'.format(allstates.index(s),agentletters[n],nonbeliefstates.index(s))
+            file.write(stri)
+            stri = 'y = {} -> !{}\' = {}\n'.format(allstates.index(s),agentletters[n],nonbeliefstates.index(s))
+            file.write(stri)
+
+    for b in beliefcombs:
+        beliefset = set()
+        for beliefstate in b:
+            beliefset = beliefset.union(partitionGrid[beliefstate])
+        if len(beliefset) > beliefconstraint:
+            stri = 'y = {} -> \n'.format(len(nonbeliefstates)+beliefcombs.index(b))
             stri += '('
             for n in range(gw.nagents):
-                beliefstateind = partitionGrid.keys()[allstates.index(s) - len(nonbeliefstates)]
-                for b in partitionGrid[beliefstateind]:
-                    invisstates = invisibilityset[n][b]
-                    if len(invisstates) > 1:
-                        stri += '('
-                        for inv in invisstates:
-                            stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(inv))
-                        stri = stri[:-3]
-                        stri += ') \\/ '
+                stri += '('
+                for x in nonbeliefstates:
+                    invisstates = invisibilityset[n][x]
+                    visstates = set(nonbeliefstates) - invisstates
+                    truebelief = beliefset - beliefset.intersection(visstates)
+                    if len(truebelief) > beliefconstraint:
+                        stri += '!{}\' = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
+                stri = stri[:-3]
+                stri += ') \\/ '
             stri = stri[:-3]
             stri += ')'
             stri += '\n'
