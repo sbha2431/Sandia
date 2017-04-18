@@ -105,7 +105,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
     xstates = list(set(gwg.states) - set(gwg.edges))
     partitionGrid = grid_partition.partitionGrid(gwg,numbeliefstates)
     allstates = copy.deepcopy(xstates)
-    beliefcombs = powerset(range(len(partitionGrid.keys())))
+    beliefcombs = powerset(partitionGrid.keys())
     for i in range(gwg.nstates,gwg.nstates+ len(beliefcombs)):
         allstates.append(i)
 
@@ -145,9 +145,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
         nextstatedirn = {'Left':None,'Right':None,'Down':None,'Up':None,'Belief':set()}
         for n in nextstates:
             ntotstate = data['nodes'][str(n)]['state']
-            nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
-            if int(''.join(str(e) for e in nenvstatebin)[::-1],2) > 27:
-                a = 1
+            nenvstatebin = ntotstate[0:envsize]
             nenvstate = allstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
             if nenvstate == gwg.moveobstacles[0] - 1:
                 nextstatedirn['Left'] = n
@@ -178,18 +176,33 @@ def userControlled_belief(filename,gwg,numbeliefstates):
                         gridstate = gwg.moveobstacles[0] - gwg.ncols
                     for n in nextstatedirn['Belief']:
                         ntotstate = data['nodes'][str(n)]['state']
-                        nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
+                        nenvstatebin = ntotstate[0:envsize]
                         nenvstate = allstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
                         # print nenvstate
                         for beliefstate in beliefcombs[len(beliefcombs) - (len(allstates) - allstates.index(nenvstate))]:
                             # print 'beliefstate is ' , beliefstate
-                            if gridstate in partitionGrid.values()[beliefstate]:
-                                nextstate = n
+                            if gridstate in partitionGrid[beliefstate]:
+                                nextstate = copy.deepcopy(n)
                                 print 'Environment state in automaton is', allstates.index(nenvstate)
                                 print 'Environment state in grid is', nenvstate
+                                nagentstatebin = ntotstate[envsize:len(ntotstate)]
+                                nextagentstate = [None]*gwg.nagents
+                                for n in range(gwg.nagents):
+                                    singleagentstatebin = nagentstatebin[n*len(nagentstatebin)/gwg.nagents:(n+1)*len(nagentstatebin)/gwg.nagents]
+                                    nextagentstate[n] = xstates[int(''.join(str(e) for e in singleagentstatebin)[::-1], 2)]
+                                invisstates = visibility.invis(gwg,nextagentstate[0])
+                                visstates = set(xstates) - invisstates
+                                if nenvstate not in xstates:
+                                    beliefcombstate = beliefcombs[allstates.index(nenvstate) - len(xstates)]
+                                    beliefstates = set()
+                                    for b in beliefcombstate:
+                                        beliefstates = beliefstates.union(partitionGrid[b])
+                                    truebeliefstates = beliefstates - beliefstates.intersection(visstates)
+                                    print 'Belief set is ', truebeliefstates
+                                    print 'Size of belief set is ', len(truebeliefstates)
                 else:
                     ntotstate = data['nodes'][str(nextstate)]['state']
-                    nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
+                    nenvstatebin = ntotstate[0:envsize]
                     nenvstate = xstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
                     print 'Environment state in automaton is', allstates.index(nenvstate)
                     print 'Environment state in grid is', nenvstate
@@ -198,8 +211,6 @@ def userControlled_belief(filename,gwg,numbeliefstates):
 
             if len(data['nodes'][str(nextstate)]['trans']) > 0:
                 break
-            else:
-                a =1
 
         print 'Automaton state is ', nextstate
         currstate = nextstate

@@ -138,12 +138,12 @@ def write_to_slugs(gw,inittarg,vel=1):
     file.write('y = {}\n'.format(xstates.index(gw.ncols+2)))
     file.close()
 
-def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint = 1):
+def write_to_slugs_belief(infile,gw,inittarg,vel=1,belief_partitions=0,beliefconstraint = 1):
     nonbeliefstates = list(set(gw.states) - set(gw.edges))
     partitionGrid = grid_partition.partitionGrid(gw,belief_partitions)
     allstates = copy.deepcopy(nonbeliefstates)
     beliefcombs = powerset(partitionGrid.keys())
-    for i in range(gw.nstates,gw.nstates+ len(beliefcombs)):
+    for i in range(gw.nstates,gw.nstates + len(beliefcombs)):
         allstates.append(i)
 
     invisibilityset = [dict.fromkeys(set(gw.states) - set(gw.edges),frozenset({gw.nrows*gw.ncols+1}))]*gw.nagents
@@ -152,7 +152,7 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint
             invisibilityset[n][s] = visibility.invis(gw,s) - set(gw.targets[n])
             if s in gw.obstacles:
                 invisibilityset[n][s] = {-1}
-    filename = 'slugs_input_'+str(gw.nagents)+'agents_belief.structuredslugs'
+    filename = infile+'.structuredslugs'
     file = open(filename,'w')
     file.write('[INPUT]\n')
     file.write('y:0...{}\n'.format(len(allstates) - 1))
@@ -202,9 +202,9 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint
                 for currbeliefstate in beliefcombstate:
                     beliefstates = beliefstates.union(partitionGrid[currbeliefstate])
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
-                if len(truebeliefstates) > 0:
+                if len(truebeliefstates) > 0 or 1==1:
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
-                    for b in truebeliefstates:
+                    for b in beliefstates:
                         beliefset = set()
                         for a in range(gw.nactions):
                             for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
@@ -259,7 +259,8 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint
         for beliefstate in b:
             beliefset = beliefset.union(partitionGrid[beliefstate])
         if len(beliefset) > beliefconstraint:
-            stri = 'y = {} -> \n'.format(len(nonbeliefstates)+beliefcombs.index(b))
+            stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
+            counter = 0
             stri += '('
             for n in range(gw.nagents):
                 stri += '('
@@ -268,13 +269,15 @@ def write_to_slugs_belief(gw,inittarg,vel=1,belief_partitions=0,beliefconstraint
                     visstates = set(nonbeliefstates) - invisstates
                     truebelief = beliefset - beliefset.intersection(visstates)
                     if len(truebelief) > beliefconstraint:
-                        stri += '!{}\' = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
+                        stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
+                        counter += 1
                 stri = stri[:-3]
                 stri += ') \\/ '
             stri = stri[:-3]
             stri += ')'
             stri += '\n'
-            file.write(stri)
+            if counter > 0:
+                file.write(stri)
 
     if gw.nagents > 1:
         for s in nonbeliefstates:
