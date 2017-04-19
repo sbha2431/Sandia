@@ -10,6 +10,7 @@ import subprocess
 import visibility
 import simplejson as json
 import time
+import counterexample_parser
 import simulateController
 #Define gridworld parameters
 # nrows = 15
@@ -40,23 +41,24 @@ gwg.render()
 outfile = 'slugs_output_1agent15x20_belief.json'
 infile = 'slugs_input_15x20_1agent_belief'
 gwg.draw_state_labels()
-beliefparts = 6
+beliefparts = 4
 beliefcons = 10
 # gwg.save('gridworld')
-print ('Writing slugs input file...')
+# print ('Writing slugs input file...')
 # Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
-Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
-print ('Converting input file...')
-os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
-print('Computing controller...')
-result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
+# Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
+# print ('Converting input file...')
+# os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+# print('Computing controller...')
+# result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
 # result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample.txt',shell=True, stdout=subprocess.PIPE)
 # # # #
-time.sleep(15)
+# time.sleep(15)
 #
 # # #
 # simulateController.userControlled_belief(outfile,gwg,beliefparts)
 
+counterexample_parser.run_counterexample('counterexample.txt',gwg,beliefparts)
 
 # simulateController.userControlled_belief('slugsoutput_1steplookahead_4.json',gwg)
 # simulateController.simulate_path(gwg,filename,counterexample)
