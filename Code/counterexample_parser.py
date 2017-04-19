@@ -62,15 +62,24 @@ def run_counterexample(fname,gwg,numbeliefstates):
 
 
 if __name__ == '__main__':
+    from gridworld import Gridworld
+
+    nrows = 10
+    ncols = 10
+    nagents = 1
+    initial = [88]
+    targets = [[ncols+1]]
+    obstacles = [34,44,45,54,55,64,47]
+    moveobstacles = [68]
+
+    regionkeys = {'pavement','gravel','grass','sand','deterministic'}
+    regions = dict.fromkeys(regionkeys,{-1})
+    regions['deterministic']= range(nrows*ncols)
+
+    gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
+    gwg.render()
+    gwg.draw_state_labels()
+    beliefparts = 4
+    beliefcons = 10
     fname = 'counterexample.txt'
-    with open(fname) as f:
-        content = f.readlines()
-    # you may also want to remove whitespace characters like `\n` at the end of each line
-    content = [x.strip() for x in content]
-    ind = 0
-    envsize = int(content[ind][34])
-    agentsize = int(content[ind][89])
-    envstatebin = []
-    agentstatebin = []
-    # print map(int,content[3][18:].split(', '))
-    print content[12].split(' ')
+    run_counterexample('counterexample.txt',gwg,beliefparts)
