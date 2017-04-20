@@ -277,9 +277,10 @@ class Gridworld():
         for n in range(self.nagents):
             x, y = self.indx2coord(state[n], center=True)
             pygame.draw.circle(self.surface, (0, 0, 255), (y, x), self.size / 2)
-        for s in self.moveobstacles:
-            x, y = self.indx2coord(s, center=True)
-            pygame.draw.circle(self.surface, (205, 92, 0), (y, x), self.size / 2)
+        if len(self.moveobstacles) > 0:
+            for s in self.moveobstacles:
+                x, y = self.indx2coord(s, center=True)
+                pygame.draw.circle(self.surface, (205, 92, 0), (y, x), self.size / 2)
         if blit:
             self.screen.blit(self.surface, (0, 0))
             pygame.display.flip()
