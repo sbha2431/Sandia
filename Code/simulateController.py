@@ -111,6 +111,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
 
     currstate = 0
     gridstate = copy.deepcopy(gwg.moveobstacles[0])
+    gwg.colorstates = [set(), set()]
     while True:
         for v in data['variables']:
             if 'y' not in v:
@@ -134,10 +135,10 @@ def userControlled_belief(filename,gwg,numbeliefstates):
         print 'Agent state in automaton is ', xstates.index(gwg.current[0])
 
 
-        gwg.colorstates = set()
-        gwg.colorstates.update(visibility.invis(gwg,agentstate[0]))
+        gwg.colorstates[0] = set()
+        gwg.colorstates[0].update(visibility.invis(gwg,agentstate[0]))
         for n in range(1, gwg.nagents):
-            gwg.colorstates = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
+            gwg.colorstates[0] = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
         time.sleep(0.4)
         gwg.render()
         gwg.draw_state_labels()
@@ -198,6 +199,8 @@ def userControlled_belief(filename,gwg,numbeliefstates):
                                     for b in beliefcombstate:
                                         beliefstates = beliefstates.union(partitionGrid[b])
                                     truebeliefstates = beliefstates - beliefstates.intersection(visstates)
+                                    gwg.colorstates[1] = copy.deepcopy(truebeliefstates)
+                                    gwg.render()
                                     print 'Belief set is ', truebeliefstates
                                     print 'Size of belief set is ', len(truebeliefstates)
                 else:
@@ -207,6 +210,8 @@ def userControlled_belief(filename,gwg,numbeliefstates):
                     print 'Environment state in automaton is', allstates.index(nenvstate)
                     print 'Environment state in grid is', nenvstate
                     gridstate = copy.deepcopy(nenvstate)
+                    gwg.colorstates[1] = set()
+                    gwg.render()
 
 
             if len(data['nodes'][str(nextstate)]['trans']) > 0:
