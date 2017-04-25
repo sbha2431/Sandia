@@ -23,8 +23,7 @@ regions['deterministic']= range(nrows*ncols)
 
 gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
 gwg.render()
-outfile = 'slugs_output_1agent10x10_belief.json'
-infile = 'slugs_input_10x10_1agent_belief'
+outfile = 'slugs_output_1agent15x20_belief.json'
 gwg.draw_state_labels()
 beliefparts = 8
 beliefcons = 30

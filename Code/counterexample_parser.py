@@ -23,7 +23,7 @@ def run_counterexample(fname,gwg,numbeliefstates):
     # you may also want to remove whitespace characters like `\n` at the end of each line
     content = [x.strip() for x in content]
     ind = 0
-
+    gwg.colorstates = [set(), set()]
     while True:
         envstatebin = []
         agentstatebin = []
@@ -63,17 +63,18 @@ def run_counterexample(fname,gwg,numbeliefstates):
             beliefinvisstates = beliefstate - beliefvisstates
             print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
             print 'Invisible states in belief states are ', beliefinvisstates
+            gwg.colorstates[1] = copy.deepcopy(beliefinvisstates)
             gwg.moveobstacles = []
         else:
-            gwg.moveobstacles[0] = copy.deepcopy(xstates[envstate])
+            gwg.moveobstacles = [copy.deepcopy(xstates[envstate])]
 
 
         gwg.render()
         gwg.current[0] = copy.deepcopy(agentstate)
 
-        gwg.colorstates = set()
-        gwg.colorstates.update(visibility.invis(gwg,agentstate))
-        gwg.colorstates = gwg.colorstates.intersection(visibility.invis(gwg,agentstate))
+        gwg.colorstates[0] = set()
+        gwg.colorstates[0].update(visibility.invis(gwg,agentstate))
+        gwg.colorstates[0] = gwg.colorstates[0].intersection(visibility.invis(gwg,agentstate))
         gwg.render()
         gwg.draw_state_labels()
 
