@@ -38,7 +38,7 @@ regions['deterministic']= range(nrows*ncols)
 
 gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
 gwg.render()
-outfile = 'slugs_output_1agent10x10_6_belief.json'
+outfile = 'slugs_output_1agent10x10_8_belief.json'
 infile = 'slugs_input_10x10_1agent_belief'
 gwg.draw_state_labels()
 beliefparts = 6
@@ -51,9 +51,9 @@ print ('Converting input file...')
 os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
 print('Computing controller...')
 # result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
-result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample_10x10.txt',shell=True, stdout=subprocess.PIPE)
+result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample_10x10_6.txt',shell=True, stdout=subprocess.PIPE)
 # # # #
-# time.sleep(15)
+time.sleep(35)
 #
 # # #
 # simulateController.userControlled_belief(outfile,gwg,beliefparts)
