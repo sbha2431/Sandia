@@ -204,8 +204,9 @@ def write_to_slugs_belief(infile,gw,inittarg,vel=1,belief_partitions=0,beliefcon
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
                 if len(truebeliefstates) > 0 or 1==1:
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
+                    beliefset = set()
+                    beliefset = beliefset.union(beliefcombstate)
                     for b in beliefstates:
-                        beliefset = set()
                         for a in range(gw.nactions):
                             for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
                                 if not any(t in invisibilityset[n][sagent] for n in range(gw.nagents)):

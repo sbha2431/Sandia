@@ -120,6 +120,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
         totstate = data['nodes'][str(currstate)]['state']
         envstatebin = totstate[0:envsize]
         agentstatebin = totstate[envsize:len(totstate)]
+        envstate = allstates[int(''.join(str(e) for e in envstatebin)[::-1],2)]
         agentstate = [None]*gwg.nagents
         for n in range(gwg.nagents):
             singleagentstatebin = agentstatebin[n*len(agentstatebin)/gwg.nagents:(n+1)*len(agentstatebin)/gwg.nagents]
@@ -179,9 +180,8 @@ def userControlled_belief(filename,gwg,numbeliefstates):
                         ntotstate = data['nodes'][str(n)]['state']
                         nenvstatebin = ntotstate[0:envsize]
                         nenvstate = allstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
-                        # print nenvstate
+
                         for beliefstate in beliefcombs[len(beliefcombs) - (len(allstates) - allstates.index(nenvstate))]:
-                            # print 'beliefstate is ' , beliefstate
                             if gridstate in partitionGrid[beliefstate]:
                                 nextstate = copy.deepcopy(n)
                                 print 'Environment state in automaton is', allstates.index(nenvstate)

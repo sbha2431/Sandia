@@ -38,25 +38,25 @@ regions['deterministic']= range(nrows*ncols)
 
 gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
 gwg.render()
-outfile = 'slugs_output_1agent15x20_belief.json'
-infile = 'slugs_input_15x20_1agent_belief'
+outfile = 'slugs_output_1agent10x10_belief.json'
+infile = 'slugs_input_10x10_1agent_belief'
 gwg.draw_state_labels()
 beliefparts = 8
 beliefcons = 30
 # # # gwg.save('gridworld')
-print ('Writing slugs input file...')
-# Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
-Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
-print ('Converting input file...')
-os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
-print('Computing controller...')
-result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
+# print ('Writing slugs input file...')
+# # Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
+# Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
+# print ('Converting input file...')
+# os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+# print('Computing controller...')
+# result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
 # result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample.txt',shell=True, stdout=subprocess.PIPE)
 # # # #
 # time.sleep(15)
 #
 # # #
-# simulateController.userControlled_belief(outfile,gwg,beliefparts)
+simulateController.userControlled_belief(outfile,gwg,beliefparts)
 #
 # counterexample_parser.run_counterexample('counterexample.txt',gwg,beliefparts)
 
