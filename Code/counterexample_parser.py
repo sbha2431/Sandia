@@ -28,17 +28,12 @@ def run_counterexample(fname,gwg,numbeliefstates):
         envstatebin = []
         agentstatebin = []
         beliefstate = set()
-        for r in range(len(content[ind])):
-            if content[ind][r] == 'y':
-                if content[ind][r+2] == '0':
-                    envstatebin.append(content[ind][r+9])
-                else:
-                    envstatebin.append(content[ind][r+4])
-            elif content[ind][r] == 'x':
-                if content[ind][r+2] == '0':
-                    agentstatebin.append(content[ind][r+9])
-                else:
-                    agentstatebin.append(content[ind][r+4])
+        line = content[ind].split(' ')
+        for r in line[6::]:
+            if r[1] == 'y' or r[0] == 'y':
+                envstatebin.append(r[-2])
+            elif r[1] == 'x' or r[0] == 'x':
+                agentstatebin.append(r[-2])
         envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         if envstate < len(xstates):
             print 'Environment position is ', xstates[envstate]

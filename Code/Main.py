@@ -41,19 +41,19 @@ gwg.render()
 outfile = 'slugs_output_1agent10x10_8_belief.json'
 infile = 'slugs_input_10x10_1agent_belief'
 gwg.draw_state_labels()
-beliefparts = 6
+beliefparts = 4
 beliefcons = 10
 # # # gwg.save('gridworld')
 print ('Writing slugs input file...')
-# Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
+# # Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
 Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
 print ('Converting input file...')
 os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
 print('Computing controller...')
 # result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
-result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample_10x10_6.txt',shell=True, stdout=subprocess.PIPE)
+result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample_10x10_4.txt',shell=True, stdout=subprocess.PIPE)
 # # # #
-time.sleep(35)
+time.sleep(15)
 #
 # # #
 # simulateController.userControlled_belief(outfile,gwg,beliefparts)

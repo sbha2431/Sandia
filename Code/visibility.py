@@ -5,11 +5,15 @@ import shapely.geometry
 
 
 def invis(gw, state):
-    targcoords = gw.coords(state)
+    targcoords = list(gw.coords(state))
+    targcoords[0] += 0.5
+    targcoords[1] += 0.5
     invisstates = set()
     for s in gw.states:
-        statecoords = gw.coords(s)
-        line = shapely.geometry.LineString([list(targcoords), list(statecoords)])
+        statecoords = list(gw.coords(s))
+        statecoords[0] += 0.5
+        statecoords[1] += 0.5
+        line = shapely.geometry.LineString([targcoords, statecoords])
         for obs in gw.obstacles:
             obscoordsupleft = list(gw.coords(obs))
             obscoordsupright = [obscoordsupleft[0] + 0.99, obscoordsupleft[1]]
