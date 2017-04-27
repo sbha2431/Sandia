@@ -60,10 +60,10 @@ def userControlled(filename,gwg):
             agentstate[n] = xstates[int(''.join(str(e) for e in singleagentstatebin)[::-1], 2)]
 
         gwg.render()
-        gwg.colorstates = set()
-        gwg.colorstates.update(visibility.invis(gwg,agentstate[0]))
+        gwg.colorstates = [set()]
+        gwg.colorstates[0].update(visibility.invis(gwg,agentstate[0]))
         for n in range(1, gwg.nagents):
-            gwg.colorstates = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
+            gwg.colorstates = gwg.colorstates[0].intersection(visibility.invis(gwg,agentstate[n]))
         gwg.moveobstacles[0] = copy.deepcopy(envstate)
         # time.sleep(1)
         gwg.current = copy.deepcopy(agentstate)
@@ -140,7 +140,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
         gwg.colorstates[0].update(visibility.invis(gwg,agentstate[0]))
         for n in range(1, gwg.nagents):
             gwg.colorstates[0] = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
-        time.sleep(0.4)
+        # time.sleep(0.4)
         gwg.render()
         # gwg.draw_state_labels()
         nextstates = data['nodes'][str(currstate)]['trans']
@@ -224,7 +224,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
                                         beliefstates = beliefstates.union(partitionGrid[b])
                                     truebeliefstates = beliefstates - beliefstates.intersection(visstates)
                                     gwg.colorstates[1] = copy.deepcopy(truebeliefstates)
-                                    gwg.render()
+                                    # gwg.render()
                                     print 'Belief set is ', truebeliefstates
                                     print 'Size of belief set is ', len(truebeliefstates)
 
@@ -284,6 +284,7 @@ def simulate_path(gwg,filename, states):
 
 if __name__ == '__main__':
     from gridworld import Gridworld
+
     nrows = 15
     ncols = 20
     nagents = 1
@@ -300,5 +301,6 @@ if __name__ == '__main__':
 
     gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
     gwg.render()
+    gwg.colorstates = [set()]
     filename = 'slugs_output.json'
     userControlled(filename,gwg)

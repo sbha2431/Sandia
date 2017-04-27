@@ -24,6 +24,5 @@ gwg.render()
 outfile = 'slugs_output_1agent15x20_8_belief.json'
 gwg.draw_state_labels()
 beliefparts = 8
-beliefcons = 30
 
 simulateController.userControlled_belief(outfile,gwg,beliefparts)
