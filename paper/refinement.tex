@@ -1,0 +1,28 @@
+\subsubsection{Counterexamples for surveillance objectives}
+A \emph{counterexample strategy} for the environment in the surveillance game $\Surveillance(G_\abstr,k)$ is a finite tree whose nodes are labelled with states in $\states_\abstr$ and which is such that
+\begin{itemize}
+\item the root of the tree is labelled with $s_\abstr^\init$
+\item each leaf of the tree is labelled with a state $s_\abstr$ such that  $|\gamma(s_\abstr)|  > k$;
+\item for each non-leaf node labelled with a state $s_\abstr$ we have $|\gamma(s_\abstr)|  \leq k$
+\item the tree branches according to all possible of the agent.
+\end{itemize}
+
+A \emph{path} in $G_\abstr$ is a sequence of states $s_0,\ldots,s_n$ such that $s_0 = s_\abstr^\init$ and $(s_i,s_{i+i}) \in T_\abstr$ for each $i < n$.
+
+\subsubsection{Forward belief-set propagation}
+Given a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ and an index $0 \leq i \leq n$, we define $\beliefF(\pi,i)\subseteq \states$ inductively as follows:
+\begin{itemize}
+\item if $i = 0$, then $\beliefF(\pi,i) = \{s^\init\}$,
+\item if $i > 0$, $\beliefF(\pi,i) = \post(\beliefF(\pi,i-1)) \cap \gamma(s_i)$.
+\end{itemize}
+
+A counterexample strategy in $G_\abstr$ is called \emph{concretizable} if for every path $\pi_\abstr = s_0,\ldots,s_n$ in the corresponding counterexample tree where $s_n$ is a leaf node, it holds that $|\beliefF(\pi,n)| > k$.
+
+\subsubsection{Backward partition splitting}
+Consider a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ such that for every index $0 \leq i \leq n$ we have $|\beliefF(\pi,n)| \leq k$. We now describe a procedure to compute a partitioning $\part'$ that refines the current partitioning $\part$ based on the path $\pi_\abstr$.
+
+
+For $s_n  =(l_a,\{B_1,\ldots,B_k\})$, we split some of the partitions in $s_n$ to obtain from $\{B_1,\ldots,B_k\}$ a set $\{B_1',\ldots, B'_{k'}\}$ such that $|\gamma(\{B_i' \in s_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
+This gives us a partitioning $Q^n$ that refines the current partitioning $Q$. To ensure that the counterexample is eliminated we have to propagate the information backwards along the path, possibly splitting the partitions further. For each $j < n$:
+
+

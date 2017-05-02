@@ -40,3 +40,11 @@ The first two conditions capture the successor locations of the target that can 
 \Rayna{As in the definition of $T_\belief$ we also have the problem that $A_t'$ depends on $l_a'$ and not only on $(l_a,A_t)$.}
 
 
+With a state $(l_a,A)$ in $\states_\abstr$ we associate a set of states in $G$ defined as follows:
+\[
+\gamma((l_a,A)) =
+\begin{cases}
+\{(l_a,l_t)\} \text{ if } A = \{\{l_t\}\}, \vis(l_a,l_t) = \true\\
+\{(l_a,l_t) \mid \exists B\in A.\; l_t \in B, \vis(l_a,l_t) = \false\}\\
+\end{cases}
+\]
