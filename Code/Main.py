@@ -13,24 +13,24 @@ import time
 import counterexample_parser
 import simulateController
 # Define gridworld parameters
-nrows = 15
-ncols = 20
-nagents = 3
-initial = [237,254,244]
-targets = [[ncols+1],[ncols+2],[ncols+3]]
-obsnum = 3
-# obstacles = [27,63,78,26,37,36,72,62,73,77,67,66,76,52,53,68,16,17]
-obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
-# obstacles = [15,16,19]
-moveobstacles = [197,152,167,71,104]
+# nrows = 15
+# ncols = 20
+# nagents = 3
+# initial = [237,254,244]
+# targets = [[ncols+1],[ncols+2],[ncols+3]]
+# obsnum = 3
+# # obstacles = [27,63,78,26,37,36,72,62,73,77,67,66,76,52,53,68,16,17]
+# obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
+# # obstacles = [15,16,19]
+# moveobstacles = [197,152,167,71,104]
 
-# nrows = 10
-# ncols = 10
-# nagents = 1
-# initial = [56]
-# targets = [[ncols+1]]
-# obstacles = [34,44,45,54,55,64,35,65,37,47,57,67]
-# moveobstacles = [26,16]
+nrows = 10
+ncols = 10
+nagents = 1
+initial = [56]
+targets = [[ncols+1]]
+obstacles = [34,44,45,54,55,64,57]
+moveobstacles = [26]
 
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
@@ -41,26 +41,26 @@ gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles
 gwg.colorstates = [set(),set()]
 gwg.render()
 
-# gwg.draw_state_labels()
+gwg.draw_state_labels()
 
-outfile = 'slugs_output_1agent15x20_6_belief.json'
-infile = 'slugs_input_15x20_6_1agent_belief'
-beliefparts = 6
-beliefcons = 25
-gwg.save('gridworldfig.png')
+outfile = 'slugs_output_1agent10x10_8_belief.json'
+infile = 'slugs_input_10x10_8_1agent_belief'
+beliefparts = 8
+beliefcons = 14
+# gwg.save('gridworldfig.png')
 # print ('Writing slugs input file...')
-# # # # # # Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
-# Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],2, beliefparts,beliefcons)
-# print ('Converting input file...')
-# os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
-# print('Computing controller...')
-# result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
+# # # # # Salty_input.write_to_slugs(gwg,moveobstacles[0],1)
+Salty_input.write_to_slugs_belief(infile,gwg,moveobstacles[0],1, beliefparts,beliefcons)
+print ('Converting input file...')
+os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+print('Computing controller...')
+result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
 # result = subprocess.Popen('/home/sudab/Applications/slugs/src/slugs --counterStrategy ' + infile+'.slugsin > counterexample_10x10_4.txt',shell=True, stdout=subprocess.PIPE)
 # # # # #
-# time.sleep(55)
+time.sleep(125)
 #
 # # #
-# simulateController.userControlled_belief(outfile,gwg,beliefparts)
+simulateController.userControlled_belief(outfile,gwg,beliefparts)
 #
 # counterexample_parser.run_counterexample('counterexample.txt',gwg,beliefparts)
 
