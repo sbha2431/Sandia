@@ -22,7 +22,7 @@ A counterexample strategy in $G_\abstr$ is called \emph{concretizable} if for ev
 Consider a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ such that for every index $0 \leq i \leq n$ we have $|\beliefF(\pi,n)| \leq k$. We now describe a procedure to compute a partitioning $\part'$ that refines the current partitioning $\part$ based on the path $\pi_\abstr$.
 
 
-For $s_n  =(l_a,\{B_1,\ldots,B_k\})$, we split some of the partitions in $s_n$ to obtain from $\{B_1,\ldots,B_k\}$ a set $\{B_1',\ldots, B'_{k'}\}$ such that $|\gamma(\{B_i' \in s_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
+For $s_n  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_n$ to obtain from $\{B_1,\ldots,B_m\}$ a set $\{B_1',\ldots, B'_{m'}\}$ such that $|\gamma(\{B_i' \in s_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
 This gives us a partitioning $Q^n$ that refines the current partitioning $Q$. To ensure that the counterexample is eliminated we have to propagate the information backwards along the path, possibly splitting the partitions further. For each $j < n$:
 
 
