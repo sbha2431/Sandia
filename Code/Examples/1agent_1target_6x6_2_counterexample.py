@@ -25,4 +25,4 @@ gwg.draw_state_labels()
 
 beliefparts = 2
 beliefcons = 2
-counterexample_parser.run_counterexample('counterexample_mine.txt',gwg,beliefparts)
+counterexample_parser.run_counterexample('counterexample_6x6_2.txt',gwg,beliefparts)
