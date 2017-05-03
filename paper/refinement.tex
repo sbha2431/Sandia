@@ -22,7 +22,13 @@ A counterexample strategy in $G_\abstr$ is called \emph{concretizable} if for ev
 Consider a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ such that for every index $0 \leq i \leq n$ we have $|\beliefF(\pi,n)| \leq k$. We now describe a procedure to compute a partitioning $\part'$ that refines the current partitioning $\part$ based on the path $\pi_\abstr$.
 
 
-For $s_n  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_n$ to obtain from $\{B_1,\ldots,B_m\}$ a set $\{B_1',\ldots, B'_{m'}\}$ such that $|\gamma(\{B_i' \in s_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
-This gives us a partitioning $Q^n$ that refines the current partitioning $Q$. To ensure that the counterexample is eliminated we have to propagate the information backwards along the path, possibly splitting the partitions further. For each $j < n$:
+For $s_n  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_n$ to obtain from $A_n = \{B_1,\ldots,B_m\}$ a set $A_n' = \{B_1',\ldots, B'_{m'}\}$ such that $|\gamma(l_a,\{B_i' \in A_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
+This gives us a partitioning $Q^n$ that refines the current partitioning $Q$. To ensure that the counterexample is eliminated we have to propagate the information backwards along the path, possibly splitting the partitions further, obtaining refinements $Q^{n-1,\ldots,Q^0}$.
+Let $C_n \subseteq A_n'$ be a maximal subset of $A_n'$ such that $|\gamma((l_a,C_n))| \leq k$ and if $\beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset$ then $B_i' \in C_n$.
+For each $j = n-1,\ldots,0$ we do the following.
+
+For $s_j  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_j$ to obtain from $A_j = \{B_1,\ldots,B_m\}$ a set $A_j' = \{B_1',\ldots, B'_{m'}\}$ such that there exists a subset $C_j'\subseteq A_j'$ such that for all $s' \in \post(\gamma(l_a,C_j'))$ there exists $B' \in C_{j+1}$ such that $s \in B'$. We fix a maximal such subset $C_j$ and the corresponding refinement $Q^j$ of the partitioning $Q_{j+1}$. 
+
+We take as the refined partitioning $Q'$ the partitioning $Q^0$.
 
 
