@@ -3,6 +3,7 @@ __author__ = 'sudab'
 import copy
 import grid_partition
 import visibility
+import numpy as np
 
 def powerset(s):
     x = len(s)
@@ -24,6 +25,8 @@ def run_counterexample(fname,gwg,numbeliefstates):
     content = [x.strip() for x in content]
     ind = 0
     gwg.colorstates = [set(), set()]
+    truebeliefstates = set()
+    truebeliefstates_next = set()
     while True:
         envstatebin = []
         agentstatebin = []
@@ -37,10 +40,21 @@ def run_counterexample(fname,gwg,numbeliefstates):
         envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         if envstate < len(xstates):
             print 'Environment position is ', xstates[envstate]
+            truebeliefstates_next = set()
+            for a in gwg.actlist:
+                for t in np.nonzero(gwg.prob[a][xstates[envstate]])[0]:
+                    truebeliefstates_next.add(t)
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
+            truebeliefstates = copy.deepcopy(truebeliefstates_next)
+            for s in truebeliefstates_next:
+                for a in gwg.actlist:
+                    for t in np.nonzero(gwg.prob[a][s])[0]:
+                        truebeliefstates.add(t)
+            truebeliefstates_next = copy.deepcopy(truebeliefstates)
             print 'Environment position is ', beliefstate
+            print "Fully refined belief states are", truebeliefstates
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
         else:
