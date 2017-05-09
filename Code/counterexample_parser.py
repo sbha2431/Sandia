@@ -40,10 +40,10 @@ def run_counterexample(fname,gwg,numbeliefstates):
         envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         if envstate < len(xstates):
             print 'Environment position is ', xstates[envstate]
-            truebeliefstates_next = set()
-            for a in gwg.actlist:
-                for t in np.nonzero(gwg.prob[a][xstates[envstate]])[0]:
-                    truebeliefstates_next.add(t)
+            truebeliefstates_next = {xstates[envstate]}
+            # for a in gwg.actlist:
+            #     for t in np.nonzero(gwg.prob[a][xstates[envstate]])[0]:
+            #         truebeliefstates_next.add(t)
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
