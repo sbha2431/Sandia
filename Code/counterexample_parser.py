@@ -48,11 +48,14 @@ def run_counterexample(fname,gwg,numbeliefstates):
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
             truebeliefstates = copy.deepcopy(truebeliefstates_next)
+
             for s in truebeliefstates_next:
                 for a in gwg.actlist:
                     for t in np.nonzero(gwg.prob[a][s])[0]:
                         truebeliefstates.add(t)
+            truebeliefstates = truebeliefstates - set(gwg.obstacles)
             truebeliefstates_next = copy.deepcopy(truebeliefstates)
+
             print 'Environment position is ', beliefstate
             print "Fully refined belief states are", truebeliefstates
         if len(agentstatebin) > 0:
