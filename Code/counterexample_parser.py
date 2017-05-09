@@ -57,7 +57,7 @@ def run_counterexample(fname,gwg,numbeliefstates):
             truebeliefstates_next = copy.deepcopy(truebeliefstates)
 
             print 'Environment position is ', beliefstate
-            print "Fully refined belief states are", truebeliefstates
+
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
         else:
@@ -73,12 +73,16 @@ def run_counterexample(fname,gwg,numbeliefstates):
             visstates = set(gwg.states) - invisstates - set(gwg.walls)
             beliefvisstates = visstates.intersection(beliefstate)
             beliefinvisstates = beliefstate - beliefvisstates
+            truebeliefstates_next = truebeliefstates_next.intersection(beliefinvisstates)
+            truebeliefstates = copy.deepcopy(truebeliefstates_next)
+            print "Fully refined belief states are", truebeliefstates
             print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
             print 'Invisible states in belief states are ', beliefinvisstates
             gwg.colorstates[1] = copy.deepcopy(beliefinvisstates)
             gwg.moveobstacles = []
         else:
             gwg.moveobstacles = [copy.deepcopy(xstates[envstate])]
+            gwg.colorstates[1] = set()
 
 
         gwg.render()
