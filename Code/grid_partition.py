@@ -96,7 +96,7 @@ def partitionState(gw,partitiondict,partkey,refine):
 def partitionState_manual(partitiondict,partkey,states):
     partitiondict_refine = copy.deepcopy(partitiondict)
     partitiondict_refine[partkey] = set()
-    partitiondict_refine[(partkey[0],partkey[1],partkey[2]+1)] = set()
-    partitiondict_refine[partkey] = partitiondict_refine[partkey].union(states)
-    partitiondict_refine[(partkey[0],partkey[1],partkey[2]+1)] = partitiondict[partkey].difference(states)
+    partitiondict_refine[(partkey[0],partkey[1],len(partitiondict)+1)] = set()
+    partitiondict_refine[partkey] = partitiondict_refine[partkey].union(partitiondict[partkey].intersection(states))
+    partitiondict_refine[(partkey[0],partkey[1],len(partitiondict)+1)] = partitiondict[partkey].difference(states)
     return partitiondict_refine

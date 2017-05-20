@@ -105,7 +105,7 @@ def run_counterexample(fname,gwg,numbeliefstates):
                 ind = w
                 break
 
-def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
+def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     xstates = list(set(gwg.states) - set(gwg.edges))
     allstates = copy.deepcopy(xstates)
     beliefcombs = powerset(partitionGrid.keys())
