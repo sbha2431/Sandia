@@ -26,6 +26,9 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     truebeliefstates_next = set()
 
     def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind):
+        global visited
+        visited.add(ind)                    
+        
         xstates = list(set(gwg.states) - set(gwg.edges))
         allstates = copy.deepcopy(xstates)
         beliefcombs = counterexample_parser.powerset(partitionGrid.keys())
@@ -110,11 +113,9 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         nextposstates = map(int,content[ind+1][18:].split(', '))
         
         truebeliefstates_old = truebeliefstates_next
-        global visited
         for succ in range(0,len(content),2):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (succ not in visited):
-                    visited.add(succ)
                     truebeliefstates_next = truebeliefstates_old
                     (res,refineLeaf,leafBelief) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,succ)
                     if res:
