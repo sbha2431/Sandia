@@ -245,7 +245,7 @@ def userControlled_belief(filename,gwg,numbeliefstates):
         print 'Automaton state is ', nextstate
         currstate = nextstate
 
-def userControlled_partition(filename,gwg,partitionGrid):
+def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
     file = open(filename)
     data = json.load(file)
     file.close()
@@ -255,8 +255,10 @@ def userControlled_partition(filename,gwg,partitionGrid):
     for i in range(gwg.nstates,gwg.nstates+ len(beliefcombs)):
         allstates.append(i)
 
+    gwg.moveobstacles = copy.deepcopy(moveobstacles)
+    
     currstate = 0
-    gridstate = copy.deepcopy(gwg.moveobstacles[0])
+    gridstate = copy.deepcopy(moveobstacles[0])
     gwg.colorstates = [set(), set()]
     while True:
         for v in data['variables']:

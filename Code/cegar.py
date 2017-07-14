@@ -69,7 +69,8 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
         subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
         time.sleep(10)
         print('Simulating controller ...')
-        simulateController.userControlled_partition(outfile,gwg,partition)
+        
+        simulateController.userControlled_partition(outfile,gwg,partition,moveobstacles)
         
 
 
