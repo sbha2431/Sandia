@@ -6,18 +6,18 @@ from gridworld import *
 import cegar
 import simulateController
 
-nrows = 7
+nrows = 8
 ncols = 5
 nagents = 1
-initial = [27]
-targets = [[ncols+1]]
-obstacles = [13,16,18]
+initial = [32]
+targets = [[16]]
+obstacles = [13,16,18,26,21,28,23,31,33]
 moveobstacles = [12]
 
 beliefparts = 2
 beliefcons = 1
 
-outfile = 'Examples/output_5x7.json'
+outfile = 'Examples/output_5x7'
 infile = 'Examples/input_5x7'
 cexfile = 'Examples/counterexample_5x7.txt'
 gwfile = 'Examples/gridworldfig_5x7.png'

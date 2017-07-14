@@ -12,13 +12,13 @@ nagents = 1
 initial = [28]
 targets = [[ncols+1]]
 obstacles = [14,15,20,21]
-moveobstacles = [10]
+moveobstacles = [25]
 
 beliefparts = 2
 beliefcons = 2
 
 gwfile = 'Examples/gridworldfig_6x6.png'
-outfile = 'Examples/output_6x6.json'
+outfile = 'Examples/output_6x6'
 infile = 'Examples/input_6x6'
 cexfile = 'Examples/counterexample_6x6.txt'
 

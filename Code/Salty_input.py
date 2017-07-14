@@ -458,8 +458,8 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
 
     # Writing sys_liveness
     file.write('\n[SYS_LIVENESS]\n')
-    for n in range(gw.nagents):
-        file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
+    #for n in range(gw.nagents):
+    #    file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
 
     # Writing env_liveness
     file.write('\n[ENV_LIVENESS]\n')

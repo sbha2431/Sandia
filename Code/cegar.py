@@ -12,7 +12,7 @@ import time
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,outfile,infile,cexfile):
+def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
 
     partition = grid_partition.partitionGrid(gwg,beliefparts);
 
@@ -43,7 +43,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,outfile,infile,cexfile):
             break;
     
         # check if counterexample is spurious
-    
+        
         (res,refineLeaf,leafBelief) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
 
         if(not res):

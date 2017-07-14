@@ -25,19 +25,21 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     truebeliefstates = set()
     truebeliefstates_next = set()
 
+    with open(fname) as f:
+        content = f.readlines()
+    content = [x.strip() for x in content]
+
     def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind):
         global visited
-        visited.add(ind)                    
+        visited.add(ind)          
+        
+        print 'INDEX ',ind        
         
         xstates = list(set(gwg.states) - set(gwg.edges))
         allstates = copy.deepcopy(xstates)
         beliefcombs = counterexample_parser.powerset(partitionGrid.keys())
         for i in range(gwg.nstates,gwg.nstates+ len(beliefcombs)):
             allstates.append(i)
-        with open(fname) as f:
-            content = f.readlines()
-        # you may also want to remove whitespace characters like `\n` at the end of each line
-        content = [x.strip() for x in content]
         gwg.colorstates = [set(), set()]
         global truebeliefstates
         global truebeliefstates_next
@@ -71,7 +73,6 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                         truebeliefstates.add(t)
             truebeliefstates = truebeliefstates - set(gwg.obstacles)
             truebeliefstates_next = copy.deepcopy(truebeliefstates)
-
             print 'Environment position is ', beliefstate
             
         if len(agentstatebin) > 0:
@@ -92,11 +93,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             truebeliefstates_next = truebeliefstates_next.intersection(beliefinvisstates)
             truebeliefstates = copy.deepcopy(truebeliefstates_next)
             #print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
-            print 'Invisible states in belief states are ', beliefinvisstates
-            print "Fully refined belief states are", truebeliefstates
             if len(beliefinvisstates) > beliefcons:
-                print "Size of abstract belief set exceeds the threshold."
                 if len(truebeliefstates) <= beliefcons:
+                    print 'Invisible states in belief states are ', beliefinvisstates
+                    print "Fully refined belief states are", truebeliefstates
+                    print "Size of abstract belief set exceeds the threshold."
                     print "Size of conctrete belief set meets thethreshold."
                     for b in beliefcombs[envstate - len(xstates)]:
                         refineLeaf.append(b)
