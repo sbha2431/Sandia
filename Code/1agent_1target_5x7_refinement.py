@@ -34,3 +34,4 @@ gwg.save(gwfile)
 
 
 cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile)
+

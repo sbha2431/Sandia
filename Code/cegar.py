@@ -9,6 +9,7 @@ import Slugs_input
 import Salty_input
 import subprocess
 import time
+import simulateController
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
@@ -66,6 +67,9 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Computing controller...')
         subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
-        time.sleep(20)
+        time.sleep(10)
+        print('Simulating controller ...')
+        simulateController.userControlled_partition(outfile,gwg,partition)
+        
 
 
