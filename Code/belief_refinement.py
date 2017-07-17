@@ -29,7 +29,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         content = f.readlines()
     content = [x.strip() for x in content]
 
-    def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind):
+    def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind,agentstate_parent):
         global visited
         visited.add(ind)          
         
@@ -86,12 +86,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             return (False,[],set())
         
         if len(beliefstate) > 0:
-            invisstates = visibility.invis(gwg,agentstate)
+            invisstates = visibility.invis(gwg,agentstate_parent)
             visstates = set(gwg.states) - invisstates - set(gwg.walls)
             beliefvisstates = visstates.intersection(beliefstate)
             beliefinvisstates = beliefstate - beliefvisstates
             truebeliefstates_next = truebeliefstates_next.intersection(beliefinvisstates)
-            truebeliefstates = copy.deepcopy(truebeliefstates_next)
+            
+            truebeliefstates = copy.deepcopy(truebeliefstates_next)            
             #print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
             if len(beliefinvisstates) > beliefcons:
                 if len(truebeliefstates) <= beliefcons:
@@ -118,11 +119,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (succ not in visited):
                     truebeliefstates_next = truebeliefstates_old
-                    (res,refineLeaf,leafBelief) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,succ)
+                    (res,refineLeaf,leafBelief) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,succ,agentstate)
                     if res:
                         return (res,refineLeaf,leafBelief)
         return (False,[],set())
     
-    return traverse_counterexample(fname,gwg,partitionGrid,beliefcons,0)
+    return traverse_counterexample(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
     
     

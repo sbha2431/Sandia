@@ -6,21 +6,21 @@ from gridworld import *
 import cegar
 import simulateController
 
-nrows = 7
+nrows = 8
 ncols = 5
 nagents = 1
-initial = [27]
+initial = [32]
 targets = [[16]]
-obstacles = [13,16,18]
+obstacles = [13,16,18,26,21,28,23]
 moveobstacles = [12]
 
 beliefparts = 2
 beliefcons = 1
 
-outfile = 'Examples/output_5x7'
-infile = 'Examples/input_5x7'
-cexfile = 'Examples/counterexample_5x7.txt'
-gwfile = 'Examples/gridworldfig_5x7.png'
+outfile = 'Examples/output_5x8'
+infile = 'Examples/input_5x8'
+cexfile = 'Examples/counterexample_5x8.txt'
+gwfile = 'Examples/gridworldfig_5x8.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
