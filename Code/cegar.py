@@ -46,7 +46,6 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
         # check if counterexample is spurious
         
         (res,refineLeaf,leafBelief,toRefine) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
-        
         if(not res):
             break
 
@@ -68,7 +67,6 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
             neg_states = neg_states.union(partition[k].difference(leafBelief))
             refinement_map[k] = list()
             refinement_map[k].append(leafBelief)
-    
         toRefine.pop(0)
         for tr in toRefine:
             if not tr:
@@ -78,9 +76,10 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
             for k in tr:
                 for s in partition[k]:
                     for a in gwg.actlist:
-                        t = set (np.nonzero(gwg.prob[a][s])[0])
+                        t = set (np.nonzero(gwg.prob[a][s])[0]) - set(gwg.obstacles)
                         if t.intersection(neg_succ):
                             neg_states.add(s)
+                    
             for k in tr:
                 if k in refinement_map:
                     refinement_map[k].append(neg_states)

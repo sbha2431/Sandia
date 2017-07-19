@@ -71,14 +71,16 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
-            truebeliefstates = copy.deepcopy(truebeliefstates_next)
-
+            
+            truebeliefstates.clear()
             for s in truebeliefstates_next:
                 for a in gwg.actlist:
                     for t in np.nonzero(gwg.prob[a][s])[0]:
                         truebeliefstates.add(t)
             truebeliefstates = truebeliefstates - set(gwg.obstacles)
             truebeliefstates_next = copy.deepcopy(truebeliefstates)
+            
+            
             print 'Environment position is ', beliefstate
             
         if len(agentstatebin) > 0:
@@ -96,10 +98,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             visstates = set(gwg.states) - invisstates - set(gwg.walls)
             beliefvisstates = visstates.intersection(beliefstate)
             beliefinvisstates = beliefstate - beliefvisstates
+            truebeliefwithvis = copy.deepcopy(truebeliefstates_next)
             truebeliefstates_next = truebeliefstates_next.intersection(beliefinvisstates)
-            
             truebeliefstates = copy.deepcopy(truebeliefstates_next)            
             #print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
+            
             if len(beliefinvisstates) > beliefcons:
                 if len(truebeliefstates) <= beliefcons:
                     print 'Invisible states in belief states are ', beliefinvisstates
@@ -112,8 +115,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                         to_refine.add(b)
                     toRefine.append(to_refine)
                     beliefLeaf = copy.deepcopy(truebeliefstates)
-                     
-                    return (True,refineLeaf,beliefLeaf)
+                    return (True,refineLeaf,truebeliefwithvis)
                 else:
                     return (False,[],set())     
             gwg.colorstates[1] = copy.deepcopy(beliefinvisstates)
