@@ -45,16 +45,54 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
     
         # check if counterexample is spurious
         
-        (res,refineLeaf,leafBelief) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
-
+        (res,refineLeaf,leafBelief,toRefine) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
+        
         if(not res):
             break
 
         # refine belief abstraction
     
+        # OLD REFINEMENT: based only on a leaf node in the tree 
+        '''
         for k in refineLeaf:
             partition = grid_partition.partitionState_manual(partition,k,leafBelief)
-
+        '''
+        # OLD REFINEMENT: ends here
+        
+        # NEW REFINEMENT: propagating the refinement of the leaf backwards on the path
+        
+        refinement_map  = dict()
+        neg_states = set()    
+        
+        for k in refineLeaf:
+            neg_states = neg_states.union(partition[k].difference(leafBelief))
+            refinement_map[k] = list()
+            refinement_map[k].append(leafBelief)
+    
+        toRefine.pop(0)
+        for tr in toRefine:
+            if not tr:
+                break
+            neg_succ = neg_states
+            neg_states = set()
+            for k in tr:
+                for s in partition[k]:
+                    for a in gwg.actlist:
+                        t = set (np.nonzero(gwg.prob[a][s])[0])
+                        if t.intersection(neg_succ):
+                            neg_states.add(s)
+            for k in tr:
+                if k in refinement_map:
+                    refinement_map[k].append(neg_states)
+                else:
+                    refinement_map[k] = list()
+                    refinement_map[k].append(neg_states)
+        
+        for k in refinement_map.iterkeys():
+            partition  = grid_partition.refine_partition(partition,k,refinement_map[k])
+        
+        # NEW REFINEMENT: ends here
+        
         iteration = iteration+1
 
     if(not realizable):

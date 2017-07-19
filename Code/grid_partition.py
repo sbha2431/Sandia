@@ -104,3 +104,28 @@ def partitionState_manual(partitiondict,partkey,states):
     partitiondict_refine[partkey] = partitiondict_refine[partkey].union(partitiondict[partkey].intersection(states))
     partitiondict_refine[(partkey[0],partkey[1],len(partitiondict)+1)] = partitiondict[partkey].difference(states)
     return partitiondict_refine
+
+def refine_partition(partitiondict,partkey,stateSets):
+    partitiondict_refine = copy.deepcopy(partitiondict)
+    
+    new_sets = list()
+    new_sets.append(partitiondict[partkey])
+    
+    for states in stateSets:
+        ns = copy.deepcopy(new_sets)        
+        new_sets[:] = []        
+        while ns:
+            p = ns.pop()
+            p1 = p.intersection(states)
+            p2 = p.difference(states)
+            if p1:
+                new_sets.append(p1)
+            if p2:
+                new_sets.append(p2)
+    
+    p = new_sets.pop(0)
+    partitiondict_refine[partkey] = p
+    for p in new_sets:
+        partitiondict_refine[(partkey[0],partkey[1],len(partitiondict)+1)] = p
+    
+    return partitiondict_refine

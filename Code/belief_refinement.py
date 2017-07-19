@@ -16,15 +16,19 @@ import visibility
 visited = set()
 truebeliefstates = set()
 truebeliefstates_next = set()
+toRefine = list()
 
 def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     global visited
     global truebeliefstates
     global truebeliefstates_next
+    global toRefine
+    
     visited = set()
     truebeliefstates = set()
     truebeliefstates_next = set()
-
+    toRefine = list()
+    
     with open(fname) as f:
         content = f.readlines()
     content = [x.strip() for x in content]
@@ -32,6 +36,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind,agentstate_parent):
         global visited
         visited.add(ind)          
+        
+        global toRefine
         
         print 'INDEX ',ind        
         
@@ -100,9 +106,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                     print "Fully refined belief states are", truebeliefstates
                     print "Size of abstract belief set exceeds the threshold."
                     print "Size of conctrete belief set meets thethreshold."
+                    to_refine = set()
                     for b in beliefcombs[envstate - len(xstates)]:
                         refineLeaf.append(b)
-                    beliefLeaf = truebeliefstates
+                        to_refine.add(b)
+                    toRefine.append(to_refine)
+                    beliefLeaf = copy.deepcopy(truebeliefstates)
+                     
                     return (True,refineLeaf,beliefLeaf)
                 else:
                     return (False,[],set())     
@@ -114,6 +124,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
 
         nextposstates = map(int,content[ind+1][18:].split(', '))
         
+        
         truebeliefstates_old = truebeliefstates_next
         for succ in range(0,len(content),2):
             if (int(content[succ].split(' ')[1]) in nextposstates):
@@ -121,9 +132,15 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                     truebeliefstates_next = truebeliefstates_old
                     (res,refineLeaf,leafBelief) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,succ,agentstate)
                     if res:
+                        to_refine = set()
+                        if envstate >= len(xstates):
+                            for b in beliefcombs[envstate - len(xstates)]:
+                                to_refine.add(b)
+                        toRefine.append(to_refine)
                         return (res,refineLeaf,leafBelief)
         return (False,[],set())
+        
+    (res,refineLeaf,leafBelief) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
     
-    return traverse_counterexample(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
-    
+    return (res,refineLeaf,leafBelief,toRefine)
     
