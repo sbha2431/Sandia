@@ -23,7 +23,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
 
     while (not done):
 
-        print 'ITERATION ',iteration
+        print 'ITERATION ', iteration
         print 'PARTITION', partition
     
         # check realizability
@@ -45,7 +45,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
     
         # check if counterexample is spurious
         
-        (res,refineLeaf,leafBelief,toRefine) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
+        (res,leafBelief,toRefine) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons)
         if(not res):
             break
 
@@ -60,26 +60,37 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
         
         # NEW REFINEMENT: propagating the refinement of the leaf backwards on the path
         
-        refinement_map  = dict()
-        neg_states = set()    
+        refinement_map  = dict() # maps abstract partitions to lists or state sets with which to refine
+        neg_states = set()       # set of states that are propagated backwards along the counterexample path
         
-        for k in refineLeaf:
+        '''
+        initialize neg_states to be the set of states that are in the abstract belief, 
+        but not in the most precise belief for the leaf node of the counterexample path
+        '''
+        Leaf = toRefine.pop(0)
+        for k in Leaf:
             neg_states = neg_states.union(partition[k].difference(leafBelief))
             refinement_map[k] = list()
             refinement_map[k].append(leafBelief)
-        toRefine.pop(0)
+        
+        
+        ''' 
+        propagate the refinement information backwards along toRefine until
+        a singleton belief or the root node of the tree is reached
+        '''
         for tr in toRefine:
             if not tr:
                 break
             neg_succ = neg_states
             neg_states = set()
-            for k in tr:
+            # propagate refinement set backwards
+            for k in tr: 
                 for s in partition[k]:
                     for a in gwg.actlist:
                         t = set (np.nonzero(gwg.prob[a][s])[0]) - set(gwg.obstacles)
                         if t.intersection(neg_succ):
                             neg_states.add(s)
-                    
+            # store set in refinement_map        
             for k in tr:
                 if k in refinement_map:
                     refinement_map[k].append(neg_states)
@@ -87,6 +98,12 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile):
                     refinement_map[k] = list()
                     refinement_map[k].append(neg_states)
         
+        print 'REF MAP', refinement_map
+
+        '''
+        split each of the partitions k in refinement_map according to the
+        list refinement_map[k] of sets of concrete states 
+        '''
         for k in refinement_map.iterkeys():
             partition  = grid_partition.refine_partition(partition,k,refinement_map[k])
         
