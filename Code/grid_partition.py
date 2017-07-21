@@ -120,12 +120,11 @@ def refine_partition(partitiondict,partkey,stateSets):
             p2 = p.difference(states)
             if p1:
                 new_sets.append(p1)
-            if p2:
+            if p2:                
                 new_sets.append(p2)
-    
     p = new_sets.pop(0)
     partitiondict_refine[partkey] = p
     for p in new_sets:
-        partitiondict_refine[(partkey[0],partkey[1],len(partitiondict)+1)] = p
-    
+        partitiondict_refine[(partkey[0],partkey[1],len(partitiondict_refine)+1)] = p
+   
     return partitiondict_refine
