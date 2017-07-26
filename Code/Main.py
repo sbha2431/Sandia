@@ -10,7 +10,6 @@ import subprocess
 import visibility
 import simplejson as json
 import time
-import counterexample_parser
 import simulateController
 # Define gridworld parameters
 # nrows = 15
