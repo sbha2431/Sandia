@@ -41,64 +41,6 @@ def randomControlled(filename,gwg): # No longer supported
             if len(data['nodes'][str(nextstate)]['trans']) > 0:
                 break
 
-def userControlled(filename,gwg):
-    file = open(filename)
-    data = json.load(file)
-    file.close()
-    xstates = list(set(gwg.states) - set(gwg.edges))
-    currstate = 0
-    while True:
-        if gwg.getkeyinput() == 'q':
-        # press 'q' to exit
-            break
-        totstate = data['nodes'][str(currstate)]['state']
-        envstatebin = totstate[0:len(totstate)/(gwg.nagents+1)]
-        agentstatebin = totstate[len(totstate)/(gwg.nagents+1):len(totstate)]
-        envstate = xstates[int(''.join(str(e) for e in envstatebin)[::-1],2)]
-        agentstate = [None]*gwg.nagents
-        for n in range(gwg.nagents):
-            singleagentstatebin = agentstatebin[n*len(agentstatebin)/gwg.nagents:(n+1)*len(agentstatebin)/gwg.nagents]
-            agentstate[n] = xstates[int(''.join(str(e) for e in singleagentstatebin)[::-1], 2)]
-
-        gwg.render()
-        gwg.colorstates = [set()]
-        gwg.colorstates[0].update(visibility.invis(gwg,agentstate[0]))
-        for n in range(1, gwg.nagents):
-            gwg.colorstates = gwg.colorstates[0].intersection(visibility.invis(gwg,agentstate[n]))
-        gwg.moveobstacles[0] = copy.deepcopy(envstate)
-        # time.sleep(1)
-        gwg.current = copy.deepcopy(agentstate)
-        gwg.render()
-        # print xstates.index(envstate)
-        # print xstates.index(agentstate)
-        # print visibility.isVis(gwg,agentstate,envstate)
-        # time.sleep(0.3)
-
-        nextstates = data['nodes'][str(currstate)]['trans']
-        nextstatedirn = {'Left':None,'Right':None,'Down':None,'Up':None}
-        for n in nextstates:
-            ntotstate = data['nodes'][str(n)]['state']
-            nenvstatebin = ntotstate[0:len(ntotstate)/(gwg.nagents+1)]
-            nenvstate = xstates[int(''.join(str(e) for e in nenvstatebin)[::-1],2)]
-            if nenvstate == gwg.moveobstacles[0] - 1:
-                nextstatedirn['Left'] = n
-            if nenvstate == gwg.moveobstacles[0] + 1:
-                nextstatedirn['Right'] = n
-            if nenvstate == gwg.moveobstacles[0] + gwg.ncols:
-                nextstatedirn['Down'] = n
-            if nenvstate == gwg.moveobstacles[0] - gwg.ncols:
-                nextstatedirn['Up'] = n
-        while True:
-            while True:
-                arrow = gwg.getkeyinput()
-                if arrow != None:
-                    break
-            nextstate = nextstatedirn[arrow]
-            if len(data['nodes'][str(nextstate)]['trans']) > 0:
-                break
-        currstate = nextstate
-
-
 def userControlled_belief(filename,gwg,numbeliefstates):
     file = open(filename)
     data = json.load(file)
