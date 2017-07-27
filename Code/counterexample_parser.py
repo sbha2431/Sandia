@@ -27,6 +27,7 @@ def run_counterexample(fname,gwg,numbeliefstates):
     gwg.colorstates = [set(), set()]
     truebeliefstates = set()
     truebeliefstates_next = set()
+
     while True:
         envstatebin = []
         agentstatebin = []
@@ -104,8 +105,9 @@ def run_counterexample(fname,gwg,numbeliefstates):
             if int(content[w].split(' ')[1]) == nextautostate:
                 ind = w
                 break
+        
 
-def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
+def run_counterexample_part(fname,gwg,partitionGrid):
     xstates = list(set(gwg.states) - set(gwg.edges))
     allstates = copy.deepcopy(xstates)
     beliefcombs = powerset(partitionGrid.keys())
@@ -119,8 +121,7 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     gwg.colorstates = [set(), set()]
     truebeliefstates = set()
     truebeliefstates_next = set()
-    refineLeaf = []
-    beliefLeaf = set()
+    agentstate_parent = gwg.current[0]
     while True:
         envstatebin = []
         agentstatebin = []
@@ -141,7 +142,7 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
-            truebeliefstates = copy.deepcopy(truebeliefstates_next)
+            #truebeliefstates = copy.deepcopy(truebeliefstates_next)
 
             for s in truebeliefstates_next:
                 for a in gwg.actlist:
@@ -163,7 +164,7 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             break
 
         if len(beliefstate) > 0:
-            invisstates = visibility.invis(gwg,agentstate)
+            invisstates = visibility.invis(gwg,agentstate_parent)
             visstates = set(gwg.states) - invisstates - set(gwg.walls)
             beliefvisstates = visstates.intersection(beliefstate)
             beliefinvisstates = beliefstate - beliefvisstates
@@ -172,13 +173,6 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
             print "Fully refined belief states are", truebeliefstates
             print('There are a total of {} invisible belief states'.format(len(beliefinvisstates)))
             print 'Invisible states in belief states are ', beliefinvisstates
-            if len(beliefinvisstates) > beliefcons:
-                print "Size of abstract belief set exceeds the threshold."
-                if len(truebeliefstates) <= beliefcons:
-                    print "Size of conctrete belief set meets thethreshold."
-                    for b in beliefcombs[envstate - len(xstates)]:
-                        refineLeaf.append(b)
-                    beliefLeaf = truebeliefstates
             gwg.colorstates[1] = copy.deepcopy(beliefinvisstates)
             gwg.moveobstacles = []
         else:
@@ -190,8 +184,8 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         gwg.current[0] = copy.deepcopy(agentstate)
 
         gwg.colorstates[0] = set()
-        gwg.colorstates[0].update(visibility.invis(gwg,agentstate))
-        gwg.colorstates[0] = gwg.colorstates[0].intersection(visibility.invis(gwg,agentstate))
+        gwg.colorstates[0].update(visibility.invis(gwg,agentstate_parent))
+        gwg.colorstates[0] = gwg.colorstates[0].intersection(visibility.invis(gwg,agentstate_parent))
         gwg.render()
         gwg.draw_state_labels()
 
@@ -199,13 +193,16 @@ def manually_analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         nextposstates = map(int,content[ind+1][18:].split(', '))
         print 'Choose from one of the following states:', nextposstates
         nextautostate = int(raw_input('Next state in automaton: '))
-        
+
+
         for w in range(0,len(content),2):
             if int(content[w].split(' ')[1]) == nextautostate:
                 ind = w
                 break
-    return (refineLeaf,beliefLeaf)
 
+        agentstate_parent = copy.deepcopy(agentstate)        
+
+        
 if __name__ == '__main__':
     from gridworld import Gridworld
 

@@ -135,7 +135,7 @@ def write_to_slugs(gw,inittarg,vel=1):
     # file.write('y = {}\n'.format(xstates.index(gw.current)))
     # file.write('y = {}\n'.format(xstates.index(inittarg)))
     # file.write('y = {}\n'.format(xstates.index(88)))
-    file.write('y = {}\n'.format(xstates.index(gw.ncols+2)))
+    #file.write('y = {}\n'.format(xstates.index(gw.ncols+2)))
     file.close()
 
 def write_to_slugs_belief(infile,gw,inittarg,vel=1,belief_partitions=0,beliefconstraint = 1):
@@ -304,7 +304,7 @@ def write_to_slugs_belief(infile,gw,inittarg,vel=1,belief_partitions=0,beliefcon
     file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
     file.close()
     
-def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstraint = 1):
+def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstraint = 1, belief_only = False):
     nonbeliefstates = list(set(gw.states) - set(gw.edges))
     allstates = copy.deepcopy(nonbeliefstates)
     beliefcombs = powerset(partitionGrid.keys())
@@ -314,7 +314,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
     invisibilityset = [dict.fromkeys(set(gw.states) - set(gw.edges),frozenset({gw.nrows*gw.ncols+1}))]*gw.nagents
     for n in range(gw.nagents):
         for s in set(gw.states) - set(gw.edges):
-            invisibilityset[n][s] = visibility.invis(gw,s) - set(gw.targets[n])
+            invisibilityset[n][s] = visibility.invis(gw,s) #- set(gw.targets[n])
             if s in gw.obstacles:
                 invisibilityset[n][s] = {-1}
     filename = infile+'.structuredslugs'
@@ -367,10 +367,10 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                 for currbeliefstate in beliefcombstate:
                     beliefstates = beliefstates.union(partitionGrid[currbeliefstate])
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
-                if len(truebeliefstates) > 0 or 1==1:
+                if len(truebeliefstates) > 0:
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
                     beliefset = set()
-                    beliefset = beliefset.union(beliefcombstate)
+                    #beliefset = beliefset.union(beliefcombstate)
                     for b in beliefstates:
                         for a in range(gw.nactions):
                             for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
@@ -458,13 +458,107 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
 
     # Writing sys_liveness
     file.write('\n[SYS_LIVENESS]\n')
-    #for n in range(gw.nagents):
-    #    file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
+    if not belief_only:
+        for n in range(gw.nagents):
+            file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
 
     # Writing env_liveness
     file.write('\n[ENV_LIVENESS]\n')
     # file.write('y = {}\n'.format(xstates.index(gw.current)))
     # file.write('y = {}\n'.format(xstates.index(inittarg)))
     # file.write('y = {}\n'.format(xstates.index(88)))
-    file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
+    # file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
+    file.close()    
+
+def write_to_slugs_fullobs(infile,gw,inittarg,vel=1):
+    states = list(set(gw.states) - set(gw.edges))
+ 
+    filename = infile+'.structuredslugs'
+    file = open(filename,'w')
+    file.write('[INPUT]\n')
+    file.write('y:0...{}\n'.format(len(states) - 1))
+    file.write('[OUTPUT]\n')
+    agentletters = ['x','z','a','b','c']
+    for n in range(gw.nagents):
+        file.write(agentletters[n]+':0...{}\n'.format(len(states)-1))
+
+    file.write('[ENV_INIT]\n')
+    file.write('y = {}\n'.format(states.index(inittarg)))
+    file.write('[SYS_INIT]\n')
+    for n in range(gw.nagents):
+        file.write(agentletters[n]+' = {}\n'.format(states.index(gw.current[n])))
+
+    # writing env_trans
+    file.write('\n[ENV_TRANS]\n')
+    for y in range(len(states)):
+        for x in range(len(states)):
+            sagent = states[x]
+            stri = " (x = {} /\\ y = {}) -> ".format(x,y)
+            senv = states[y]
+            beliefset = set()
+            for a in range(gw.nactions):
+                for t in np.nonzero(gw.prob[gw.actlist[a]][senv])[0]:
+                    stri += ' y\' = {} \\/'.format(states.index(t))
+            stri = stri[:-3]
+            stri += '\n'
+            file.write(stri)
+            for n in range(gw.nagents):
+                file.write("{} = {} -> !y' = {}\n".format(agentletters[n],x,states.index(sagent)))
+
+
+    # Writing env_safety
+    for obs in gw.obstacles:
+        file.write('!y = {}\n'.format(states.index(obs)))
+
+    for n in range(gw.nagents):
+        # file.write('!y = {}\n'.format(agentletters[n]))
+        file.write('!y = {}\n'.format(states.index(gw.targets[n][0])))
+
+    # writing sys_trans
+    file.write('\n[SYS_TRANS]\n')
+    for n in range(gw.nagents):
+        for x in range(len(states)):
+            s = states[x]
+            stri = "{} = {} -> ".format(agentletters[n], x)
+            t = reach_states(gw,{s})
+            for i in range(1,vel):
+                t.update(reach_states(gw,t))
+            for t2 in t:
+                stri += ' {}\' = {} \\/ '.format(agentletters[n], states.index(t2))
+            stri = stri[:-3]
+            stri += '\n'
+            file.write(stri)
+    # Writing sys_safety
+        for obs in gw.obstacles:
+            file.write('!{} = {}\n'.format(agentletters[n],states.index(obs)))
+
+    for s in set(states):
+        for n in range(gw.nagents):
+            stri = 'y = {} -> !{} = {}\n'.format(states.index(s),agentletters[n],states.index(s))
+            file.write(stri)
+            stri = 'y = {} -> !{}\' = {}\n'.format(states.index(s),agentletters[n],states.index(s))
+            file.write(stri)
+
+    if gw.nagents > 1:
+        for s in states:
+            for n in range(gw.nagents):
+                stri = '{} = {} ->'.format(agentletters[n],states.index(s))
+                for m in range(gw.nagents):
+                    if m!= n:
+                        stri += ' !{} = {} /\\'.format(agentletters[m],states.index(s))
+                stri = stri[:-2]
+                stri += '\n'
+                file.write(stri)
+
+    # Writing sys_liveness
+    file.write('\n[SYS_LIVENESS]\n')
+    for n in range(gw.nagents):
+        file.write('{} = {}\n'.format(agentletters[n],states.index(gw.targets[n][0])))
+
+    # Writing env_liveness
+    file.write('\n[ENV_LIVENESS]\n')
+    # file.write('y = {}\n'.format(xstates.index(gw.current)))
+    # file.write('y = {}\n'.format(xstates.index(inittarg)))
+    # file.write('y = {}\n'.format(xstates.index(88)))
+    # file.write('y = {}\n'.format(states.index(gw.ncols+2)))
     file.close()    

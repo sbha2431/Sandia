@@ -17,6 +17,7 @@ moveobstacles = [17]
 
 beliefparts = 2
 beliefcons = 2
+belief_only = True
 
 outfile = 'Examples/output_5x6'
 infile = 'Examples/input_5x6'
@@ -33,5 +34,5 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile)
+cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_only)
 
