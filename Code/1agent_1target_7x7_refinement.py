@@ -19,10 +19,10 @@ beliefparts = 2
 beliefcons = 2
 belief_only = True
 
-outfile = 'Examples/output_5x6'
-infile = 'Examples/input_5x6'
-cexfile = 'Examples/counterexample_5x6.txt'
-gwfile = 'Examples/gridworldfig_5x6.png'
+outfile = 'Examples/output_7x7'
+infile = 'Examples/input_7x7'
+cexfile = 'Examples/counterexample_7x7.txt'
+gwfile = 'Examples/gridworldfig_7x7.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})

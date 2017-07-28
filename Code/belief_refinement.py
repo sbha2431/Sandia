@@ -60,11 +60,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         
         visited.add(ind)          
 
-        #print '---------------------------------'
-        #print 'INDEX IN CE ', ind
+        #print 'INDEX IN COUNTEREXAMPLE ', ind
         
         beliefLeaf = set()
-        
+        imprecise = False     
+
         xstates = list(set(gwg.states) - set(gwg.edges))
         allstates = copy.deepcopy(xstates)
         beliefcombs = counterexample_parser.powerset(partitionGrid.keys())
@@ -75,14 +75,15 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         envstatebin = []
         agentstatebin = []
         beliefstate = set()
+        
         line = content[ind].split(' ')
         for r in line[6::]:
             if r[1] == 'y' or r[0] == 'y':
                 envstatebin.append(r[-2])
             elif r[1] == 'x' or r[0] == 'x':
                 agentstatebin.append(r[-2])
-        envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         
+        # agent position
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
             #print 'Agent position is ', agentstate
@@ -91,26 +92,20 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         if content[ind+1] == 'With no successors.': # terminal state
             return (False,set(),False,False)
 
+        # environment position
+        envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         if envstate < len(xstates):
             truebeliefstates = {xstates[envstate]}
             truebeliefwithvis = {xstates[envstate]}
-            print 'Environment position is ', xstates[envstate]
+            #print 'Environment position is ', xstates[envstate]
         else:
             for b in beliefcombs[envstate - len(xstates)]:
-                print 'Environment position includes ', b
                 beliefstate = beliefstate.union(partitionGrid[b])
-            #print 'SYS STATE IN GAME', int(''.join(str(e) for e in agentstatebin)[::-1], 2)
-            #print 'ENV STATE IN GAME',envstate ,'BELIEF',beliefstate
-            #print 'AGENT POSITION', agentstate
-            print '---------------------------------'
             truebeliefstates = copy.deepcopy(truebeliefstates_next)
             truebeliefwithvis = copy.deepcopy(truebeliefwithvis_next)
-            #truebeliefwithvis = copy.deepcopy(truebeliefstates)
-            #truebeliefstates = truebeliefstates.intersection(visibility.invis(gwg,agentstate))
-        
-            if not (truebeliefstates <= beliefstate):
-                print 'ERROR:', truebeliefstates, 'NOT SUBSET OF',beliefstate
-        # compute true belief state for successor nodes
+            #print 'Environment position is ', beliefstate    
+            
+        # compute true belief set for successor nodes
         truebeliefstates_next = set()
         for s in truebeliefstates:
             for a in gwg.actlist:
@@ -119,12 +114,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         truebeliefstates_next = truebeliefstates_next - set(gwg.walls)
         truebeliefwithvis_next = copy.deepcopy(truebeliefstates_next)
         truebeliefstates_next = truebeliefstates_next.intersection(visibility.invis(gwg,agentstate))    
-        #for n in range(gwg.nagents):
-        #    for t in gwg.targets[n]:
-        #        truebeliefstates_next.discard(t)
-        
-        imprecise = False     
-        
+
       
         if len(beliefstate) > 0:
             beliefinvisstates = beliefstate.intersection(visibility.invis(gwg,agentstate_parent))
@@ -142,11 +132,9 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                 threshold_violated.add(ind)
                 if len(truebeliefstates) <= beliefcons:
                     print 'Invisible states in belief states are', beliefinvisstates
-                    print "Agent position", agentstate_parent, " Fully refined belief states are", truebeliefstates
-                    #print "Size of abstract belief set exceeds the threshold."
-                    #print "Size of conctrete belief set meets thethreshold."
+                    print "Fully refined belief states are", truebeliefstates
                     
-                    # partitions in the leaf node that wull be refined
+                    # partitions in the leaf node that will be refined
                     tr = set()
                     for b in beliefcombs[envstate - len(xstates)]:
                         tr.add(b)

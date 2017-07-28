@@ -356,7 +356,6 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                 if len(beliefset) > 0:
                     b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                     stri += ' y\' = {} \\/'.format(allstates.index(b2))
-                        
                 stri = stri[:-3]
                 stri += '\n'
                 file.write(stri)
@@ -385,9 +384,10 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                                 else:
                                     t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
                                     beliefset.add(t2)
-                        if len(beliefset) > 0:
-                            b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
-                            stri += ' y\' = {} \\/'.format(allstates.index(b2))
+                    truebeliefset = beliefset.intersection(invisstates)
+                    if len(beliefset) > 0:
+                        b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
+                        stri += ' y\' = {} \\/'.format(allstates.index(b2))
                     stri = stri[:-3]
                     stri += '\n'
                     file.write(stri)

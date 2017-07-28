@@ -20,10 +20,10 @@ beliefcons = 8
 belief_only = False
 
 
-outfile = 'Examples/output_7x7_blocked'
-infile = 'Examples/input_7x7_blocked'
-cexfile = 'Examples/counterexample_7x7_blocked.txt'
-gwfile = 'Examples/gridworldfig_7x7_blocked.png'
+outfile = 'Examples/output_7x7_reachability'
+infile = 'Examples/input_7x7_reachability'
+cexfile = 'Examples/counterexample_7x7_reachability.txt'
+gwfile = 'Examples/gridworldfig_7x7_reachability.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
