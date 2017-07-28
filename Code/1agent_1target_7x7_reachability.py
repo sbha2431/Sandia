@@ -16,7 +16,7 @@ obstacles = [16,17,18,24]
 moveobstacles = [37]
 
 beliefparts = 2
-beliefcons = 8
+beliefcons = 50
 belief_only = False
 
 
