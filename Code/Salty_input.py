@@ -332,7 +332,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
         file.write(agentletters[n]+':0...{}\n'.format(len(nonbeliefstates)-1))
 
     file.write('[ENV_INIT]\n')
-    file.write('y = {}\n'.format(allstates.index(gw.moveobstacle[0])))
+    file.write('y = {}\n'.format(allstates.index(gw.moveobstacles[0])))
     file.write('[SYS_INIT]\n')
     for n in range(gw.nagents):
         file.write(agentletters[n]+' = {}\n'.format(nonbeliefstates.index(gw.current[n])))
@@ -356,6 +356,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                 if len(beliefset) > 0:
                     b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                     stri += ' y\' = {} \\/'.format(allstates.index(b2))
+                        
                 stri = stri[:-3]
                 stri += '\n'
                 file.write(stri)
@@ -372,7 +373,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                 for currbeliefstate in beliefcombstate:
                     beliefstates = beliefstates.union(partitionGrid[currbeliefstate])
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
-                if len(truebeliefstates) > 0:
+                if len(beliefstates) > 0: # changed from truebeliefstates, othersise some transitions were missing
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
                     beliefset = set()
                     #beliefset = beliefset.union(beliefcombstate)

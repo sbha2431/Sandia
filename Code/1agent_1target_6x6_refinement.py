@@ -15,7 +15,7 @@ obstacles = [14,15,20,21]
 moveobstacles = [25]
 
 beliefparts = 2
-beliefcons = 2
+beliefcons = 3
 belief_only = True
 
 gwfile = 'Examples/gridworldfig_6x6.png'

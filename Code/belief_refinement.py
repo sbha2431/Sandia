@@ -14,9 +14,10 @@ import counterexample_parser
 import visibility
 
 visited = set()   # stores already visited nodes
-truebeliefstates = set()
 threshold_violated = set()
-
+truebeliefstates = set()
+truebeliefstates_next = set()
+truebeliefwithvis_next = set()
 '''
 stores information about the path in the counterexample tree along which we will refine
 each element of the list is a set of partitions forming the belief in the current position
@@ -26,15 +27,19 @@ toRefine_ltl = dict()
 
 def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     global visited
-    global truebeliefstates
     global threshold_violated
-       
+    global truebeliefstates
+    global truebeliefstates_next
+    global truebeliefwithvis_next
+     
     global toRefine_belief
     global toRefine_ltl
     
         
     visited = set()
     truebeliefstates = set()
+    truebeliefstates_next = set()
+    truebeliefwithvis_next = set()
     threshold_violated = set()
     
     toRefine_belief = list() 
@@ -47,13 +52,16 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
     def traverse_counterexample(fname,gwg,partitionGrid,beliefcons,ind,agentstate_parent):
         global visited
         global truebeliefstates
+        global truebeliefstates_next
+        global truebeliefwithvis_next
         global threshold_violated 
         global toRefine_belief
         global toRefine_ltl
         
         visited.add(ind)          
 
-        #print 'IDX ', ind
+        #print '---------------------------------'
+        #print 'INDEX IN CE ', ind
         
         beliefLeaf = set()
         
@@ -75,48 +83,55 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
                 agentstatebin.append(r[-2])
         envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
         
-        if envstate < len(xstates):
-            #print 'Environment position is ', xstates[envstate]
-            truebeliefstates = {xstates[envstate]}
-        else:
-            for b in beliefcombs[envstate - len(xstates)]:
-                beliefstate = beliefstate.union(partitionGrid[b])
-            #print 'Environment position is ', beliefstate
-            truebeliefstates_next = set()
-            #truebeliefstates_next = copy.deepcopy(truebeliefstates)
-            for s in truebeliefstates:
-                for a in gwg.actlist:
-                    for t in np.nonzero(gwg.prob[a][s])[0]:
-                        truebeliefstates_next.add(t)
-            truebeliefstates_next = truebeliefstates_next #- set(gwg.obstacles)
-            #for n in range(gwg.nagents):
-            #    for t in gwg.targets[n]:
-            #        truebeliefstates_next.discard(t)
-            truebeliefstates = copy.deepcopy(truebeliefstates_next)
-
-        imprecise = False
-        
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
             #print 'Agent position is ', agentstate
         else: # failure state
-            return (False,set(),imprecise,False)
+            return (False,set(),False,False)
         if content[ind+1] == 'With no successors.': # terminal state
-            return (False,set(),imprecise,False)
+            return (False,set(),False,False)
+
+        if envstate < len(xstates):
+            truebeliefstates = {xstates[envstate]}
+            truebeliefwithvis = {xstates[envstate]}
+            print 'Environment position is ', xstates[envstate]
+        else:
+            for b in beliefcombs[envstate - len(xstates)]:
+                print 'Environment position includes ', b
+                beliefstate = beliefstate.union(partitionGrid[b])
+            #print 'SYS STATE IN GAME', int(''.join(str(e) for e in agentstatebin)[::-1], 2)
+            #print 'ENV STATE IN GAME',envstate ,'BELIEF',beliefstate
+            #print 'AGENT POSITION', agentstate
+            print '---------------------------------'
+            truebeliefstates = copy.deepcopy(truebeliefstates_next)
+            truebeliefwithvis = copy.deepcopy(truebeliefwithvis_next)
+            #truebeliefwithvis = copy.deepcopy(truebeliefstates)
+            #truebeliefstates = truebeliefstates.intersection(visibility.invis(gwg,agentstate))
+        
+            if not (truebeliefstates <= beliefstate):
+                print 'ERROR:', truebeliefstates, 'NOT SUBSET OF',beliefstate
+        # compute true belief state for successor nodes
+        truebeliefstates_next = set()
+        for s in truebeliefstates:
+            for a in gwg.actlist:
+                for t in np.nonzero(gwg.prob[a][s])[0]:
+                    truebeliefstates_next.add(t)
+        truebeliefstates_next = truebeliefstates_next - set(gwg.walls)
+        truebeliefwithvis_next = copy.deepcopy(truebeliefstates_next)
+        truebeliefstates_next = truebeliefstates_next.intersection(visibility.invis(gwg,agentstate))    
+        #for n in range(gwg.nagents):
+        #    for t in gwg.targets[n]:
+        #        truebeliefstates_next.discard(t)
+        
+        imprecise = False     
         
       
         if len(beliefstate) > 0:
             beliefinvisstates = beliefstate.intersection(visibility.invis(gwg,agentstate_parent))
-            truebeliefwithvis = copy.deepcopy(truebeliefstates)
-            truebeliefstates = truebeliefstates.intersection(beliefinvisstates)
-            #if not truebeliefstates:
-            #    print 'TRUE BELIEF EMPTY ',truebeliefwithvis
-                
             if (len(beliefinvisstates) > len(truebeliefstates)):
                 imprecise = True
                 if not toRefine_ltl:
                     for b in beliefcombs[envstate - len(xstates)]:
-                        print 'TO REFINE', partitionGrid[b], 'WITH', truebeliefstates
                         if b in toRefine_ltl:
                             toRefine_ltl[b].append(truebeliefstates)
                         else:
@@ -145,13 +160,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         recurse over the successors (subtrees) of the current node, searching for a leaf node to refine
         if in some subtree such node is found, add the current node to the counterexample and return 
         '''
-        truebeliefstates_current = copy.deepcopy(truebeliefstates)
+        truebeliefstates_next_current = copy.deepcopy(truebeliefstates_next)
         nextposstates = map(int,content[ind+1][18:].split(', '))
         belief_violated = True
         for succ in range(0,len(content),2):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (succ not in visited):
-                    truebeliefstates = copy.deepcopy(truebeliefstates_current)
+                    truebeliefstates_next = copy.deepcopy(truebeliefstates_next_current)
                     (res,leafBelief,imprecise_rec,belief_violated_rec) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,succ,agentstate)
                     imprecise = (imprecise or imprecise_rec)
                     belief_violated = (belief_violated and belief_violated_rec)
@@ -170,6 +185,5 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons):
         
 
     (res,leafBelief,imprecise,belief_violated) = traverse_counterexample(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
-    #print 'TO REFINE DUE TO BELIEF CONSTRAINT ',toRefine_belief
     return (res,leafBelief,toRefine_belief,imprecise,belief_violated,toRefine_ltl)
     

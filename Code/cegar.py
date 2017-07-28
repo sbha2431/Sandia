@@ -61,6 +61,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
         print('Checking realizability of full spec...')
         sp = subprocess.Popen(slugs + ' --counterStrategy ' + infile+'.slugsin > ' + cexfile,shell=True, stdout=subprocess.PIPE)
         sp.wait()
+        time.sleep(10)
         
         done = (os.stat(cexfile).st_size == 0)
             
@@ -148,6 +149,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
                     partition = grid_partition.refine_partition(partition,k,toRefine_ltl[k])
             else:
                 break
+        
         iteration = iteration+1
 
     if(not realizable):
