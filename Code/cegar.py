@@ -14,11 +14,11 @@ import counterexample_parser
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_only):
+def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_objective,target_reachability):
 
     partition = grid_partition.partitionGrid(gwg,beliefparts);
 
-    if not belief_only: # check realizability of the LTL specification under full observability
+    if target_reachability: # check realizability of the LTL specification under full observability
         print ('Writing slugs input file...')
         filename = 'slugs_input_'+str(gwg.nagents)+'agents.structuredslugs'
         Salty_input.write_to_slugs_fullobs(infile,gwg,moveobstacles[0])
@@ -45,7 +45,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
 
         # check realizability of the full spec
         print ('Writing slugs input file...')
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_only)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_objective,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Checking realizability of full spec...')
@@ -129,7 +129,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
         
             # NEW REFINEMENT: ends here
         else: 
-            if not belief_only: # refine belief abstraction for the LTL specification
+            if target_reachability: # refine belief abstraction for the LTL specification
                 print 'REFINING DUE TO LTL SPECIFICATION'
                 for k in toRefine_ltl.keys():
                     partition = grid_partition.refine_partition(partition,k,toRefine_ltl[k])
@@ -146,7 +146,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
     else: 
         # compute controller for realizable abstraction
 
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_only)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_objective,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Computing controller...')

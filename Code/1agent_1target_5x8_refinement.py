@@ -16,7 +16,7 @@ moveobstacles = [12]
 
 beliefparts = 2
 beliefcons = 1
-belief_only = True
+target_reachability = False
 
 outfile = 'Examples/output_5x8'
 infile = 'Examples/input_5x8'
@@ -34,5 +34,5 @@ gwg.draw_state_labels()
 gwg.save(gwfile)
 
 
-cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_only)
+cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,'safety',target_reachability)
 

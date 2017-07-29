@@ -16,7 +16,7 @@ moveobstacles = [25]
 
 beliefparts = 2
 beliefcons = 3
-belief_only = True
+target_reachability = False
 
 gwfile = 'Examples/gridworldfig_6x6.png'
 outfile = 'Examples/output_6x6'
@@ -33,4 +33,4 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_only)
+cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,'safety',target_reachability)
