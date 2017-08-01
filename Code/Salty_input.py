@@ -309,7 +309,7 @@ def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint =
     file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
     file.close()
     
-def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstraint = 1, belief_objective = 'safety',target_reachability = False):
+def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safety = 0, belief_liveness = 0, target_reachability = False):
     
     nonbeliefstates = list(set(gw.states) - set(gw.edges))
     allstates = copy.deepcopy(nonbeliefstates)
@@ -428,12 +428,12 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
             stri = 'y = {} -> !{}\' = {}\n'.format(allstates.index(s),agentletters[n],nonbeliefstates.index(s))
             file.write(stri)
     
-    if belief_objective == 'safety':
+    if belief_safety > 0:
         for b in beliefcombs:
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
-            if len(beliefset) > beliefconstraint:
+            if len(beliefset) > belief_safety:
                 stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
                 counter = 0
                 stri += '('
@@ -443,7 +443,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                         invisstates = invisibilityset[n][x]
                         visstates = set(nonbeliefstates) - invisstates
                         truebelief = beliefset - beliefset.intersection(visstates)
-                        if len(truebelief) > beliefconstraint:
+                        if len(truebelief) > belief_safety:
                             stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
                             counter += 1
                     stri = stri[:-3]
@@ -471,12 +471,12 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
         for n in range(gw.nagents):
             file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
 
-    if belief_objective == 'liveness':
+    if belief_liveness >0:
         for b in beliefcombs:
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
-            if len(beliefset) > beliefconstraint:
+            if len(beliefset) > belief_liveness:
                 stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
                 counter = 0
                 stri += '('
@@ -486,7 +486,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
                         invisstates = invisibilityset[n][x]
                         visstates = set(nonbeliefstates) - invisstates
                         truebelief = beliefset - beliefset.intersection(visstates)
-                        if len(truebelief) > beliefconstraint:
+                        if len(truebelief) > belief_liveness:
                             stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
                             counter += 1
                     stri = stri[:-3]
@@ -499,10 +499,6 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[],beliefconstra
     
     # Writing env_liveness
     file.write('\n[ENV_LIVENESS]\n')
-    # file.write('y = {}\n'.format(xstates.index(gw.current)))
-    # file.write('y = {}\n'.format(xstates.index(inittarg)))
-    # file.write('y = {}\n'.format(xstates.index(88)))
-    # file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
     file.close()    
 
 def write_to_slugs_fullobs(infile,gw,inittarg,vel=1):
@@ -592,10 +588,6 @@ def write_to_slugs_fullobs(infile,gw,inittarg,vel=1):
 
     # Writing env_liveness
     file.write('\n[ENV_LIVENESS]\n')
-    # file.write('y = {}\n'.format(xstates.index(gw.current)))
-    # file.write('y = {}\n'.format(xstates.index(inittarg)))
-    # file.write('y = {}\n'.format(xstates.index(88)))
-    # file.write('y = {}\n'.format(states.index(gw.ncols+2)))
     file.close()    
 
 

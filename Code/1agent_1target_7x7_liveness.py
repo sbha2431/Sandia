@@ -10,14 +10,15 @@ import time
 nrows = 7
 ncols = 7
 nagents = 1
-initial = [19]
+initial = [18]
 targets = [[10]]
 obstacles = [23,24,25]
 moveobstacles = [32]
 
 beliefparts = 2
-beliefcons = 2
-target_reachability = False
+belief_safety = 0
+belief_liveness = 2
+target_reachability = True
 
 
 outfile = 'Examples/output_7x7_liveness'
@@ -35,5 +36,8 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-cegar.cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,'liveness',target_reachability)
+
+cegar.cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
+
+
 

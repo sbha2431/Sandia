@@ -28,7 +28,7 @@ each element of the list is a set of partitions forming the belief in the curren
 toRefine_belief = list()
 toRefine_ltl = dict()
 
-def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
+def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness):
     global visited_set
     global safety_violated_set
     global current_path
@@ -62,7 +62,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
     for i in range(gwg.nstates,gwg.nstates+ len(beliefcombs)):
         allstates.append(i)
 
-    def traverse_counterexample_safety(fname,gwg,partitionGrid,beliefcons,ind,agentstate_parent):
+    def traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,ind,agentstate_parent):
 
         global visited_set
         global safety_violated_set 
@@ -135,12 +135,12 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
                             toRefine_ltl[b] = list()
                             toRefine_ltl[b].append(belief_true)
                             
-            if len(belief_invisible) > beliefcons: # belief violates constraint
+            if len(belief_invisible) > belief_safety: # belief violates constraint
                 
                 safety_violated_set.add(ind)
                 
-                if len(belief_true) <= beliefcons: # true belief satisfies constraint
-                    
+                if len(belief_true) <= belief_safety: # true belief satisfies constraint
+                    print 'SAFETY'
                     print 'Invisible states in belief:', belief_invisible
                     print "Precise belief:", belief_true
                     
@@ -168,7 +168,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (succ not in visited_set):
                     belief_true_next = copy.deepcopy(belief_true_next_current)
-                    (leaf_belief,safety_violated_rec) = traverse_counterexample_safety(fname,gwg,partitionGrid,beliefcons,succ,agentstate)
+                    (leaf_belief,safety_violated_rec) = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,succ,agentstate)
                     safety_violated = (safety_violated and safety_violated_rec)
                     if toRefine_belief:
                         tr = set()
@@ -184,7 +184,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
         return (set(),safety_violated)
         
 
-    def traverse_counterexample_liveness(fname,gwg,partitionGrid,beliefcons,ind,agentstate_parent):
+    def traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,ind,agentstate_parent):
         global current_path 
         global path_beliefs
             
@@ -262,6 +262,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
                         else:
                             toRefine_ltl[b] = list()
                             toRefine_ltl[b].append(belief_true)
+        else:
+            path_beliefs.append((belief_true,belief_true,true_plus_vis,set()))
         
         '''
         recurse over the successors (subtrees) of the current node, searching for a leaf node to refine
@@ -274,7 +276,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (succ not in current_path):
                     belief_true_next = copy.deepcopy(belief_true_next_current)
-                    (leaf_belief,liveness_violated_rec) = traverse_counterexample_liveness(fname,gwg,partitionGrid,beliefcons,succ,agentstate)
+                    (leaf_belief,liveness_violated_rec) = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,succ,agentstate)
                     liveness_violated = (liveness_violated and liveness_violated_rec)
                     if toRefine_belief:
                         return (leaf_belief,False)
@@ -283,13 +285,12 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
                     leaf_belief = set()
                     for (i,b) in zip(reversed(current_path),reversed(path_beliefs)):
                         (b_invisible,b_true,true_visible,tr) = b
-                        if len(b_invisible) > beliefcons and len(b_true) <= beliefcons:
+                        if len(b_invisible) > belief_liveness and len(b_true) <= belief_liveness:
                             ref_found = True
                             leaf_belief = copy.deepcopy(true_visible)
-                            #print 'Invisible states in belief:', b_invisible
-                            #print "Precise belief:", b_true
-                            #print 'PATH', current_path,ind
-                            #print 'REFINE AT',i
+                            print 'LIVENESS'
+                            print 'Invisible states in belief:', b_invisible
+                            print "Precise belief:", b_true
                         if i == succ and not ref_found:
                             break
                         if ref_found:
@@ -302,12 +303,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,beliefcons,belief_objective):
         return (set(),liveness_violated)
     
     
-    if belief_objective == 'safety':
-        (leaf_belief,safety_violated) = traverse_counterexample_safety(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
-        return (toRefine_belief,leaf_belief,safety_violated,toRefine_ltl)
-    if belief_objective == 'liveness':
-        (leaf_belief,liveness_violated) = traverse_counterexample_liveness(fname,gwg,partitionGrid,beliefcons,0,gwg.current)
-        return (toRefine_belief,leaf_belief,liveness_violated,toRefine_ltl)
+    if belief_safety > 0:
+        (leaf_belief,belief_only) = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,0,gwg.current)
+    if not toRefine_belief and belief_liveness > 0:
+        (leaf_belief,belief_only) = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,0,gwg.current)
+    return (toRefine_belief,leaf_belief,belief_only,toRefine_ltl)
 
     
     

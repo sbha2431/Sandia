@@ -14,7 +14,7 @@ import counterexample_parser
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,belief_objective,target_reachability):
+def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability):
 
     partition = grid_partition.partitionGrid(gwg,beliefparts);
 
@@ -45,7 +45,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
 
         # check realizability of the full spec
         print ('Writing slugs input file...')
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_objective,target_reachability)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,belief_safety,belief_liveness,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Checking realizability of full spec...')
@@ -60,9 +60,9 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
     
         # check if counterexample is spurious
         
-        (toRefine_belief,leaf_belief,belief_violated,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,beliefcons,belief_objective)
+        (toRefine_belief,leaf_belief,belief_only,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
         
-        if (belief_violated and not toRefine_belief):
+        if (belief_only and not toRefine_belief):
             print 'Belief constraint not realizable'
             break
             
@@ -146,7 +146,7 @@ def cegar_loop(gwg,moveobstacles,beliefcons,beliefparts,infile,outfile,cexfile,b
     else: 
         # compute controller for realizable abstraction
 
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,beliefcons,belief_objective,target_reachability)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,belief_safety,belief_liveness,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Computing controller...')

@@ -5,24 +5,26 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from gridworld import *
 import cegar
 import simulateController
+import time
 
-nrows = 6
-ncols = 6
+nrows = 7
+ncols = 7
 nagents = 1
-initial = [28]
-targets = [[ncols+1]]
-obstacles = [14,15,20,21]
-moveobstacles = [25]
+initial = [18]
+targets = [[10]]
+obstacles = [23,24,25]
+moveobstacles = [32]
 
 beliefparts = 2
-belief_safety = 3
-belief_liveness = 0
+belief_safety = 7
+belief_liveness = 2
 target_reachability = False
 
-gwfile = 'Examples/gridworldfig_6x6.png'
-outfile = 'Examples/output_6x6'
-infile = 'Examples/input_6x6'
-cexfile = 'Examples/counterexample_6x6.txt'
+
+outfile = 'Examples/output_7x7_liveness'
+infile = 'Examples/input_7x7_liveness'
+cexfile = 'Examples/counterexample_7x7_liveness.txt'
+gwfile = 'Examples/gridworldfig_7x7_liveness.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
@@ -34,4 +36,8 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
+
 cegar.cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
+
+
+
