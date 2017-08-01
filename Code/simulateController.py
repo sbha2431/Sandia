@@ -493,26 +493,3 @@ def gazeboOutput(gwg,timestep):
             file.write('t,e,a\n')
         file.write('{},{},{}\n'.format(timestep,gwg.moveobstacles[0],gwg.current[0]))
         file.close()
-
-if __name__ == '__main__':
-    from gridworld import Gridworld
-
-    nrows = 15
-    ncols = 20
-    nagents = 1
-    initial = [237]
-    targets = [[ncols+1],[ncols*2+1]]
-    obsnum = 3
-    # obstacles = [27,63,78,26,37,36,72,62,73,77,67,66,76,52,53,68,16,17]
-    obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
-    # obstacles = [15,16,19]
-    moveobstacles = [197]
-    regionkeys = {'pavement','gravel','grass','sand','deterministic'}
-    regions = dict.fromkeys(regionkeys,{-1})
-    regions['deterministic']= range(nrows*ncols)
-
-    gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
-    gwg.render()
-    gwg.colorstates = [set()]
-    filename = 'slugs_output.json'
-    userControlled(filename,gwg)
