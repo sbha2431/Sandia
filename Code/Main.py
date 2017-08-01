@@ -12,21 +12,21 @@ import simplejson as json
 import time
 import simulateController
 # Define gridworld parameters
-# nrows = 15
-# ncols = 20
-# nagents = 1
-# initial = [237]
-# targets = [[ncols+1]]
-# obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
-# moveobstacles = [197]
-#
-nrows = 10
-ncols = 10
+nrows = 15
+ncols = 20
 nagents = 1
-initial = [56]
+initial = [237]
 targets = [[ncols+1]]
-obstacles = [34,44,45,54,55,64,57]
-moveobstacles = [46,37]
+obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
+moveobstacles = [197,177]
+#
+# nrows = 10
+# ncols = 10
+# nagents = 1
+# initial = [56]
+# targets = [[ncols+1]]
+# obstacles = [34,44,45,54,55,64,57]
+# moveobstacles = [46,37]
 
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
@@ -35,14 +35,16 @@ regions['deterministic']= range(nrows*ncols)
 
 gwg = Gridworld(initial, nrows, ncols,nagents, targets, obstacles, moveobstacles,regions)
 gwg.colorstates = [set(),set()]
-gwg.render()
+# gwg.render()
+#
+# gwg.draw_state_labels()
 
-gwg.draw_state_labels()
-
-outfile = 'test_multitarget.json'
-infile = 'test_multitarget'
-beliefparts = 6
-beliefcons = 30
+outfile = '15x20_multitarget_4_8belief.json'
+infile = '15x20_multitarget_4_8belief'
+print 'output file: ', outfile
+print 'input file name:', infile
+beliefparts = 10
+beliefcons = 120
 # gwg.save('gridworldfig.png')
 # print ('Writing slugs input file...')
 
@@ -63,4 +65,4 @@ beliefcons = 30
 
 # simulateController.userControlled('slugs_output_2agents.json',gwg)
 # simulateController.simulate_path(gwg,filename,counterexample)
-simulateController.userControlled_belief_multitarget(outfile,gwg,beliefparts)
+# simulateController.userControlled_belief_multitarget(outfile,gwg,beliefparts)
