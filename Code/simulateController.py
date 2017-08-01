@@ -276,7 +276,7 @@ def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
                                 checker = 1
                                 nextstate = copy.deepcopy(n)
                                 print 'Environment state in automaton is', allstates.index(nenvstate)
-                                print 'Environment state in grid is', nenvstate
+                                print 'Belief state is', beliefcombs[allstates.index(nenvstate) - len(xstates)]
                                 nagentstatebin = ntotstate[envsize:len(ntotstate)]
                                 nextagentstate = [None]*gwg.nagents
                                 for n in range(gwg.nagents):
@@ -292,7 +292,7 @@ def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
                                     truebeliefstates = beliefstates - beliefstates.intersection(visstates)
                                     gwg.colorstates[1] = copy.deepcopy(truebeliefstates)
                                     gwg.render()
-                                    print 'Belief set is ', truebeliefstates
+                                    print 'True belief set is ', truebeliefstates
                                     print 'Size of belief set is ', len(truebeliefstates)
 
                 else:
