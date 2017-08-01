@@ -10,7 +10,7 @@ import time
 nrows = 7
 ncols = 7
 nagents = 1
-initial = [18]
+initial = [19]
 targets = [[10]]
 obstacles = [23,24,25]
 moveobstacles = [32]

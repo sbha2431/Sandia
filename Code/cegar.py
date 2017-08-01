@@ -124,6 +124,7 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
             split each of the partitions k in refinement_map according to the
             list refinement_map[k] of sets of concrete states 
             '''
+            print 'REF MAP', refinement_map
             for k in refinement_map.iterkeys():
                 partition  = grid_partition.refine_partition(partition,k,refinement_map[k])
         
