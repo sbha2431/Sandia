@@ -48,7 +48,7 @@ def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint =
         file.write(agentletters[n]+':0...{}\n'.format(len(nonbeliefstates)-1))
 
     file.write('[ENV_INIT]\n')
-    file.write('y = {}\n'.format(allstates.index(gw.moveobstacles[0])))
+    file.write('y = {}\n'.format(allstates.index(gw.moveobstacle[0])))
     file.write('[SYS_INIT]\n')
     for n in range(gw.nagents):
         file.write(agentletters[n]+' = {}\n'.format(nonbeliefstates.index(gw.current[n])))
@@ -141,18 +141,6 @@ def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint =
             stri = 'y = {} -> !{}\' = {}\n'.format(allstates.index(s),agentletters[n],nonbeliefstates.index(s))
             file.write(stri)
 
-    if gw.nagents > 1:
-        for s in nonbeliefstates:
-            for n in range(gw.nagents):
-                stri = '{} = {} ->'.format(agentletters[n],nonbeliefstates.index(s))
-                for m in range(gw.nagents):
-                    if m!= n:
-                        stri += ' !{} = {} /\\'.format(agentletters[m],nonbeliefstates.index(s))
-                stri = stri[:-2]
-                stri += '\n'
-                file.write(stri)
-
-    file.write('\n[SYS_LIVENESS]\n')
     for b in beliefcombs:
         beliefset = set()
         for beliefstate in b:
@@ -178,9 +166,19 @@ def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint =
             if counter > 0:
                 file.write(stri)
 
+    if gw.nagents > 1:
+        for s in nonbeliefstates:
+            for n in range(gw.nagents):
+                stri = '{} = {} ->'.format(agentletters[n],nonbeliefstates.index(s))
+                for m in range(gw.nagents):
+                    if m!= n:
+                        stri += ' !{} = {} /\\'.format(agentletters[m],nonbeliefstates.index(s))
+                stri = stri[:-2]
+                stri += '\n'
+                file.write(stri)
 
     # Writing sys_liveness
-
+    file.write('\n[SYS_LIVENESS]\n')
     for n in range(gw.nagents):
         file.write('{} = {}\n'.format(agentletters[n],nonbeliefstates.index(gw.targets[n][0])))
 
@@ -189,7 +187,7 @@ def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint =
     # file.write('y = {}\n'.format(xstates.index(gw.current)))
     # file.write('y = {}\n'.format(xstates.index(inittarg)))
     # file.write('y = {}\n'.format(xstates.index(88)))
-    # file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
+    file.write('y = {}\n'.format(nonbeliefstates.index(gw.ncols+2)))
     file.close()
 
 def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safety = 0, belief_liveness = 0, target_reachability = False):
@@ -244,7 +242,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                 stri = stri[:-3]
                 stri += '\n'
                 file.write(stri)
-                for n in range(gw.nagents): # Don't allow environment to move onto an agent position
+                for n in range(gw.nagents):
                     file.write("{} = {} -> !y' = {}\n".format(agentletters[n],x,allstates.index(sagent)))
 
         else:
@@ -312,30 +310,46 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
             file.write(stri)
     
     if belief_safety > 0:
+        for y in range(len(nonbeliefstates)):
+            stri+='y = {}'.format(y)
+            if y < len(nonbeliefstates) - 1:
+                stri+=' \\/ '
         for b in beliefcombs:
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
-            if len(beliefset) > belief_safety:
-                stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
-                counter = 0
-                stri += '('
-                for n in range(gw.nagents):
-                    stri += '('
-                    for x in nonbeliefstates:
-                        invisstates = invisibilityset[n][x]
-                        visstates = set(nonbeliefstates) - invisstates
-                        truebelief = beliefset - beliefset.intersection(visstates)
-                        if len(truebelief) > belief_safety:
-                            stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
-                            counter += 1
-                    stri = stri[:-3]
-                    stri += ') \\/ '
-                stri = stri[:-3]
-                stri += ')'
-                stri += '\n'
-                if counter > 0:
-                    file.write(stri)
+            for n in range(gw.nagents):
+                for x in nonbeliefstates:
+                    truebelief = beliefset.intersection(invisibilityset[n][x])
+                    if len(truebelief) <= belief_safety:
+                        stri += ' \\/ (y = {} /\\ {} = {}) '.format(len(nonbeliefstates)+beliefcombs.index(b),agentletters[n],nonbeliefstates.index(x))
+        stri += '\n'
+        file.write(stri)
+
+        #for b in beliefcombs:
+            #beliefset = set()
+            #for beliefstate in b:
+                #beliefset = beliefset.union(partitionGrid[beliefstate])
+            #if len(beliefset) > belief_safety:
+                #stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
+                #counter = 0
+                #stri += '('
+                #for n in range(gw.nagents):
+                    #stri += '('
+                    #for x in nonbeliefstates:
+                        #invisstates = invisibilityset[n][x]
+                        #visstates = set(nonbeliefstates) - invisstates
+                        #truebelief = beliefset - beliefset.intersection(visstates)
+                        #if len(truebelief) > belief_safety:
+                            #stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
+                            #counter += 1
+                    #stri = stri[:-3]
+                    #stri += ') \\/ '
+                #stri = stri[:-3]
+                #stri += ')'
+                #stri += '\n'
+                #if counter > 0:
+                    #file.write(stri)
                     
     if gw.nagents > 1:
         for s in nonbeliefstates:
