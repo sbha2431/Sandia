@@ -15,32 +15,6 @@ def powerset(s):
         a.append({s[j] for j in range(x) if (i &(1<<j))})
     return a
 
-
-def randomControlled(filename,gwg): # No longer supported
-    file = open(filename)
-    data = json.load(file)
-    file.close()
-    xstates = list(set(gwg.states) - set(gwg.edges))
-    currstate = 0
-    while gwg.current not in gwg.targets:
-        totstate = data['nodes'][str(currstate)]['state']
-        envstatebin = totstate[0:len(totstate)/2]
-        agentstatebin = totstate[len(totstate)/2:len(totstate)]
-        envstate = xstates[int(''.join(str(e) for e in envstatebin)[::-1],2)]
-        agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1],2)]
-        gwg.moveobstacles[0] = envstate
-        gwg.render()
-        time.sleep(0.2)
-        gwg.current = agentstate
-        gwg.render()
-        time.sleep(0.2)
-        currstate = nextstate
-
-        while True:
-            nextstate = random.sample((data['nodes'][str(currstate)]['trans']), 1)[0]
-            if len(data['nodes'][str(nextstate)]['trans']) > 0:
-                break
-
 def userControlled_belief(filename,gwg,numbeliefstates):
     file = open(filename)
     data = json.load(file)
