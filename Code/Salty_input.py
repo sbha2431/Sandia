@@ -242,7 +242,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                 stri = stri[:-3]
                 stri += '\n'
                 file.write(stri)
-                for n in range(gw.nagents):
+                for n in range(gw.nagents): # Don't allow environment to move onto an agent position
                     file.write("{} = {} -> !y' = {}\n".format(agentletters[n],x,allstates.index(sagent)))
 
         else:
