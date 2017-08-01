@@ -377,7 +377,6 @@ def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
         print 'Agent state in grid is ', gwg.current[0]
         print 'Agent state in automaton is ', xstates.index(gwg.current[0])
 
-
         gwg.colorstates[0] = set()
         gwg.colorstates[0].update(visibility.invis(gwg,agentstate[0]))
         for n in range(1, gwg.nagents):
