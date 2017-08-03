@@ -241,6 +241,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
 
         if (((ind,frozenset(belief_true)) in visited_pairs)): # already explored
             current_path.pop()
+            print 'HERE'
             return set()
         visited_pairs.add((ind,frozenset(belief_true)))
                 
@@ -255,11 +256,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             current_path.pop()
             return set()
 
-
+        
         
         # compute true belief for successor nodes w.r.t. current position of agent
         belief_true_next = set()
-        for s in belief_true:
+        for s in (belief_true - set(gwg.targets[0])):
             for a in gwg.actlist:
                 for t in np.nonzero(gwg.prob[a][s])[0]:
                     belief_true_next.add(t)
@@ -319,7 +320,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                                 tr.add(b)
                         toRefine_belief.append(tr)
                         current_path.pop()
-                        leaf_belief
+                        return leaf_belief
         current_path.pop()    
         return set() 
 
@@ -451,7 +452,16 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
     if belief_safety > 0:
         leaf_belief = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,0,gwg.current)
     if not toRefine_belief and belief_liveness > 0:
-        belief_only = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,0,gwg.current)
+        visited_nodes = set()   
+        visited_pairs = set()   
+
+        current_path = list()
+        path_beliefs = list()
+
+        belief_true_next = set()
+        true_plus_vis_next = set()
+
+        leaf_belief = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,0,gwg.current)
     return (toRefine_belief,leaf_belief,toRefine_ltl)
 
     

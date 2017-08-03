@@ -254,6 +254,8 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                 visstates = set(nonbeliefstates) - invisstates
                 for currbeliefstate in beliefcombstate:
                     beliefstates = beliefstates.union(partitionGrid[currbeliefstate])
+                for n in range(gw.nagents):
+                    beliefstates = beliefstates - set(gw.targets[n])
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
                 if len(beliefstates) > 0: # changed from truebeliefstates, othersise some transitions were missing
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)

@@ -10,21 +10,21 @@ import time
 nrows = 7
 ncols = 7
 nagents = 1
-initial = [18]
+initial = [19]
 targets = [[10]]
 obstacles = [23,24,25]
 moveobstacles = [32]
 
 beliefparts = 2
-belief_safety = 7
+belief_safety = 10
 belief_liveness = 2
 target_reachability = False
 
 
-outfile = 'Examples/output_7x7_liveness'
-infile = 'Examples/input_7x7_liveness'
-cexfile = 'Examples/counterexample_7x7_liveness.txt'
-gwfile = 'Examples/gridworldfig_7x7_liveness.png'
+outfile = 'Examples/output_7x7_live+safe'
+infile = 'Examples/input_7x7_live+safe'
+cexfile = 'Examples/counterexample_7x7_live+safe.txt'
+gwfile = 'Examples/gridworldfig_7x7_live+safe.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})

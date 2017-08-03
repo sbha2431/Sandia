@@ -5,26 +5,24 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from gridworld import *
 import cegar
 import simulateController
-import time
 
-nrows = 7
-ncols = 7
+nrows = 6
+ncols = 6
 nagents = 1
-initial = [19]
-targets = [[10]]
-obstacles = [23,24,25]
-moveobstacles = [32]
+initial = [28]
+targets = [[ncols+1]]
+obstacles = [14,15,20,21]
+moveobstacles = [25]
 
 beliefparts = 2
-belief_safety = 0
-belief_liveness = 2
-target_reachability = False
+belief_safety = 6 # not reasizable with belief_safety = 5
+belief_liveness = 0
+target_reachability = True
 
-
-outfile = 'Examples/output_7x7_liveness'
-infile = 'Examples/input_7x7_liveness'
-cexfile = 'Examples/counterexample_7x7_liveness.txt'
-gwfile = 'Examples/gridworldfig_7x7_liveness.png'
+gwfile = 'Examples/gridworldfig_6x6_reachability.png'
+outfile = 'Examples/output_6x6_reachability'
+infile = 'Examples/input_6x6_reachability'
+cexfile = 'Examples/counterexample_6x6_reachability.txt'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
@@ -36,8 +34,4 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-
 cegar.cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
-
-
-
