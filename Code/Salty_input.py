@@ -310,46 +310,46 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
             file.write(stri)
     
     if belief_safety > 0:
-        for y in range(len(nonbeliefstates)):
-            stri+='y = {}'.format(y)
-            if y < len(nonbeliefstates) - 1:
-                stri+=' \\/ '
-        for b in beliefcombs:
-            beliefset = set()
-            for beliefstate in b:
-                beliefset = beliefset.union(partitionGrid[beliefstate])
-            for n in range(gw.nagents):
-                for x in nonbeliefstates:
-                    truebelief = beliefset.intersection(invisibilityset[n][x])
-                    if len(truebelief) <= belief_safety:
-                        stri += ' \\/ (y = {} /\\ {} = {}) '.format(len(nonbeliefstates)+beliefcombs.index(b),agentletters[n],nonbeliefstates.index(x))
-        stri += '\n'
-        file.write(stri)
-
+        #for y in range(len(nonbeliefstates)):
+            #stri+='y = {}'.format(y)
+            #if y < len(nonbeliefstates) - 1:
+                #stri+=' \\/ '
         #for b in beliefcombs:
             #beliefset = set()
             #for beliefstate in b:
                 #beliefset = beliefset.union(partitionGrid[beliefstate])
-            #if len(beliefset) > belief_safety:
-                #stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
-                #counter = 0
-                #stri += '('
-                #for n in range(gw.nagents):
-                    #stri += '('
-                    #for x in nonbeliefstates:
-                        #invisstates = invisibilityset[n][x]
-                        #visstates = set(nonbeliefstates) - invisstates
-                        #truebelief = beliefset - beliefset.intersection(visstates)
-                        #if len(truebelief) > belief_safety:
-                            #stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
-                            #counter += 1
-                    #stri = stri[:-3]
-                    #stri += ') \\/ '
-                #stri = stri[:-3]
-                #stri += ')'
-                #stri += '\n'
-                #if counter > 0:
-                    #file.write(stri)
+            #for n in range(gw.nagents):
+                #for x in nonbeliefstates:
+                    #truebelief = beliefset.intersection(invisibilityset[n][x])
+                    #if len(truebelief) <= belief_safety:
+                        #stri += ' \\/ (y = {} /\\ {} = {}) '.format(len(nonbeliefstates)+beliefcombs.index(b),agentletters[n],nonbeliefstates.index(x))
+        #stri += '\n'
+        #file.write(stri)
+
+        for b in beliefcombs:
+            beliefset = set()
+            for beliefstate in b:
+                beliefset = beliefset.union(partitionGrid[beliefstate])
+            if len(beliefset) > belief_safety:
+                stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
+                counter = 0
+                stri += '('
+                for n in range(gw.nagents):
+                    stri += '('
+                    for x in nonbeliefstates:
+                        invisstates = invisibilityset[n][x]
+                        visstates = set(nonbeliefstates) - invisstates
+                        truebelief = beliefset - beliefset.intersection(visstates)
+                        if len(truebelief) > belief_safety:
+                            stri += '!{} = {} /\\ '.format(agentletters[n],nonbeliefstates.index(x))
+                            counter += 1
+                    stri = stri[:-3]
+                    stri += ') \\/ '
+                stri = stri[:-3]
+                stri += ')'
+                stri += '\n'
+                if counter > 0:
+                    file.write(stri)
                     
     if gw.nagents > 1:
         for s in nonbeliefstates:
@@ -379,11 +379,22 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
+            stri1 = ' \\/ (y = {} /\\ ('.format(len(nonbeliefstates)+beliefcombs.index(b))
+            count = 0
             for n in range(gw.nagents):
                 for x in nonbeliefstates:
                     truebelief = beliefset.intersection(invisibilityset[n][x])
                     if len(truebelief) <= belief_liveness:
-                        stri += ' \\/ (y = {} /\\ {} = {}) '.format(len(nonbeliefstates)+beliefcombs.index(b),agentletters[n],nonbeliefstates.index(x))
+                        if count > 0:
+                            stri1 += ' \\/ '
+                        stri1 += ' {} = {} '.format(agentletters[n],nonbeliefstates.index(x))
+                        count+=1
+            stri1+='))'
+            if count > 0 and count < len(nonbeliefstates):
+                stri+=stri1
+            if count == len(nonbeliefstates):
+                stri+= ' \\/ y = {}'.format(len(nonbeliefstates)+beliefcombs.index(b))
+                
         stri += '\n'
         file.write(stri)
    
