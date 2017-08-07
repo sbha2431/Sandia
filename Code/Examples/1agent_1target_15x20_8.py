@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from gridworld import *
 import simulateController
+import grid_partition
 # Define gridworld parameters
 nrows = 15
 ncols = 20
@@ -24,5 +25,5 @@ gwg.render()
 outfile = 'slugs_output_1agent15x20_8.json'
 gwg.draw_state_labels()
 beliefparts = 8
-
-simulateController.userControlled_belief(outfile,gwg,beliefparts)
+partition = grid_partition.partitionGrid(gwg,beliefparts)
+simulateController.userControlled_partition(outfile,gwg,partition,moveobstacles)

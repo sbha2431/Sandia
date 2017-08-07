@@ -292,6 +292,7 @@ def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
                                 gwg.colorstates[1] = copy.deepcopy(truebeliefstates)
                                 gwg.render()
                                 print 'True belief set is ', truebeliefstates
+                                print 'Size of true belief set is ', len(truebeliefstates)
                 else:
                     ntotstate = data['nodes'][str(nextstate)]['state']
                     nenvstatebin = ntotstate[0:envsize]
