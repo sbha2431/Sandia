@@ -60,13 +60,13 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
     
         # check if counterexample is spurious
         
-        (toRefine_belief,leaf_belief,belief_only,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
+        (toRefine_belief,leaf_belief,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
         
-        if (belief_only and not toRefine_belief):
+        if (not toRefine_belief and not target_reachability):
             print 'Belief constraint not realizable'
             break
             
-        if((not toRefine_belief) and (not toRefine_ltl)):
+        if((not toRefine_belief) and (not target_reachability or not toRefine_ltl)):
             print 'No further refinement possible'
             break
         
