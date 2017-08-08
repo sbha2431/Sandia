@@ -321,9 +321,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                         beliefstate_succ = beliefstate_succ.union(partitionGrid[b])
                 belief_visible_succ = beliefstate_succ - invisibilityset[0][agentstate]
                 belief_invisible_succ = beliefstate_succ.intersection(invisibilityset[0][agentstate])
-                if (succ,frozenset(belief_true_next_current)) in path_beliefs and len(belief_true_next_current) <= belief_liveness and len(belief_invisible_succ) > belief_liveness:
+                if belief_true_next_current and (succ,frozenset(belief_true_next_current)) in path_beliefs and len(belief_true_next_current) <= belief_liveness and len(belief_invisible_succ) > belief_liveness:
                     print 'LIVENESS'
-                    print 'LOOP BACK TO', path_beliefs.index((succ,frozenset(belief_true_next_current)))
                     print 'TRUE BELIEF',belief_true_next_current
                     prefix_length = path_beliefs.index((succ,frozenset(belief_true_next_current)))
                     

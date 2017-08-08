@@ -11,12 +11,16 @@ import subprocess
 import time
 import simulateController
 import counterexample_parser
+import copy
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability):
+def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict()):
 
-    partition = grid_partition.partitionGrid(gwg,beliefparts);
+    if len(partition_init) > 0:
+        partition = copy.deepcopy(partition_init)
+    else:
+        partition = grid_partition.partitionGrid(gwg,beliefparts);
 
     if target_reachability: # check realizability of the LTL specification under full observability
         print ('Writing slugs input file...')
