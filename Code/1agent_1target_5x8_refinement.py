@@ -13,6 +13,7 @@ initial = [32]
 targets = [[16]]
 obstacles = [13,16,18,26,21,28,23]
 moveobstacles = [12]
+velocity = 1
 
 beliefparts = 2
 belief_safety = 1
@@ -35,5 +36,5 @@ gwg.draw_state_labels()
 gwg.save(gwfile)
 
 
-cegar.cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety, belief_liveness, target_reachability)
+cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety, belief_liveness, target_reachability)
 

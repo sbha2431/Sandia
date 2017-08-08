@@ -14,14 +14,14 @@ import counterexample_parser
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability):
+def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability):
 
     partition = grid_partition.partitionGrid(gwg,beliefparts);
 
     if target_reachability: # check realizability of the LTL specification under full observability
         print ('Writing slugs input file...')
         filename = 'slugs_input_'+str(gwg.nagents)+'agents.structuredslugs'
-        Salty_input.write_to_slugs_fullobs(infile,gwg,moveobstacles[0])
+        Salty_input.write_to_slugs_fullobs(infile,gwg,moveobstacles[0],velocity)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Checking realizability of LTL spec ...')
@@ -45,7 +45,7 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
 
         # check realizability of the full spec
         print ('Writing slugs input file...')
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,belief_safety,belief_liveness,target_reachability)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Checking realizability of full spec...')
@@ -60,7 +60,7 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
     
         # check if counterexample is spurious
         
-        (toRefine_belief,leaf_belief,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
+        (refinement,toRefine_belief,leaf_belief,prefix_length,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
         
         if (not toRefine_belief and not target_reachability):
             print 'Belief constraint not realizable'
@@ -101,7 +101,10 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
             a singleton belief or the root node of the tree is reached
             '''
             for tr in toRefine_belief:
-                if not tr:
+                if not tr and refinement=='safety':
+                    break
+                if not tr and refinement=='liveness':
+                    toRefine_prefix = toRefine_belief[prefix_length:len(toRefine_belief)]
                     break
                 neg_succ = neg_states
                 neg_states = set()
@@ -120,6 +123,39 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
                     else:
                         refinement_map[k] = list()
                         refinement_map[k].append(neg_states)
+
+            if refinement == 'liveness':
+                tr = toRefine_prefix.pop(0)
+                neg_states = set()
+                for k in tr:
+                    neg_states = neg_states.union(partition[k].difference(leaf_belief))
+                    refinement_map[k] = list()
+                    refinement_map[k].append(leaf_belief)
+                ''' 
+                propagate the refinement information backwards along toRefine until
+                a singleton belief or the root node of the tree is reached
+                '''
+                for tr in toRefine_prefix:
+                    if not tr:
+                        break
+                    neg_succ = neg_states
+                    neg_states = set()
+                    # propagate refinement set backwards
+                    for k in tr: 
+                        for s in partition[k]:
+                            for a in gwg.actlist:
+                                t = set (np.nonzero(gwg.prob[a][s])[0])
+                                if t.intersection(neg_succ):
+                                    neg_states.add(s)
+                                
+                    # store set in refinement_map        
+                    for k in tr:
+                        if k in refinement_map:
+                            refinement_map[k].append(neg_states)
+                        else:
+                            refinement_map[k] = list()
+                            refinement_map[k].append(neg_states)
+
             '''
             split each of the partitions k in refinement_map according to the
             list refinement_map[k] of sets of concrete states 
@@ -146,7 +182,7 @@ def cegar_loop(gwg,moveobstacles,beliefparts,infile,outfile,cexfile,belief_safet
     else: 
         # compute controller for realizable abstraction
 
-        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],1, partition,belief_safety,belief_liveness,target_reachability)
+        Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
         print ('Converting input file...')
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
         print('Computing controller...')
