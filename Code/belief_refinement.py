@@ -176,8 +176,9 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                         tr.add(b)
                     toRefine_belief.append(tr)
                     
-                    #leaf_belief = copy.deepcopy(true_plus_vis)
-                    leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
+                    leaf_belief = copy.deepcopy(true_plus_vis)
+                    #leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
+                    print "LEAF BELIEF:", leaf_belief
                     current_path.pop()
                     return leaf_belief
                 else:
@@ -190,11 +191,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         if in some subtree such node is found, add the current node to the counterexample and return 
         '''
         belief_true_next_current = copy.deepcopy(belief_true_next)
+        true_plus_vis_next_current = copy.deepcopy(true_plus_vis_next)
         nextposstates = map(int,content[ind+1][18:].split(', '))
         for succ in range(0,len(content),2):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 if (not((succ,frozenset(belief_true_next_current)) in visited_pairs) and not(not belief_true_next_current and succ in visited_nodes) and not(succ in current_path)):
                     belief_true_next = copy.deepcopy(belief_true_next_current)
+                    true_plus_vis_next = copy.deepcopy(true_plus_vis_next_current)
                     leaf_belief = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,succ,agentstate)
                     if toRefine_belief:
                         tr = set()
@@ -302,11 +305,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         if in some subtree such node is found, add the current node to the counterexample and return 
         '''
         belief_true_next_current = copy.deepcopy(belief_true_next)
+        true_plus_vis_next_current = copy.deepcopy(true_plus_vis_next)
         nextposstates = map(int,content[ind+1][18:].split(', '))
         for succ in range(0,len(content),2):
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 belief_true_next = copy.deepcopy(belief_true_next_current)
-
+                true_plus_vis_next = copy.deepcopy(true_plus_vis_next_current)
+                
                 envstatebin_succ = []
                 beliefstate_succ = set()
                 line_succ = content[succ].split(' ')
@@ -329,10 +334,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     tr_succ = set()
                     if envstate_succ >= len(xstates):
                         for b in beliefcombs[envstate_succ - len(xstates)]:
-                            tr_succ.add(b)
+                            if partitionGrid[b].intersection(belief_true_next_current):
+                                tr_succ.add(b)
                     toRefine_belief.append(tr_succ)
                     
                     leaf_belief = copy.deepcopy(belief_visible_succ.union(belief_true_next_current))
+                    #leaf_belief = copy.deepcopy(true_plus_vis_next)
+                    
                     print 'LEAF BELIEF',leaf_belief
                     tr = set()
                     if envstate >= len(xstates):
@@ -459,8 +467,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     tr.add(b)
                 toRefine_belief.append(tr)
                     
-                #leaf_belief = copy.deepcopy(true_plus_vis)
-                leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
+                leaf_belief = copy.deepcopy(true_plus_vis)
+                #leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
                     
                 current_path.pop()    
                 return leaf_belief
@@ -631,5 +639,15 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         ref = 'liveness'
     return (ref,toRefine_belief,leaf_belief,prefix_length,toRefine_ltl)
 
-    
+def remove_leq(list_of_sets,a_set):
+    subsumed = False
+    keep = list()
+    for s in list_of_sets:
+        if s <= a_set:
+            continue
+        if s > a_set:
+            subsumed = True
+        keep.append(s)
+    return (subsumed,keep)
+    #return (False,list_of_sets)
     

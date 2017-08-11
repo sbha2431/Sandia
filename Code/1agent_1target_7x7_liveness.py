@@ -37,6 +37,11 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
+partition = dict()
+partition[(0,0,0)] = {8,9,10,11,12,15,16,17,18,19}
+partition[(0,0,1)] = {26,29,30,31,32,33,36,37,38,39,40}
+partition[(0,0,2)] = {22}
+
 
 cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
 

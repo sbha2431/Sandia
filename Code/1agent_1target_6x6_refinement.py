@@ -16,7 +16,7 @@ moveobstacles = [25]
 velocity = 1
 
 beliefparts = 2
-belief_safety = 3
+belief_safety = 2
 belief_liveness = 0
 target_reachability = False
 

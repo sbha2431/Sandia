@@ -88,18 +88,18 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         
             # NEW REFINEMENT: propagating the refinement of the leaf backwards on the path
             
-            refinement_map  = dict() # maps abstract partitions to lists or state sets with which to refine
+            refinement_map_precise  = dict() # maps abstract partitions to lists or state sets with which to refine
+            refinement_map_coarse  = dict()
+            negstates_map = dict()
             neg_states = set()       # set of states that are propagated backwards along the counterexample path
-      
+            
             '''
             initialize neg_states to be the set of states that are in the abstract belief, 
             but not in the most precise belief for the leaf node of the counterexample path
             '''
-            tr = toRefine_belief.pop(0)
-            for k in tr:
+            tr_0 = toRefine_belief.pop(0)
+            for k in tr_0:
                 neg_states = neg_states.union(partition[k].difference(leaf_belief))
-                refinement_map[k] = list()
-                refinement_map[k].append(leaf_belief)
             ''' 
             propagate the refinement information backwards along toRefine until
             a singleton belief or the root node of the tree is reached
@@ -110,31 +110,36 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                 if not tr and refinement=='liveness':
                     toRefine_prefix = toRefine_belief[prefix_length:len(toRefine_belief)]
                     break
+              
                 neg_succ = neg_states
                 neg_states = set()
                 # propagate refinement set backwards
+                all_states = set()
                 for k in tr: 
                     for s in partition[k]:
+                        all_states.add(s)
                         for a in gwg.actlist:
                             t = set (np.nonzero(gwg.prob[a][s])[0])
                             if t.intersection(neg_succ):
                                 neg_states.add(s)
-                                
-                # store set in refinement_map        
-                for k in tr:
-                    if k in refinement_map:
-                        refinement_map[k].append(neg_states)
-                    else:
-                        refinement_map[k] = list()
-                        refinement_map[k].append(neg_states)
-
+                if not all_states <= neg_states:
+                    # store states in refinement_map_precise
+                    for k in tr:
+                        if k in refinement_map_precise:
+                            refinement_map_precise[k].append(neg_states)
+                        else:
+                            refinement_map_precise[k] = list()
+                            refinement_map_precise[k].append(neg_states)
+                        if k in negstates_map:
+                            negstates_map[k] = negstates_map[k].union(neg_states)
+                        else:
+                            negstates_map[k] = neg_states
+                
             if refinement == 'liveness':
                 tr = toRefine_prefix.pop(0)
                 neg_states = set()
                 for k in tr:
                     neg_states = neg_states.union(partition[k].difference(leaf_belief))
-                    refinement_map[k] = list()
-                    refinement_map[k].append(leaf_belief)
                 ''' 
                 propagate the refinement information backwards along toRefine until
                 a singleton belief or the root node of the tree is reached
@@ -145,28 +150,59 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                     neg_succ = neg_states
                     neg_states = set()
                     # propagate refinement set backwards
+                    all_states = set()
                     for k in tr: 
                         for s in partition[k]:
+                            all_states.add(s)
                             for a in gwg.actlist:
                                 t = set (np.nonzero(gwg.prob[a][s])[0])
                                 if t.intersection(neg_succ):
                                     neg_states.add(s)
-                                
-                    # store set in refinement_map        
-                    for k in tr:
-                        if k in refinement_map:
-                            refinement_map[k].append(neg_states)
-                        else:
-                            refinement_map[k] = list()
-                            refinement_map[k].append(neg_states)
-
+                    if not all_states <= neg_states:            
+                        # store set in refinement_map_precise
+                        for k in tr:
+                            if k in refinement_map_precise:
+                                refinement_map_precise[k].append(neg_states)
+                            else:
+                                refinement_map_precise[k] = list()       
+                                refinement_map_precise[k].append(neg_states)
+                            if k in negstates_map:
+                                negstates_map[k] = negstates_map[k].union(neg_states)
+                            else:
+                                negstates_map[k] = neg_states
+            for k in tr_0:
+                if not k in refinement_map_precise:
+                    refinement_map_precise[k] = list()
+                refinement_map_precise[k].append(leaf_belief)
+                if not k in refinement_map_coarse:
+                    refinement_map_coarse[k] = list()
+                refinement_map_coarse[k].append(leaf_belief)
+                
+            for k in negstates_map.iterkeys():
+                if not k in refinement_map_coarse:
+                    refinement_map_coarse[k] = list()
+                refinement_map_coarse[k].append(negstates_map[k])
+                
+            #print 'REF MAP PRECISE', refinement_map_precise    
+            #print 'REF MAP COARSE', refinement_map_coarse
+            
             '''
-            split each of the partitions k in refinement_map according to the
-            list refinement_map[k] of sets of concrete states 
+            split each of the partitions k in refinement_map_coarse according to the
+            list refinement_map_coarse[k] of sets of concrete states 
             '''
-            for k in refinement_map.iterkeys():
-                partition  = grid_partition.refine_partition(partition,k,refinement_map[k])
-        
+            for k in refinement_map_coarse.iterkeys():
+                partition_coarse  = grid_partition.refine_partition(partition,k,refinement_map_coarse[k])
+            if partition_coarse == partition:
+                print 'USING PRECISE BELIEF REFINEMENT'
+                '''
+                split each of the partitions k in refinement_map_precise according to the
+                list refinement_map_precise[k] of sets of concrete states 
+                '''
+                for k in refinement_map_precise.iterkeys():
+                    partition  = grid_partition.refine_partition(partition,k,refinement_map_precise[k])
+            else:
+                partition = copy.deepcopy(partition_coarse)
+                print 'USING COARSE BELIEF REFINEMENT'
             # NEW REFINEMENT: ends here
         else: 
             if target_reachability: # refine belief abstraction for the LTL specification
