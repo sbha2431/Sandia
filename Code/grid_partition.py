@@ -128,3 +128,12 @@ def refine_partition(partitiondict,partkey,stateSets):
         partitiondict_refine[(partkey[0],partkey[1],len(partitiondict_refine)+1)] = p
    
     return partitiondict_refine
+
+def precise_partition(gw):
+    count = 0
+    partition = dict()
+    for s in set(gw.states) - set(gw.walls):
+        partition[(0,0,count)] = set()
+        partition[(0,0,count)].add(s)
+        count = count + 1
+    return partition

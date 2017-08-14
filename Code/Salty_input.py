@@ -95,6 +95,8 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                 for n in range(gw.nagents):
                     beliefstates = beliefstates - set(gw.targets[n])
                 truebeliefstates = beliefstates - beliefstates.intersection(visstates)
+                if belief_safety > 0 and len(truebeliefstates) > belief_safety:
+                    continue
                 if len(beliefstates) > 0: # changed from truebeliefstates, othersise some transitions were missing
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
                     beliefset = set()

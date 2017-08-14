@@ -6,6 +6,7 @@ from gridworld import *
 import cegar
 import simulateController
 import time
+import grid_partition
 
 nrows = 7
 ncols = 7
@@ -38,3 +39,6 @@ gwg.save(gwfile)
 
 cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
 
+# with precise partition
+#partition = grid_partition.precise_partition(gwg)
+#cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition)

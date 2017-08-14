@@ -5,13 +5,14 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from gridworld import *
 import cegar
 import simulateController
+import grid_partition
 
-nrows = 8
+nrows = 9
 ncols = 5
 nagents = 1
-initial = [32]
+initial = [37]
 targets = [[16]]
-obstacles = [13,16,18,26,21,28,23]
+obstacles = [13,16,18,26,21,28,23,31,33]
 moveobstacles = [12]
 velocity = 1
 
@@ -38,3 +39,6 @@ gwg.save(gwfile)
 
 cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety, belief_liveness, target_reachability)
 
+# with precise partition
+#partition = grid_partition.precise_partition(gwg)
+#cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition)
