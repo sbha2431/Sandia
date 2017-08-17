@@ -7,24 +7,24 @@ import cegar
 import simulateController
 import grid_partition
 
-nrows = 6
+nrows = 7
 ncols = 6
 nagents = 1
-initial = [28]
-targets = [[ncols+1]]
-obstacles = [14,15,20,21]
-moveobstacles = [25]
+initial = [9]
+targets = [[33]]
+obstacles = [14,15,16,20,26]
+moveobstacles = [27]
 velocity = 1
 
 beliefparts = 2
-belief_safety = 2
+belief_safety = 42
 belief_liveness = 0
-target_reachability = False
+target_reachability = True
 
-gwfile = 'Examples/gridworldfig_6x6.png'
-outfile = 'Examples/output_6x6'
-infile = 'Examples/input_6x6'
-cexfile = 'Examples/counterexample_6x6.txt'
+gwfile = 'Examples/gridworldfig_7x6_reachability.png'
+outfile = 'Examples/output_7x6_reachability'
+infile = 'Examples/input_7x6_reachability'
+cexfile = 'Examples/counterexample_7x6_reachability.txt'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})

@@ -18,6 +18,7 @@ visited_pairs = set()   # stores already visited pairs of node and true belief
 
 current_path = list()
 path_beliefs = list()
+path_abstract = list()
 
 belief_true_next = set()
 true_plus_vis_next = set()
@@ -28,22 +29,21 @@ true_plus_vis_next = set()
 stores information about the path in the counterexample tree along which we will refine
 each element of the list is a set of partitions forming the belief in the current position
 '''
-toRefine_belief = list()
-toRefine_ltl = dict()
+toRefine = list()
 prefix_length = 0
 
-def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness):
+def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness,targets):
     global visited_nodes
     global visited_pairs
 
     global current_path
     global path_beliefs
+    global path_abstract
     
     global belief_true_next
     global true_plus_vis_next
      
-    global toRefine_belief
-    global toRefine_ltl
+    global toRefine
     global prefix_length
         
     visited_nodes = set()
@@ -51,12 +51,12 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
 
     current_path = list()
     path_beliefs = list()
+    path_abstract = list()
     
     belief_true_next = set()
     true_plus_vis_next = set()
     
-    toRefine_belief = list() 
-    toRefine_ltl = dict() 
+    toRefine = list()  
     prefix_length = 0
     
     with open(fname) as f:
@@ -86,8 +86,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         global belief_true_next
         global true_plus_vis_next
         
-        global toRefine_belief
-        global toRefine_ltl
+        global toRefine
         
         current_path.append(ind)
         visited_nodes.add(ind)
@@ -153,16 +152,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             belief_invisible = beliefstate.intersection(invisibilityset[0][agentstate_parent])
             belief_visible = beliefstate - invisibilityset[0][agentstate_parent]
         
-            if (len(beliefstate) > len(belief_true)):
-                # belief state imprecise: possibly refine for LTL spec
-                if not toRefine_ltl:
-                    for b in beliefcombs[envstate - len(xstates)]:
-                        if b in toRefine_ltl:
-                            toRefine_ltl[b].append(belief_true)
-                        else:
-                            toRefine_ltl[b] = list()
-                            toRefine_ltl[b].append(belief_true)
-                            
+                     
             if len(belief_invisible) > belief_safety: # belief violates constraint
              
                 if len(belief_true) <= belief_safety: # true belief satisfies constraint
@@ -174,7 +164,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     tr = set()
                     for b in beliefcombs[envstate - len(xstates)]:
                         tr.add(b)
-                    toRefine_belief.append(tr)
+                    toRefine.append(tr)
                     
                     leaf_belief = copy.deepcopy(true_plus_vis)
                     #leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
@@ -199,12 +189,12 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     belief_true_next = copy.deepcopy(belief_true_next_current)
                     true_plus_vis_next = copy.deepcopy(true_plus_vis_next_current)
                     leaf_belief = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,succ,agentstate)
-                    if toRefine_belief:
+                    if toRefine:
                         tr = set()
                         if envstate >= len(xstates):
                             for b in beliefcombs[envstate - len(xstates)]:
                                 tr.add(b)
-                        toRefine_belief.append(tr)
+                        toRefine.append(tr)
                         current_path.pop()
                         return leaf_belief
         current_path.pop()    
@@ -219,8 +209,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         global belief_true_next
         global true_plus_vis_next
         
-        global toRefine_belief
-        global toRefine_ltl
+        global toRefine
         global prefix_length
         
         current_path.append(ind)
@@ -251,12 +240,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             true_plus_vis = copy.deepcopy(true_plus_vis_next)
             #print 'Environment position is ', beliefstate    
 
+         
         if (((ind,frozenset(belief_true)) in visited_pairs)): # already explored
             current_path.pop()
             return set()
         visited_pairs.add((ind,frozenset(belief_true)))
         path_beliefs.append((ind,frozenset(belief_true)))
-                
+           
         # agent position
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
@@ -270,8 +260,15 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             path_beliefs.pop()
             return set()
 
-        
-        
+        # invisible states in belief w.r.t. previous position of agent
+        belief_invisible = beliefstate.intersection(set())#invisibilityset[0][agentstate_parent])
+        belief_visible = beliefstate.difference(set())#invisibilityset[0][agentstate_parent])
+
+        if len(beliefstate) > 0:
+            path_abstract.append((envstate,frozenset(belief_invisible),frozenset(belief_visible)))
+        else:
+            path_abstract.append((envstate,frozenset(set()),frozenset(set())))
+
         # compute true belief for successor nodes w.r.t. current position of agent
         belief_true_next = set()
         for s in (belief_true - set(gwg.targets[0])):
@@ -281,23 +278,6 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         belief_true_next = belief_true_next - set(gwg.walls)
         true_plus_vis_next = copy.deepcopy(belief_true_next)
         belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
-
-      
-        if len(beliefstate) > 0:
-            
-            # invisible states in belief w.r.t. previous position of agent
-            belief_invisible = beliefstate.intersection(invisibilityset[0][agentstate_parent])
-            belief_visible = beliefstate - invisibilityset[0][agentstate_parent]
-            
-            if (len(beliefstate) > len(belief_true)):
-                # belief state imprecise: possibly refine for LTL spec
-                if not toRefine_ltl:
-                    for b in beliefcombs[envstate - len(xstates)]:
-                        if b in toRefine_ltl:
-                            toRefine_ltl[b].append(belief_true)
-                        else:
-                            toRefine_ltl[b] = list()
-                            toRefine_ltl[b].append(belief_true)
                             
 
         '''
@@ -327,16 +307,17 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                 belief_visible_succ = beliefstate_succ - invisibilityset[0][agentstate]
                 belief_invisible_succ = beliefstate_succ.intersection(invisibilityset[0][agentstate])
                 if belief_true_next_current and (succ,frozenset(belief_true_next_current)) in path_beliefs and len(belief_true_next_current) <= belief_liveness and len(belief_invisible_succ) > belief_liveness:
-                    print 'LIVENESS'
+                    print 'LIVENESS', len(path_beliefs)
                     print 'TRUE BELIEF',belief_true_next_current
                     prefix_length = path_beliefs.index((succ,frozenset(belief_true_next_current)))
                     
+           
                     tr_succ = set()
                     if envstate_succ >= len(xstates):
                         for b in beliefcombs[envstate_succ - len(xstates)]:
                             if partitionGrid[b].intersection(belief_true_next_current):
                                 tr_succ.add(b)
-                    toRefine_belief.append(tr_succ)
+                    toRefine.append(tr_succ)
                     
                     leaf_belief = copy.deepcopy(belief_visible_succ.union(belief_true_next_current))
                     #leaf_belief = copy.deepcopy(true_plus_vis_next)
@@ -346,26 +327,29 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     if envstate >= len(xstates):
                         for b in beliefcombs[envstate - len(xstates)]:
                             tr.add(b)
-                    toRefine_belief.append(tr)
+                    toRefine.append(tr)
                     current_path.pop()
                     path_beliefs.pop()
+                    path_abstract.pop()
                     return leaf_belief                   
                 if (not((succ,frozenset(belief_true_next_current)) in visited_pairs) and not((not belief_true_next_current) and succ in visited_nodes)): # and not(succ in current_path)
                     leaf_belief = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,succ,agentstate)
-                    if toRefine_belief:
+                    if toRefine:
                         tr = set()
                         if envstate >= len(xstates):
                             for b in beliefcombs[envstate - len(xstates)]:
                                 tr.add(b)
-                        toRefine_belief.append(tr)
+                        toRefine.append(tr)
                         current_path.pop()
                         path_beliefs.pop()
+                        path_abstract.pop()
                         return leaf_belief
         current_path.pop()
         path_beliefs.pop()    
+        path_abstract.pop()
         return set() 
-
-    def traverse_counterexample_liveness_basic(fname,gwg,partitionGrid,belief_liveness,ind,agentstate_parent):
+        
+    def traverse_counterexample_ltl(fname,gwg,partitionGrid,targets,ind,agentstate_parent):
 
         global visited_nodes
         global visited_pairs
@@ -374,8 +358,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         global belief_true_next
         global true_plus_vis_next
         
-        global toRefine_belief
-        global toRefine_ltl
+        global toRefine
+        global prefix_length
         
         current_path.append(ind)
         visited_nodes.add(ind)
@@ -405,12 +389,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             true_plus_vis = copy.deepcopy(true_plus_vis_next)
             #print 'Environment position is ', beliefstate    
 
+         
         if (((ind,frozenset(belief_true)) in visited_pairs)): # already explored
             current_path.pop()
             return set()
         visited_pairs.add((ind,frozenset(belief_true)))
         path_beliefs.append((ind,frozenset(belief_true)))
-                
+           
         # agent position
         if len(agentstatebin) > 0:
             agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
@@ -424,6 +409,132 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             path_beliefs.pop()
             return set()
 
+        # invisible states in belief w.r.t. previous position of agent
+        belief_invisible = beliefstate.intersection(set())#invisibilityset[0][agentstate_parent])
+        belief_visible = beliefstate.difference(set())#invisibilityset[0][agentstate_parent])
+
+        if len(beliefstate) > 0:
+            path_abstract.append((envstate,frozenset(belief_invisible),frozenset(belief_visible)))
+        else:
+            path_abstract.append((envstate,frozenset(set()),frozenset(set())))
+
+        # compute true belief for successor nodes w.r.t. current position of agent
+        belief_true_next = set()
+        for s in (belief_true - set(gwg.targets[0])):
+            for a in gwg.actlist:
+                for t in np.nonzero(gwg.prob[a][s])[0]:
+                    belief_true_next.add(t)
+        belief_true_next = belief_true_next - set(gwg.walls)
+        true_plus_vis_next = copy.deepcopy(belief_true_next)
+        belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
+
+      
+        if len(beliefstate) > 0:
+            if (len(beliefstate) > len(belief_true)):
+                # belief state imprecise: possibly refine for LTL spec
+                if not toRefine:
+                    tr = set()
+                    for b in beliefcombs[envstate - len(xstates)]:
+                        tr.add(b)
+                    toRefine.append(tr)
+                    leaf_belief = copy.deepcopy(true_plus_vis)
+                    return leaf_belief                            
+
+        '''
+        recurse over the successors (subtrees) of the current node, searching for a leaf node to refine
+        if in some subtree such node is found, add the current node to the counterexample and return 
+        '''
+        belief_true_next_current = copy.deepcopy(belief_true_next)
+        true_plus_vis_next_current = copy.deepcopy(true_plus_vis_next)
+        nextposstates = map(int,content[ind+1][18:].split(', '))
+        for succ in range(0,len(content),2):
+            if (int(content[succ].split(' ')[1]) in nextposstates):
+                if (not((succ,frozenset(belief_true_next_current)) in visited_pairs) and not(not belief_true_next_current and succ in visited_nodes) and not(succ in current_path)):
+                    belief_true_next = copy.deepcopy(belief_true_next_current)
+                    true_plus_vis_next = copy.deepcopy(true_plus_vis_next_current)
+                    leaf_belief = traverse_counterexample_ltl(fname,gwg,partitionGrid,targets,succ,agentstate)
+                    if toRefine:
+                        tr = set()
+                        if envstate >= len(xstates):
+                            for b in beliefcombs[envstate - len(xstates)]:
+                                tr.add(b)
+                        toRefine.append(tr)
+                        current_path.pop()
+                        path_beliefs.pop()    
+                        path_abstract.pop()
+                        return leaf_belief
+        current_path.pop()
+        path_beliefs.pop()    
+        path_abstract.pop()
+        return set() 
+        
+    def traverse_counterexample_liveness_basic(fname,gwg,partitionGrid,belief_liveness,ind,agentstate_parent):
+
+        global visited_nodes
+        global visited_pairs
+        global current_path   
+        
+        global belief_true_next
+        global true_plus_vis_next
+        
+        global toRefine
+        
+        current_path.append(ind)
+        visited_nodes.add(ind)
+        #print 'INDEX IN COUNTEREXAMPLE ', ind
+    
+        envstatebin = []
+        agentstatebin = []
+        beliefstate = set()
+        
+        line = content[ind].split(' ')
+        for r in line[6::]:
+            if r[1] == 'y' or r[0] == 'y':
+                envstatebin.append(r[-2])
+            elif r[1] == 'x' or r[0] == 'x':
+                agentstatebin.append(r[-2])
+ 
+        # environment position
+        envstate = int(''.join(str(e) for e in envstatebin)[::-1],2)
+        if envstate < len(xstates):
+            belief_true = {xstates[envstate]}
+            true_plus_vis = {xstates[envstate]}
+            #print 'Environment position is ', xstates[envstate]
+        else:
+            for b in beliefcombs[envstate - len(xstates)]:
+                beliefstate = beliefstate.union(partitionGrid[b])
+            belief_true = copy.deepcopy(belief_true_next)
+            true_plus_vis = copy.deepcopy(true_plus_vis_next)
+            #print 'Environment position is ', beliefstate    
+
+
+        if (((ind,frozenset(belief_true)) in visited_pairs)): # already explored
+            current_path.pop()
+            return set()
+        visited_pairs.add((ind,frozenset(belief_true)))
+        path_beliefs.append((ind,frozenset(belief_true)))
+
+        # agent position
+        if len(agentstatebin) > 0:
+            agentstate = xstates[int(''.join(str(e) for e in agentstatebin)[::-1], 2)]
+            #print 'Agent position is ', agentstate
+        else: # failure state
+            current_path.pop()
+            path_beliefs.pop()
+            return set()
+        if content[ind+1] == 'With no successors.': # terminal state
+            current_path.pop()
+            path_beliefs.pop()
+            return set()
+
+        # invisible states in belief w.r.t. previous position of agent
+        belief_invisible = beliefstate.intersection(invisibilityset[0][agentstate_parent])
+        belief_visible = beliefstate - invisibilityset[0][agentstate_parent]
+
+        if len(beliefstate) > 0:
+            path_abstract.append((envstate,frozenset(belief_invisible),frozenset(belief_visible)))
+        else:
+            path_abstract.append((envstate,frozenset(set()),frozenset(set())))
         
         
         # compute true belief for successor nodes w.r.t. current position of agent
@@ -438,22 +549,6 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
 
       
         if len(beliefstate) > 0:
-            
-            # invisible states in belief w.r.t. previous position of agent
-            belief_invisible = beliefstate.intersection(invisibilityset[0][agentstate_parent])
-            belief_visible = beliefstate - invisibilityset[0][agentstate_parent]
-            
-            if (len(beliefstate) > len(belief_true)):
-                # belief state imprecise: possibly refine for LTL spec
-                if not toRefine_ltl:
-                    for b in beliefcombs[envstate - len(xstates)]:
-                        if b in toRefine_ltl:
-                            toRefine_ltl[b].append(belief_true)
-                        else:
-                            toRefine_ltl[b] = list()
-                            toRefine_ltl[b].append(belief_true)
-                            
-
             if len(belief_invisible) > belief_liveness and len(belief_true) <= belief_liveness: 
             # belief violates the constraint and true belief satisfies constraint
                 print 'LIVENESS'
@@ -465,7 +560,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                 tr = set()
                 for b in beliefcombs[envstate - len(xstates)]:
                     tr.add(b)
-                toRefine_belief.append(tr)
+                toRefine.append(tr)
                     
                 leaf_belief = copy.deepcopy(true_plus_vis)
                 #leaf_belief = copy.deepcopy(belief_visible.union(belief_true))
@@ -483,13 +578,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             if (int(content[succ].split(' ')[1]) in nextposstates):
                 belief_true_next = copy.deepcopy(belief_true_next_current)
                 if (not((succ,frozenset(belief_true_next_current)) in visited_pairs) and not((not belief_true_next_current) and succ in visited_nodes) and not(succ in current_path)): 
-                    leaf_belief = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,succ,agentstate)
-                    if toRefine_belief:
+                    leaf_belief = traverse_counterexample_liveness_basic(fname,gwg,partitionGrid,belief_liveness,succ,agentstate)
+                    if toRefine:
                         tr = set()
                         if envstate >= len(xstates):
                             for b in beliefcombs[envstate - len(xstates)]:
                                 tr.add(b)
-                        toRefine_belief.append(tr)
+                        toRefine.append(tr)
                         current_path.pop()
                         path_beliefs.pop()
                         return leaf_belief
@@ -504,8 +599,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         #global belief_true_next
         #global true_plus_vis_next
         
-        #global toRefine_belief
-        #global toRefine_ltl
+        #global toRefine
         
         #current_path.append(ind)
         ##print 'INDEX IN COUNTEREXAMPLE ', ind
@@ -571,13 +665,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         
             #if (len(beliefstate) > len(belief_true)):
                 ## belief state imprecise: possibly refine for LTL spec
-                #if not toRefine_ltl:
+                #if not toRefine:
                     #for b in beliefcombs[envstate - len(xstates)]:
-                        #if b in toRefine_ltl:
-                            #toRefine_ltl[b].append(belief_true)
+                        #if b in toRefine:
+                            #toRefine[b].append(belief_true)
                         #else:
-                            #toRefine_ltl[b] = list()
-                            #toRefine_ltl[b].append(belief_true)
+                            #toRefine[b] = list()
+                            #toRefine[b].append(belief_true)
         #else:
             #path_beliefs.append((belief_true,belief_true,true_plus_vis,set()))
         
@@ -592,7 +686,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                 #if (succ not in current_path):
                     #belief_true_next = copy.deepcopy(belief_true_next_current)
                     #leaf_belief = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,succ,agentstate)
-                    #if toRefine_belief:
+                    #if toRefine:
                         #return leaf_belief
                 #else:# found the loop of a lasso path
                     #ref_found = False
@@ -610,13 +704,13 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                         #if i == succ and not ref_found:
                             #break
                         #if ref_found and tr:
-                            #toRefine_belief.append(tr)
+                            #toRefine.append(tr)
                             #break
                         #if ref_found and not tr:
                             #break    
                     #if ref_found:
                         #return leaf_belief
-        #if not toRefine_belief:
+        #if not toRefine:
             #current_path.pop()
             #path_beliefs.pop()
         #return set()
@@ -625,19 +719,37 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
     if belief_safety > 0:
         leaf_belief = traverse_counterexample_safety(fname,gwg,partitionGrid,belief_safety,0,gwg.current)
         ref = 'safety'
-    if not toRefine_belief and belief_liveness > 0:
+        
+    if not toRefine and belief_liveness > 0:
         visited_nodes = set()   
         visited_pairs = set()   
 
         current_path = list()
         path_beliefs = list()
+        path_abstract = list()
 
         belief_true_next = set()
         true_plus_vis_next = set()
 
         leaf_belief = traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,0,gwg.current)
         ref = 'liveness'
-    return (ref,toRefine_belief,leaf_belief,prefix_length,toRefine_ltl)
+    if not toRefine and len(targets) > 0:
+        visited_nodes = set()   
+        visited_pairs = set()   
+
+        current_path = list()
+        path_beliefs = list()
+        path_abstract = list()
+
+        belief_true_next = set()
+        true_plus_vis_next = set()
+
+        leaf_belief = traverse_counterexample_ltl(fname,gwg,partitionGrid,targets,0,gwg.current)
+        ref = 'ltl'
+    if not toRefine:
+        ref = 'none'    
+        
+    return (ref,toRefine,leaf_belief,prefix_length)
 
 def remove_leq(list_of_sets,a_set):
     subsumed = False

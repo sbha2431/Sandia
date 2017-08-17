@@ -64,23 +64,25 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
     
         # check if counterexample is spurious
         
-        (refinement,toRefine_belief,leaf_belief,prefix_length,toRefine_ltl) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness)
+        (refinement,toRefine,leaf_belief,prefix_length) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness,gwg.targets[0])
         
-        if (not toRefine_belief and not target_reachability):
+        if (not (refinement == 'safety' or refinement == 'liveness') and not target_reachability):
             print 'Belief constraint not realizable'
             break
             
-        if((not toRefine_belief) and (not target_reachability or not toRefine_ltl)):
+        if not toRefine:
             print 'No further refinement possible'
             break
         
-        if toRefine_belief: # refine belief abstraction using belief constraint
+        if toRefine: # refine belief abstraction using belief constraint
     
-            print 'REFINING DUE TO BELIEF CONSTRAINT'
-            
+            if refinement == 'safety' or refinement == 'liveness':
+                print 'REFINING DUE TO BELIEF CONSTRAINT'
+            if refinement == 'ltl':
+                print 'REFINING DUE TO LVENESS OBJECTIVE', leaf_belief
             # OLD REFINEMENT: based only on a leaf node in the tree 
             '''
-            tr  = toRefine_belief.pop(0)
+            tr  = toRefine.pop(0)
             for k in tr:
                 partition = grid_partition.partitionState_manual(partition,k,leaf_belief)
             '''
@@ -97,18 +99,18 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             initialize neg_states to be the set of states that are in the abstract belief, 
             but not in the most precise belief for the leaf node of the counterexample path
             '''
-            tr_0 = toRefine_belief.pop(0)
+            tr_0 = toRefine.pop(0)
             for k in tr_0:
                 neg_states = neg_states.union(partition[k].difference(leaf_belief))
             ''' 
             propagate the refinement information backwards along toRefine until
             a singleton belief or the root node of the tree is reached
             '''
-            for tr in toRefine_belief:
-                if not tr and refinement=='safety':
+            for tr in toRefine:
+                if not tr and refinement=='safety' or refinement == 'ltl':
                     break
                 if not tr and refinement=='liveness':
-                    toRefine_prefix = toRefine_belief[prefix_length:len(toRefine_belief)]
+                    toRefine_prefix = toRefine[prefix_length:len(toRefine)]
                     break
               
                 neg_succ = neg_states
@@ -205,13 +207,8 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                 print 'USING COARSE BELIEF REFINEMENT'
             # NEW REFINEMENT: ends here
         else: 
-            if target_reachability: # refine belief abstraction for the LTL specification
-                print 'REFINING DUE TO LTL SPECIFICATION'
-                for k in toRefine_ltl.keys():
-                    partition = grid_partition.refine_partition(partition,k,toRefine_ltl[k])
-            else:
-                break
-        
+            break
+
         iteration = iteration+1
 
     if(not realizable):

@@ -167,7 +167,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                         #stri += ' \\/ (y = {} /\\ {} = {}) '.format(len(nonbeliefstates)+beliefcombs.index(b),agentletters[n],nonbeliefstates.index(x))
         #stri += '\n'
         #file.write(stri)
-
+        
         for b in beliefcombs:
             beliefset = set()
             for beliefstate in b:
