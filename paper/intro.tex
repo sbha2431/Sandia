@@ -1,6 +1,20 @@
+Performing surveillance on an adversarial target, by its very nature is a partial information problem. The agent may not always know the position of the target. However, surveillance in conjunction with a mission specification can be crucial in applications such as defense where it is important to keep track of (potentially hostile) targets whilst trying to satisfy a particular objective. 
+
+Since we are dealing with an adversarial target a natural setting for formulating the problem is a two-player game. There are several flavours of partial information games that have been studied in the literature \cite{Chatterjee2013}, and in this paper we focus on turn-based one-sided partial-observation deterministic games on which we perform reactive control synthesis. It is one-sided as we allow the adversary full information on the location of the agent even if it is not in sight. 
+
+Our aim is to then synthesize a reactive controller that satisfies both the LTL specification as well as the surveillance objective. While it has been shown that for a general LTL specification, the synthesis problem is doubly exponential in the length of the formula \cite{Pnueli1989}, the work in \cite{Piterman2006} lays out a class of formulae called GR(1) that is $\mathcal{O}(N^3)$. This framework has been used extensively in robotic planning, for example in \cite{wong2012,Kress2007} and we will use the same here. We explicitly encode the surveillance requirement into the GR(1) formula to allow for synthesis. 
+
+However, we still have the issue of partial observability in our setting. The controller will need to choose actions even when the state of the adversary is not known. The standard approach to deal with the partial observability is by using a \emph{belief set construction} to reduce the problem to a full observability game \cite{Bertoli2006}. However, the number of belief states will be exponential in the number of states \cite{Rintanen2004} as the belief set construction takes a powerset of the number of states. In general, this will scale badly and not be usable for most practical situations. \todo{literature on other partial information reduction heuristics}
+
+In this paper, to deal with this problem, we introduce \emph{abstract belief set construction}. This is an underapproximation of the true belief space and hence, if a controller is found, then we know a controller will exist in the fully refined belief space. If a controller is not found, we use counterexample guided abstract refinement (CEGAR) to split a belief set and the process is repeated. While CEGAR is used on abstract models for GR(1) reactive synthesis, to our knowledge it has not been used on belief state refinement in converting a partial information game to a full information game. 
+
+
+
+Our contributions in this paper are as follows:
 \begin{itemize}
-\item General motivation of the problem and motivating example
-\item Lack of satisfactory approaches to the problem
-\item List of contributions of the paper
-\item Other related work
+\item We encode the surveillance task as a safety specification which forces the agent to more closely follow the adversary in order to ensure the uncertainty (size of the belief set) on the location of adversary does not grow above the constraint.
+\item We also encode surveillance task as a liveness objective. This allows for the agent to be more relaxed in monitoring the location of the agent if it can ensure that it can see it again sometime in the future.
+\item We analyse the qualitatively different behaviour produced based on the specification type which allows the user to tailor the specification based on the requirements of the mission.
+\item Avoiding the state space blow up by abstract belief set construction and using counter example guided belief refinement for both the safety and liveness specification cases.
 \end{itemize}
+
