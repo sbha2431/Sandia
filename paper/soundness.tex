@@ -1,0 +1,11 @@
+With a state $(l_a,A)$ in $\states_\abstr$ we associate a set of states in $G$ defined as follows:
+\[
+\gamma((l_a,A)) =
+\begin{cases}
+\{(l_a,l_t)\} \text{ if } A = \{\{l_t\}\}, \vis(l_a,l_t) = \true\\
+\{(l_a,l_t) \mid \exists B\in A.\; l_t \in B, \vis(l_a,l_t) = \false\}\\
+\end{cases}
+\]
+
+
+\todo{Soundness Thm for safety belief objectives, Soundness Thm for omega-regular belief objectives}

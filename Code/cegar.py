@@ -64,7 +64,7 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
     
         # check if counterexample is spurious
         
-        (refinement,toRefine,leaf_belief,prefix_length) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness,gwg.targets[0])
+        (refinement,toRefine,leaf_belief,neg_states_0,prefix_length) = belief_refinement.analyse_counterexample(cexfile,gwg,partition,belief_safety,belief_liveness,gwg.targets[0])
         
         if (not (refinement == 'safety' or refinement == 'liveness') and not target_reachability):
             print 'Belief constraint not realizable'
@@ -77,9 +77,9 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         if toRefine: # refine belief abstraction using belief constraint
     
             if refinement == 'safety' or refinement == 'liveness':
-                print 'REFINING DUE TO BELIEF CONSTRAINT'
+                print 'REFINING DUE TO BELIEF CONSTRAINT OBJECTIVE'
             if refinement == 'ltl':
-                print 'REFINING DUE TO LVENESS OBJECTIVE', leaf_belief
+                print 'REFINING DUE TO LVENESS OBJECTIVE'
             # OLD REFINEMENT: based only on a leaf node in the tree 
             '''
             tr  = toRefine.pop(0)
@@ -99,21 +99,24 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             initialize neg_states to be the set of states that are in the abstract belief, 
             but not in the most precise belief for the leaf node of the counterexample path
             '''
+            
             tr_0 = toRefine.pop(0)
-            for k in tr_0:
-                neg_states = neg_states.union(partition[k].difference(leaf_belief))
+            neg_states = neg_states_0
+            #for k in tr_0:
+            #    neg_states = neg_states.union(partition[k].difference(leaf_belief))
             ''' 
             propagate the refinement information backwards along toRefine until
             a singleton belief or the root node of the tree is reached
             '''
             for tr in toRefine:
-                if not tr and refinement=='safety' or refinement == 'ltl':
+                if not tr and (refinement=='safety' or refinement == 'ltl'):
                     break
                 if not tr and refinement=='liveness':
                     toRefine_prefix = toRefine[prefix_length:len(toRefine)]
                     break
               
                 neg_succ = neg_states
+                print 'NEG STATES', neg_states
                 neg_states = set()
                 # propagate refinement set backwards
                 all_states = set()
@@ -139,9 +142,10 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                 
             if refinement == 'liveness':
                 tr = toRefine_prefix.pop(0)
-                neg_states = set()
-                for k in tr:
-                    neg_states = neg_states.union(partition[k].difference(leaf_belief))
+                neg_states = neg_states_0
+                #neg_states = set()
+                #for k in tr:
+                #    neg_states = neg_states.union(partition[k].difference(leaf_belief))
                 ''' 
                 propagate the refinement information backwards along toRefine until
                 a singleton belief or the root node of the tree is reached
@@ -149,6 +153,7 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                 for tr in toRefine_prefix:
                     if not tr:
                         break
+                    print 'NEG STATES', neg_states
                     neg_succ = neg_states
                     neg_states = set()
                     # propagate refinement set backwards
@@ -175,9 +180,12 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             for k in tr_0:
                 if not k in refinement_map_precise:
                     refinement_map_precise[k] = list()
+                
                 refinement_map_precise[k].append(leaf_belief)
+                
                 if not k in refinement_map_coarse:
                     refinement_map_coarse[k] = list()
+                
                 refinement_map_coarse[k].append(leaf_belief)
                 
             for k in negstates_map.iterkeys():
@@ -229,5 +237,6 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         
         simulateController.userControlled_partition(outfile,gwg,partition,moveobstacles)
         
+
 
 

@@ -1,14 +1,3 @@
-\subsubsection{Counterexamples for surveillance objectives}
-A \emph{counterexample strategy} for the environment in the surveillance game $\Surveillance(G_\abstr,k)$ is a finite tree whose nodes are labelled with states in $\states_\abstr$ and which is such that
-\begin{itemize}
-\item the root of the tree is labelled with $s_\abstr^\init$
-\item each leaf of the tree is labelled with a state $s_\abstr$ such that  $|\gamma(s_\abstr)|  > k$;
-\item for each non-leaf node labelled with a state $s_\abstr$ we have $|\gamma(s_\abstr)|  \leq k$
-\item the tree branches according to all possible of the agent.
-\end{itemize}
-
-A \emph{path} in $G_\abstr$ is a sequence of states $s_0,\ldots,s_n$ such that $s_0 = s_\abstr^\init$ and $(s_i,s_{i+i}) \in T_\abstr$ for each $i < n$.
-
 \subsubsection{Forward belief-set propagation}
 Given a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ and an index $0 \leq i \leq n$, we define $\beliefF(\pi,i)\subseteq \states$ inductively as follows:
 \begin{itemize}
@@ -31,4 +20,6 @@ For $s_j  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_j$ t
 
 We take as the refined partitioning $Q'$ the partitioning $Q^0$.
 
-
+\begin{example}
+\todo{illustrating example}
+\end{example}
