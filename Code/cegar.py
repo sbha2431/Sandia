@@ -157,7 +157,6 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                 for tr in toRefine_prefix:
                     if not tr:
                         break
-                    print 'NEG STATES', neg_states
                     neg_succ = neg_states
                     neg_states = set()
                     # propagate refinement set backwards
