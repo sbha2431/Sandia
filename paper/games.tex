@@ -1,54 +1,64 @@
-\subsection{Surveillance Games}
-Game structure $G  = (\states,s^\init,T,\vis)$, where
+\subsection{Surveillance Game Structures}
+We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\init,T,\vis)$, where:
 \begin{itemize}
-\item $\states = L_a \times L_t$ is the set of states with $L_a$ the set of locations of the agent and $L_t$ the locations of the target,
-\item $s^\init = (l_a^\init,l_t^\init)$ is the initial state,
-\item $\trans \subseteq \states \times \states$ is the transition relation describing the possible moves of the agent and the target
-\item $\vis : \states \to \bools$ is a function that maps a state $(l_a,l_t)$ to $\true$ if and only if $l_t$ is in the line of sight of $l_a$.
+\item $\states = L_a \times L_t$ is the set of states with $L_a$ the set of locations of the agent and $L_t$ the locations of the target;
+\item $s^\init = (l_a^\init,l_t^\init)$ is the initial state;
+\item $\trans \subseteq \states \times \states$ is the transition relation describing the possible moves of the agent and the target;
+\item $\vis : \states \to \bools$ is a function that maps a state $(l_a,l_t)$ to $\true$ if and only if\emph{ $l_t$ is in the line of sight of $l_a$}.
 \end{itemize}
 
 \begin{example}
 \todo{grid plus small part of corresponding game structure}
 \end{example}
-\subsection{Belief-Set Games}
+\subsection{Belief-Set Game Structures}
 
-Game structure $G_\belief  = (\states_\belief,s^\init_\belief,T_\belief)$, where
+For a surveillance game structure $G  = (\states,s^\init,T,\vis)$ we define the corresponding \emph{belief game structure} $G_\belief  = (\states_\belief,s^\init_\belief,T_\belief)$ with the following components
 \begin{itemize}
-\item $\states_\belief = L_a \times \mathcal P(L_t)$ is the set of states with $L_a$ the set of locations of the agent and $\mathcal P(L_t)$ the set of belief sets describing information about the location of the target
-\item $s^\init_\belief = (l_a^\init,\{l_t^\init\})$ is the initial state,
-\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation such that $((l_a, B_t),(l_a', B_t')) \in T_\belief$ if and only if some of the following two conditions is satisfied
+\item $\states_\belief = L_a \times \mathcal P(L_t)$ is the set of states with $L_a$ the set of locations of the agent, and $\mathcal P(L_t)$ the set of belief sets describing information about the location of the target;
+\item $s^\init_\belief = (l_a^\init,\{l_t^\init\})$ is the initial state;
+\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation such that $((l_a, B_t),(l_a', B_t')) \in T_\belief$ if and only if one of the following two conditions is satisfied:
 \begin{itemize}
-\item $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a',l_t') = \true$ and
+\item $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in T$;
 \item $\begin{array}{lll}
-B_t' = \{l_t' & \mid & \vis(l_a',l_t') = \false \text{ and }\\
-&&\exists l_t \in B_t.\; ((l_a,l_t),(l_a',l_t')) \in T\}
+B_t' = \{l_t' & \mid & \vis(l_a,l_t') = \false \text{ and }\\
+&&\exists l_t \in B_t.\; ((l_a,l_t),(l_a',l_t')) \in T\}.
 \end{array}
-$. 
-
-The first condition captures the successor locations of the target that can be observed from the agent's successor location, while the second  corresponds to the belief set that consists of all possible successor locations of the target that are not visible from the corresponding successor location of the agent.
+$
 \end{itemize}
+The first condition captures the successor locations of the target that can be observed from the agent's current location, while the second corresponds to the belief set consisting of all possible successor locations of the target not visible from the agent's current location.
 \end{itemize}
 
+\noindent{\bf Remark} \todo{explain sequence of agent's observation and action}
 \begin{example}
 \todo{small part of corresponding belief-set game structure}
 \end{example}
 
-\Rayna{In the above definition of the transition relation, the successor belief set depends on the successor position of the agent. Note, that the actual transitions of the target according to $T$ do not depend on the successor position of the agent, only the partitioning into visible/invisible locations does. However, this is still a problem if we want the successor $B_t'$ to depend only on $(l_a,l_t)$. This can be resolved by introducing intermediate states and strict turn-taking.}
+
+With each state $(l_a,B)$ in $\states_\belief$ we associate a set of states in $G$ defined as $\gamma((l_a,B)) = \{(l_a,l_t) \mid l_t \in B\}$.
 
 \subsection{Temporal Quantitative Surveillance Objectives}
-\todo{omega-regular surveillance objectives, special cases: safety surveillance objectives, liveness surveillance objectives}
-Given a threshold value $k \in \nats_{>0}$, the surveillance objective that the size of the belief set does not exceed $k$ can be formulated as a safety objective with set of error states $\states_\belief^{>k} = \{(l_a, B_t) \in S_\belief \mid |B_t| > k\}$.
+
+We consider a set of \emph{surveillance predicates} $\SP = \{p_k \mid k \in \nats\}$, where for $k \in \nats$ we say that a state $(l_a,B_t)$ in the belief game structure satisfies $p_k$ (denoted $(l_a,B_t) \models p_k$) iff 
+$|\{l_t \in B_t \mid \vis(l_a,l_t)  = \false \}| \leq k$. Intuitively, $p_k$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $k \in \nats$.
+
+We consider surveillance objectives expressed by formulas of linear temporal logic (LTL) over surveillance predicates. LTL surveillance formulas are generated by the grammar
+\[\varphi := p \;\mid\; \neg \varphi \;\mid\; \varphi \vee \varphi \;\mid\; \LTLnext  \varphi  \;\mid\; \varphi \LTLuntil \varphi,\]
+
+where $p \in \SP$ is a surveillance predicate, $\LTLnext$ is the \emph{next} operator, and $\LTLuntil$ is the \emph{until} operator. We also define the derived operators 
+\emph{finally} $\LTLfinally \varphi = \true \LTLuntil \varphi$ and 
+\emph{globally} $\LTLglobally \varphi = \neg \LTLfinally \neg \varphi$.
+Of special interest will be formulas of the form $\LTLglobally p_k$, termed \emph{safety surveillance objective}, and $\LTLglobally\LTLfinally p_k$, called \emph{liveness surveillance objective}.
+
+\todo{semantics}
 
 \begin{example}
 \todo{safety surveillance objective; liveness surveillance objective}
 \end{example}
 
 
-With each state $(l_a,B)$ in $\states_\belief$ we associate a set of states in $G$ defined as $\gamma((l_a,B)) = \{(l_a,l_t) \mid l_t \in B\}$.
-
 \subsection{Incorporating Functional Objectives}
-LTL
+We can easily integrate functional LTL objectives not related to surveillance by considering in addition to $\SP$ a set $\AP$ of predicates interpreted over states of $G$. In order to define the semantics of $p \in \AP$ over states of $G_\belief$, we require for every $p \in \AP$ that if $(l_a,l_t')$, $(l_a,l_t'')$, and $\vis(l_a,l_t') = \vis(l_a,l_t'') = \false$, then $(l_a,l_t') \models p$ iff $(l_a,l_t'') \models p$. This restriction is without loss of generality, since or a finite set of predicates one can extend the state-space of $G$ by making the predicate valuations part of $L_a$.
 
 \begin{example}
 \todo{safety surveillance objective + liveness objective, liveness surveillance objective + liveness objective}
