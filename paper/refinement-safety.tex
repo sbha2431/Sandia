@@ -1,27 +1,28 @@
 \subsubsection{Forward belief-set propagation}
+Given an abstract counterexample tree $\counterex_\abstr$ we label its nodes with states in $\states_\belief$ in a top-down manner as follows. 
+The root node is labelled with $s_\belief^\init$. If a node $v$ is a node labelled with the belief set $(l_a,B_t) \in \states_\belief$, and  $v'$ is a child of $v$ in $\counterex_\abstr$ labelled with an abstract state $(l_a',A_t')$, then we label $v'$ with the belief set $(l_a',B_t')$, where 
+$B_t' = \post(B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis}.
+If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node labelled with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
 
-A \emph{path} in $G_\abstr$ is a sequence of states $s_0,\ldots,s_n$ such that $s_0 = s_\abstr^\init$ and $(s_i,s_{i+i}) \in \trans_\abstr$ for each $i < n$.
-
-Given a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ and an index $0 \leq i \leq n$, we define $\beliefF(\pi,i)\subseteq \states$ inductively as follows:
-\begin{itemize}
-\item if $i = 0$, then $\beliefF(\pi,i) = \{s^\init\}$,
-\item if $i > 0$, $\beliefF(\pi,i) = \post(\beliefF(\pi,i-1)) \cap \gamma(s_i)$.
-\end{itemize}
-
-A counterexample strategy in $G_\abstr$ is called \emph{concretizable} if for every path $\pi_\abstr = s_0,\ldots,s_n$ in the corresponding counterexample tree where $s_n$ is a leaf node, it holds that $|\beliefF(\pi,n)| > k$.
+\begin{theorem}\todo{correctness of counterexample analysis}
+\end{theorem}
 
 \subsubsection{Backward partition splitting}
-Consider a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ such that for every index $0 \leq i \leq n$ we have $|\beliefF(\pi,n)| \leq k$. We now describe a procedure to compute a partitioning $\part'$ that refines the current partitioning $\part$ based on the path $\pi_\abstr$.
+Consider a path $\pi_\abstr = v_0,\ldots, v_n$ in $\counterex_\abstr$ where $v_0$ is the root node and $v_n$ is a leaf. For each node $n_i$, let $(l_a^i,A_t^i) $ be the abstract state labelling $n_i$ in $\counterex_\abstr$, and let $(l_a^i,B_t^i)$ be the  belief set with which the node was labelled by the the counterexample analysis procedure. We consider the case when $(l_a^n,B_t^n) \models p_k$, that is, $|\{l_t \in B_t^n \mid \vis(l_a,l_t) = \false\}| \leq k$.
+Note that since $\counterex_\abstr$ is a counterexample we have $(l_a^n,A_t^n) \not \models p_k$, and since $k>0$, this means $A_t \subseteq \mathcal{P}(\mathcal Q)$.
 
 
-For $s_n  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_n$ to obtain from $A_n = \{B_1,\ldots,B_m\}$ a set $A_n' = \{B_1',\ldots, B'_{m'}\}$ such that $|\gamma(l_a,\{B_i' \in A_n' \mid \beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset\})| \leq k$.
-This gives us a partitioning $Q^n$ that refines the current partitioning $Q$. To ensure that the counterexample is eliminated we have to propagate the information backwards along the path, possibly splitting the partitions further, obtaining refinements $Q^{n-1,\ldots,Q^0}$.
-Let $C_n \subseteq A_n'$ be a maximal subset of $A_n'$ such that $|\gamma((l_a,C_n))| \leq k$ and if $\beliefF(\pi_\abstr, n) \cap B_i' \neq \emptyset$ then $B_i' \in C_n$.
-For each $j = n-1,\ldots,0$ we do the following.
+We now describe a procedure to compute a partition $\part'$ that refines the current partition $\part$ based on the path $\pi_\abstr$. Intuitively, we split the partition states that appear in $A_t^n$ with the goal to ensure that in the refined abstract game the corresponding abstract state satisfies the surveillance predicate $p_k$. To achieve this, however, we might have to also split partition elements appearing in abstract states on the path to $n_b$. The reason is that we have to ensure that earlier imprecisions on this path do not propagate and including more of the newly split partition states leading to the same violation of $p_k$.
+Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the partition states $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A_j' = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
+\[|\{l_t \in \gamma(C^n) \mid \vis(l_a^n,l_t) = \false\}| \leq k \text{, where}\] 
+\[C^n = \{B_{n,i}' \in A_j' \mid B_{n,i}' \cap B_t^n \neq \emptyset\}.\]
+This property intuitively means that if we consider the sets in $A'$ that have non-empty intersection with $B_t^n$, an abstract state composed of those partition sets will satisfy $p_k$. Since $(l_a^n,B_t^n)$ satisfies $p_k$, we can find a partition $\part^n \preceq \part$ that guarantees this property. What remains in order to eliminate this counterexample, is to ensure that only these partition states are reachable via the considered path, by propagating this splitting backwards, obtaining a sequence of partitions $\part \succeq \part^n \succeq \part^{n-1} \succeq \ldots \succeq \part^0$ refining $\part$. Given $\part^{j+1}$, we compute $Q^j$ as follows. For each $j$, we define a set $C^j \subseteq \mathcal{P}(L_t)$ (for $j=n$, the set $C^n$ was defined above). Suppose we have defined $C^{j+1}$ for some $j \geq 0$, and $A_t^j = (l_a^j,\{B_{j,1},\ldots,B_{j,m_j}\})$. We split some of the sets $B_{j,1},\ldots,B_{j,m_j}$ to obtain from $A_t^j$ a set $A_j' = \{B_{j,1}',\ldots,B_{j,m_j'}'\}$ where there exists $C^j \subseteq A_j'$ with
+\[\gamma(C^j) = \gamma(A_t^j) \cap \{l_t \mid \post(l_a^j,l_t) \cap \gamma(A_t^{j+1}) \subseteq \gamma(C^{j+1})\}.\] 
+Intuitively, this means that the new partition allow us to express precisely the set of states that do not lead to sets in $A_{j+1}'$ that we are trying to avoid. Again, the fact that an appropriate partition $\part$ can be computed follows from the choice of the leaf node $v_n$. The procedure for computing the partition $\part' = \part^0$ that refines $\part$ based on such a path $\pi_\abstr$ is formalized in Algorithm~\ref{}, and the theorem below states the progress property (eliminating the considered counterexample) which it guarantees.
 
-For $s_j  =(l_a,\{B_1,\ldots,B_m\})$, we split some of the partitions in $s_j$ to obtain from $A_j = \{B_1,\ldots,B_m\}$ a set $A_j' = \{B_1',\ldots, B'_{m'}\}$ such that there exists a subset $C_j'\subseteq A_j'$ such that for all $s' \in \post(\gamma(l_a,C_j'))$ there exists $B' \in C_{j+1}$ such that $s \in B'$. We fix a maximal such subset $C_j$ and the corresponding refinement $Q^j$ of the partitioning $Q_{j+1}$. 
 
-We take as the refined partitioning $Q'$ the partitioning $Q^0$.
+\begin{theorem}\todo{progress property of the refinement procedure: counterexample eliminated}
+\end{theorem}
 
 \begin{example}
 \todo{illustrating example}

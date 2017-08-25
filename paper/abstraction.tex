@@ -1,4 +1,7 @@
-For a partitioning $\part = \{Q_i\}_{i=1}^n$ of the set of target positions $L_t$ in a game structure $G$ we define the function $\alpha_\part : L_t \to \part$ by letting $\alpha(l) = Q$ for the unique $Q \in \part$ with $l \in Q$. We denote also with $\alpha_{\part} : \mathcal{P}(L_t) \to \mathcal{P}(\part)$ the \emph{abstraction function} defined by $\alpha_{\part}(L) = \{\alpha_\part(l) \mid l \in L\}$.
+\todo{partition, one partition refines another}
+
+
+For a partition $\part = \{Q_i\}_{i=1}^n$ of the set of target positions $L_t$ in a game structure $G$ we define the function $\alpha_\part : L_t \to \part$ by letting $\alpha(l) = Q$ for the unique $Q \in \part$ with $l \in Q$. We denote also with $\alpha_{\part} : \mathcal{P}(L_t) \to \mathcal{P}(\part)$ the \emph{abstraction function} defined by $\alpha_{\part}(L) = \{\alpha_\part(l) \mid l \in L\}$.
 We define a \emph{concretization function} $\gamma :  \mathcal{P}(\part) \cup L_t \to \mathcal{P}(L_t)$
 \[
 \gamma(A) =
@@ -7,7 +10,7 @@ We define a \emph{concretization function} $\gamma :  \mathcal{P}(\part) \cup L_
 \bigcup_{Q \in A} Q &\text{if } A \in \mathcal{P}(\mathcal{Q}).\\
 \end{cases}
 \]
-Given a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ and a partitioning $\part = \{Q_i\}_{i=1}^n$ of the set $L_t$, we define the \emph{abstraction of $G$ w.r.t.\ $\part$} to be the game structure 
+Given a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ and a partition $\part = \{Q_i\}_{i=1}^n$ of the set $L_t$, we define the \emph{abstraction of $G$ w.r.t.\ $\part$} to be the game structure 
 $G_\abstr  = \alpha_{\part}(G)= (\states_\abstr,s^\init_\abstr,\trans_\abstr)$, where
 
 \begin{itemize}
