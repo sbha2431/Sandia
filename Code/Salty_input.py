@@ -78,7 +78,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                         if not any(t in invisibilityset[n][sagent] for n in range(gw.nagents)):
                             stri += ' y\' = {} \\/'.format(allstates.index(t))
                         else:
-                            if not t == sagent: # not allowed to move on agent's position
+                            if not t == sagent and t not in gw.targets[0]: # not allowed to move on agent's position
                                 t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
                                 beliefset.add(t2)
                 if len(beliefset) > 0:
@@ -113,19 +113,21 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                     stri = " (x = {} /\\ y = {}) -> ".format(x,y)
                     
                     beliefset = set()
-                    for b in beliefstates_invis: # successors of invisible states in beliefstates
+                    for b in beliefstates: 
                         for a in range(gw.nactions):
                             for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
                                 if not any(t in invisibilityset[n][sagent] for n in range(gw.nagents)):
                                     stri += ' y\' = {} \\/'.format(allstates.index(t))
                                 else:
+                                    if t in gw.targets[0]:
+                                        continue
                                     t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
                                     beliefset.add(t2)
                     if len(beliefset) > 0:
                         b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                         stri += ' y\' = {} \\/'.format(allstates.index(b2))
                         
-                        
+                    '''    
                     for b in beliefstates_vis: # successors of visible states in beliefstates
                         beliefset = set()
                         for a in range(gw.nactions):
@@ -138,6 +140,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
                         if len(beliefset) > 0:
                             b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                             stri += ' y\' = {} \\/'.format(allstates.index(b2))     
+                    '''
                                                
                     stri = stri[:-3]
                     stri += '\n'
@@ -181,6 +184,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
+            beliefset =  beliefset -set(gw.targets[0])
             if len(beliefset) > belief_safety:
                 stri = 'y = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
                 counter = 0
@@ -229,6 +233,7 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
             beliefset = set()
             for beliefstate in b:
                 beliefset = beliefset.union(partitionGrid[beliefstate])
+            beliefset =  beliefset -set(gw.targets[0])
             stri1 = ' \\/ (y = {} /\\ ('.format(len(nonbeliefstates)+beliefcombs.index(b))
             count = 0
             for n in range(gw.nagents):

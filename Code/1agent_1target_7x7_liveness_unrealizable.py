@@ -10,7 +10,7 @@ import grid_partition
 nrows = 7
 ncols = 7
 nagents = 1
-initial = [12]
+initial = [19]
 targets = [[24]]
 obstacles = [16,17,18,23,24,25,30,31,32]
 moveobstacles = [38]
@@ -18,7 +18,7 @@ velocity = 1
 
 beliefparts = 2
 belief_safety = 0 
-belief_liveness = 4
+belief_liveness = 3
 target_reachability = False
 
 gwfile = 'Examples/gridworldfig_7x7_unrealizable.png'

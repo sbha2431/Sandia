@@ -30,7 +30,7 @@ refine_states = set()
 neg_states = set()
 prefix_length = 0
 
-def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness,targets):
+def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness,target_reachability,targets):
     global visited_nodes
     global visited_pairs
 
@@ -70,7 +70,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
     invisibilityset = [dict.fromkeys(set(gwg.states) - set(gwg.edges),frozenset({gwg.nrows*gwg.ncols+1}))]*gwg.nagents
     for n in range(gwg.nagents):
         for s in set(gwg.states) - set(gwg.edges):
-            invisibilityset[n][s] = visibility.invis(gwg,s) #- set(gw.targets[n])
+            invisibilityset[n][s] = visibility.invis(gwg,s) #- set(gwg.targets[n])
             if s in gwg.obstacles:
                 invisibilityset[n][s] = {-1}
 
@@ -117,6 +117,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
+            beliefstate = beliefstate - set(gwg.targets[0])
             belief_true = copy.deepcopy(belief_true_next)
             #print 'Environment position is ', beliefstate    
  
@@ -129,9 +130,11 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         
         # compute true belief for successor nodes w.r.t. current position of agent
         belief_true_next = set()
-        for s in belief_true:
+        for s in (belief_true - set(gwg.targets[0])):
             for a in gwg.actlist:
                 for t in np.nonzero(gwg.prob[a][s])[0]:
+                    if t in gwg.targets[0]: 
+                        continue # do not add goal locations
                     belief_true_next.add(t)
         belief_true_next = belief_true_next - set(gwg.walls)
         belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
@@ -234,6 +237,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
+            beliefstate = beliefstate - set(gwg.targets[0])
             belief_true = copy.deepcopy(belief_true_next)
             #print 'Environment position is ', beliefstate    
 
@@ -285,6 +289,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         for s in (belief_true - set(gwg.targets[0])):
             for a in gwg.actlist:
                 for t in np.nonzero(gwg.prob[a][s])[0]:
+                    if t in gwg.targets[0]: 
+                        continue # do not add goal locations
                     belief_true_next.add(t)
         belief_true_next = belief_true_next - set(gwg.walls)
         belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
@@ -312,6 +318,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                 else:
                     for b in beliefcombs[envstate_succ - len(xstates)]:
                         beliefstate_succ = beliefstate_succ.union(partitionGrid[b])
+                    beliefstate_succ = beliefstate_succ - set(gwg.targets[0])
                 belief_visible_succ = beliefstate_succ - invisibilityset[0][agentstate]
                 belief_invisible_succ = beliefstate_succ.intersection(invisibilityset[0][agentstate])
                 
@@ -404,6 +411,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
+            beliefstate = beliefstate - set(gwg.targets[0])
             belief_true = copy.deepcopy(belief_true_next)
             #print 'Environment position is ', beliefstate    
 
@@ -430,6 +438,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         for s in (belief_true - set(gwg.targets[0])):
             for a in gwg.actlist:
                 for t in np.nonzero(gwg.prob[a][s])[0]:
+                    if t in gwg.targets[0]: 
+                        continue # do not add goal locations
                     belief_true_next.add(t)
         belief_true_next = belief_true_next - set(gwg.walls)
         belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
@@ -452,6 +462,12 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
             return
             
         if (len(belief_invisible) > len(belief_true)):
+            print 'LTL'
+            print 'AGENT STATE',agentstate_parent
+            print 'ABSTRACT BELIEF', beliefstate
+            print 'ABSTRACT BELIEF INVISIBLE', belief_invisible
+            print 'TRUE BELIEF',belief_true
+                    
                 
             refine_states = copy.deepcopy(belief_true)
             leaf_plus_vis = copy.deepcopy(belief_visible.union(belief_true))
@@ -517,6 +533,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         else:
             for b in beliefcombs[envstate - len(xstates)]:
                 beliefstate = beliefstate.union(partitionGrid[b])
+            beliefstate = beliefstate - set(gwg.targets[0])
             belief_true = copy.deepcopy(belief_true_next)
             #print 'Environment position is ', beliefstate    
 
@@ -544,6 +561,8 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         for s in (belief_true - set(gwg.targets[0])):
             for a in gwg.actlist:
                 for t in np.nonzero(gwg.prob[a][s])[0]:
+                    if t in gwg.targets[0]: 
+                        continue # do not add goal locations
                     belief_true_next.add(t)
         belief_true_next = belief_true_next - set(gwg.walls)
         belief_true_next = belief_true_next.intersection(invisibilityset[0][agentstate])    
@@ -625,7 +644,7 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
         traverse_counterexample_liveness(fname,gwg,partitionGrid,belief_liveness,0,gwg.current[0])
         ref = 'liveness'
     
-    if not toRefine and len(targets) > 0:
+    if not toRefine and target_reachability:
         visited_nodes = set()   
         visited_pairs = set()   
 
