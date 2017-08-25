@@ -1,11 +1,3 @@
-With a state $(l_a,A)$ in $\states_\abstr$ we associate a set of states in $G$ defined as follows:
-\[
-\gamma((l_a,A)) =
-\begin{cases}
-\{(l_a,l_t)\} \text{ if } A = \{\{l_t\}\}, \vis(l_a,l_t) = \true\\
-\{(l_a,l_t) \mid \exists B\in A.\; l_t \in B, \vis(l_a,l_t) = \false\}\\
-\end{cases}
-\]
-
-
-\todo{Soundness Thm for safety belief objectives, Soundness Thm for omega-regular belief objectives}
+\begin{theorem}
+Let $G$ be a surveillance game structure, $\part = \{Q_i\}_{i=1}^n$ be a partitioning and $G_\abstr = \alpha_\part(G)$ be the corresponding abstract game structure. For every surveillance objective $\varphi$, if there exists a wining strategy for the agent in the abstract game $(\alpha_\part(G),\varphi)$, then there exists a winning strategy for the agent in the surveillance game $(G,\varphi)$.
+\end{theorem}

@@ -1,4 +1,7 @@
 \subsubsection{Forward belief-set propagation}
+
+A \emph{path} in $G_\abstr$ is a sequence of states $s_0,\ldots,s_n$ such that $s_0 = s_\abstr^\init$ and $(s_i,s_{i+i}) \in \trans_\abstr$ for each $i < n$.
+
 Given a path $\pi_\abstr = s_0,\ldots,s_n$ in $G_\abstr$ and an index $0 \leq i \leq n$, we define $\beliefF(\pi,i)\subseteq \states$ inductively as follows:
 \begin{itemize}
 \item if $i = 0$, then $\beliefF(\pi,i) = \{s^\init\}$,
