@@ -17,7 +17,7 @@ moveobstacles = [25]
 velocity = 1
 
 beliefparts = 2
-belief_safety = 6 # not reasizable with belief_safety = 5
+belief_safety = 6# not reasizable with belief_safety = 5
 belief_liveness = 0
 target_reachability = True
 
@@ -36,7 +36,7 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
+cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,dict(),True)
 
 # with precise partition
 #partition = grid_partition.precise_partition(gwg)

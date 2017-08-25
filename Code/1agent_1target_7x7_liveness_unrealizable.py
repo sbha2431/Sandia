@@ -36,7 +36,7 @@ gwg.render()
 gwg.draw_state_labels()
 gwg.save(gwfile)
 
-cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
+cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,dict(),False)
 
 # with precise partition of size 16
 #partition = grid_partition.precise_partition(gwg)

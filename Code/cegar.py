@@ -15,7 +15,7 @@ import copy
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict()):
+def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict(),local_refinement=False):
 
     if len(partition_init) > 0:
         partition = copy.deepcopy(partition_init)
@@ -140,12 +140,13 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                             negstates_map[k] = negstates_map[k].union(neg_states)
                         else:
                             negstates_map[k] = neg_states
-                #partition_new = copy.deepcopy(partition)
-                #for k in refinement_map_precise.iterkeys():
-                #    partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
-                #if not (partition_new == partition):
-                #    partition = partition_new
-                #    refined = True
+                if local_refinement:            
+                    partition_new = copy.deepcopy(partition)
+                    for k in refinement_map_precise.iterkeys():
+                        partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
+                    if not (partition_new == partition):
+                        partition = partition_new
+                        refined = True
                     
             if refinement == 'liveness' and prefix_length > 0 and not refined:
                 tr = toRefine_prefix.pop(0)
@@ -180,16 +181,17 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                                 negstates_map[k] = negstates_map[k].union(neg_states)
                             else:
                                 negstates_map[k] = neg_states
-                    #partition_new = copy.deepcopy(partition)
-                    #for k in refinement_map_precise.iterkeys():
-                    #    partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
-                    #if not (partition_new == partition):
-                    #    partition = partition_new
-                    #    refined = True  
-            #if refined:
-            #    print 'LOCAL REFINEMENT'
-            #    iteration = iteration+1
-            #    continue
+                    if local_refinement:
+                        partition_new = copy.deepcopy(partition)
+                        for k in refinement_map_precise.iterkeys():
+                            partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
+                        if not (partition_new == partition):
+                            partition = partition_new
+                            refined = True  
+            if refined:
+                print 'LOCAL REFINEMENT'
+                iteration = iteration+1
+                continue
             
             'constrcut efinement_map_coarse'
             for k in tr_0:

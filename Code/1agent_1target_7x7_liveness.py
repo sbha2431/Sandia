@@ -43,7 +43,7 @@ gwg.save(gwfile)
 #partition[(0,0,1)] = {26,29,30,31,32,33,36,37,38,39,40,22}
 
 
-cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability)
+cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,dict(),True)
 
 # with precise partition
 #partition = grid_partition.precise_partition(gwg)

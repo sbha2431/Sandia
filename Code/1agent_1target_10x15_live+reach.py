@@ -42,7 +42,7 @@ partition[(0,0,0)] = {16,17,31,32,46,47,61,62,76,77,91,92,106,107,121,122}
 partition[(0,1,0)] = {19,20,21,34,35,36,48,49,50,51,22,37,52,63,64,65,23,24,38,39,53,54,93,108,109,110,111,123,124,125,126}
 partition[(0,2,0)] = {26,27,28,41,42,43,56,57,58,73,100,101,113,114,115,116,117,118,128,129,130,131,132,133}
 partition[(1,2,0)] = {78,79,80,81,82,83,84,85,86,87,88}
-cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition)
+cegar.cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition,True)
 
 
 
