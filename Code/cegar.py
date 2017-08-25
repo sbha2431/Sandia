@@ -42,11 +42,15 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
     realizable = False
     iteration = 1
     
+    
+    
     while (not done):
 
         print 'ITERATION ', iteration
         print 'PARTITION', partition
-
+        
+        partition_local = copy.deepcopy(partition)
+        
         # check realizability of the full spec
         print ('Writing slugs input file...')
         Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
@@ -108,8 +112,6 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             propagate the refinement information backwards along toRefine until
             a singleton belief or the root node of the tree is reached
             '''
-            refined = False
-            
             for tr in toRefine:
                 if not tr and (refinement=='safety' or refinement == 'ltl'):
                     break
@@ -140,15 +142,11 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                             negstates_map[k] = negstates_map[k].union(neg_states)
                         else:
                             negstates_map[k] = neg_states
-                if local_refinement:            
-                    partition_new = copy.deepcopy(partition)
+                if local_refinement and (partition_local == partition):            
                     for k in refinement_map_precise.iterkeys():
-                        partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
-                    if not (partition_new == partition):
-                        partition = partition_new
-                        refined = True
+                        partition_local  = grid_partition.refine_partition(partition_local,k,refinement_map_precise[k])
                     
-            if refinement == 'liveness' and prefix_length > 0 and not refined:
+            if refinement == 'liveness' and prefix_length > 0:
                 tr = toRefine_prefix.pop(0)
                 neg_states = neg_states_0
                 ''' 
@@ -181,17 +179,9 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
                                 negstates_map[k] = negstates_map[k].union(neg_states)
                             else:
                                 negstates_map[k] = neg_states
-                    if local_refinement:
-                        partition_new = copy.deepcopy(partition)
+                    if local_refinement and (partition_local == partition):
                         for k in refinement_map_precise.iterkeys():
-                            partition_new  = grid_partition.refine_partition(partition_new,k,refinement_map_precise[k])
-                        if not (partition_new == partition):
-                            partition = partition_new
-                            refined = True  
-            if refined:
-                print 'LOCAL REFINEMENT'
-                iteration = iteration+1
-                continue
+                            partition_local  = grid_partition.refine_partition(partition_local,k,refinement_map_precise[k])
             
             'constrcut efinement_map_coarse'
             for k in tr_0:
@@ -214,13 +204,17 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             for k in refinement_map_coarse.iterkeys():
                 partition_coarse  = grid_partition.refine_partition(partition,k,refinement_map_coarse[k])
             if partition_coarse == partition:
-                print 'USING PRECISE BELIEF REFINEMENT'
-                '''
-                split each of the partitions k in refinement_map_precise according to the
-                list refinement_map_precise[k] of sets of concrete states 
-                '''
-                for k in refinement_map_precise.iterkeys():
-                    partition  = grid_partition.refine_partition(partition,k,refinement_map_precise[k])
+                if local_refinement and not (partition_local == partition):
+                    print 'USING LOCAL BELIEF REFINEMENT'
+                    partition = copy.deepcopy(partition_local)
+                else:    
+                    print 'USING PRECISE BELIEF REFINEMENT'
+                    '''
+                    split each of the partitions k in refinement_map_precise according to the
+                    list refinement_map_precise[k] of sets of concrete states 
+                    '''
+                    for k in refinement_map_precise.iterkeys():
+                        partition  = grid_partition.refine_partition(partition,k,refinement_map_precise[k])
             else:
                 partition = copy.deepcopy(partition_coarse)
                 print 'USING COARSE BELIEF REFINEMENT'
