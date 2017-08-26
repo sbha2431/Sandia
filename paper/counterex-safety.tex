@@ -1,0 +1,23 @@
+An abstract strategy for the target in the abstract game $(G_\abstr,\LTLglobally p_k)$ can be naturally represented as a tree. 
+An \emph{abstract counterexample tree} for $(G_\abstr,\LTLglobally p_k)$ is a finite tree  whose nodes are labelled with states in $\states_\abstr$, so that:
+\begin{itemize}
+\item The root node is labelled with the initial state $s_\abstr^\init$;
+\item Each leaf node is labelled with an abstract state $s_\abstr$ which violates $p_k$, that is, $s_\abstr \not\models p_k$;
+\item Each non-leaf node is labelled with an abstract state $s_\abstr$ that satisfies $p_k$, that is, $s_\abstr \models p_k$; 
+\item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $n$ is labelled with $(l_a,A_t)$, then there exists an $A_t'$  such that: (1) $((l_a,A_t),(l_a',A_t')) \in \trans_\abstr$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,A_t),(l_a,A_t')) \in \trans_\abstr$, there is a child $n'$ of $n$ labelled with $(l_a',A_t')$.
+\end{itemize}
+
+A \emph{concrete counterexample tree} for $(G_\belief,\LTLglobally p_k)$ is a finite tree in which each node is labelled with a state in $\states_\belief$ such that:
+\begin{itemize}
+\item The root node is labelled with the initial state $s_\belief^\init$;
+\item Each leaf node is labelled with a concrete belief state $s_\belief$ which violates $p_k$, that is, $s_\belief \not\models p_k$;
+\item Each non-leaf node is labelled with a concrete belief state $s_\abstr$ that satisfies $p_k$, that is, $s_\belief \models p_k$; 
+\item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $n$ is labelled with $(l_a,B_t)$, then there exists an $B_t'$  such that: (1) $((l_a,B_t),(l_a',B_t')) \in \trans_\belief$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,B_t),(l_a,B_t')) \in \trans_\belief$, there is a child $n'$ of $n$ labelled with $(l_a',B_t')$.
+\end{itemize}
+
+An abstract counterexample $\counterex_\abstr$ in $(G_\abstr,\LTLglobally p_k)$ is \emph{concretizable} if there exists a concrete counterexample 
+tree $\counterex_\belief$ in $(G_\belief,\LTLglobally p_k)$, which differs from $\counterex_\abstr$ only in the node labels, and each node labelled with $(l_a,A_t)$ in $\counterex_\abstr$ has label $(l_a, B_t)$ in $\counterex_\belief$ for which $B_t \subseteq \gamma(A_t)$.
+ 
+\begin{example}
+\todo{illustrating example} abstract counterexample tree and its concretization
+\end{example}
