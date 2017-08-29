@@ -140,3 +140,4 @@ A \emph{surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance 
 
 {\bf Surveillance synthesis problem:} Given a surveillance game $(G,\varphi)$, compute a winning strategy for the agent for $(G,\varphi)$, or determine that such a strategy does not exist.
 
+A \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ for the agent in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_a$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \not\models \varphi$.
