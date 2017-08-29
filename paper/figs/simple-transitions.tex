@@ -1,0 +1,23 @@
+\begin{minipage}{5.5cm}
+\vspace{-2.2cm}
+{\small $\vis(12,32) = \false,\vis(12,31) = \false,$ $\vis(12,33) = \true, \vis(12,39) = \false$}
+
+\bigskip
+
+\begin{tikzpicture}[node distance=.9 cm,auto,>=latex',line join=bevel,transform shape,scale=0.75]
+\node at (0,0) (s0) {$(12,32)$};
+\node  [below left of=s0,yshift=-.5cm] (s3) {$(11,39)$};
+\node  [below right of=s0,yshift=-.5cm] (s4) {$(19,31)$};
+\node  [left of=s3,xshift=-.35cm] (s2) {$(11,33)$};
+\node  [left of=s2,xshift=-.35cm] (s1) {$(11,31)$};
+\node  [right of=s4,xshift=.35cm] (s5) {$(19,33)$};
+\node  [right of=s5,xshift=.35cm] (s6) {$(19,39)$};
+
+\draw [->] (s0) edge (s1.north);
+\draw [->] (s0) edge (s2.north);
+\draw [->] (s0) edge (s3.north);
+\draw [->] (s0) edge (s4.north);
+\draw [->] (s0) edge (s5.north);
+\draw [->] (s0) edge (s6.north);
+\end{tikzpicture}
+\end{minipage}

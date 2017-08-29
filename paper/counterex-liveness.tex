@@ -1,3 +1,16 @@
+The counterexamples for general surveillance properties are directed graphs, which may contain loops. In particular, for a liveness surveillance property of the form $\LTLglobally\LTLfinally p_k$ each infinite path in the graph contains has a position such that, from this position on each state on the path violates $p_k$. Formally, $\counterex_\abstr$ is an \emph{abstract counterexample graph} for an abstract game $(G_\abstr,\LTLglobally\LTLfinally p_k)$ if it is such that:
+\begin{itemize}
+\item There exists a node $v_0$ of $\counterex_\abstr$ labelled with $s^\init_\abstr$.
+\item For each loop $\rho = v_1,v_2,\ldots,v_n$ with $v_1 = v_n$ in $\counterex$ that is reachable from the node $v_0$, every node $v_i$ in $\rho$ is labelled with state $s_\abstr^i$ where $s_\abstr^i \not\models s_\abstr^i$.
+\item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $n$ is labelled with $(l_a,A_t)$, then there exists an $A_t'$  such that: (1) $((l_a,A_t),(l_a',A_t')) \in \trans_\abstr$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,A_t),(l_a,A_t')) \in \trans_\abstr$, there is a child $n'$ of $n$ labelled with $(l_a',A_t')$.
+\end{itemize}   
+
 \begin{example}
 \todo{illustrating example}
 \end{example}
+
+A \emph{concrete counterexample graph} $\counterex_\belief$ for the belief game $(G_\belief,\LTLglobally\LTLfinally p_k)$ is defined analogously. 
+
+An abstract counterexample graph $\counterex_\abstr$ for the game $(G_\abstr,\LTLglobally\LTLfinally p_k)$ is \emph{concretizable} if there exists a counterexample
+$\counterex_\belief$ in $(G_\belief,\LTLglobally \LTLfinally p_k)$, such that for each infinite path $\pi_\abstr = n_\abstr^0,n_\abstr^1,\ldots$ starting from the initial node of $\counterex_\abstr$ there exists an infinite path $\pi_\belief = n_\belief^0,n_\belief^1,\ldots$ in $\counterex_\belief$ staring from its initial node such that if $n_\abstr^i$ is labelled with $(l_a,A_t)$ in $\counterex_\abstr$, then the corresponding node $n_\belief^i$ in $\counterex_\belief$ is labelled with $(l_a,B_t)$ for some $B_t \in \mathcal{P}(L_t)$ for which $B_t \subseteq \gamma(A_t)$.
+

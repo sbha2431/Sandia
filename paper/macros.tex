@@ -1,7 +1,15 @@
 \usepackage{amsmath} 
 \usepackage{amssymb} 
+
 \usepackage{color}
 \usepackage{ltl} 
+
+\usepackage{subfig}
+\usepackage{tikz}
+\usetikzlibrary{arrows,fit,shapes,automata}
+\usetikzlibrary{positioning,fit,calc,shapes}
+\usetikzlibrary{decorations.fractals}
+\usetikzlibrary{decorations.markings}
 
 \newcommand{\Rayna}[1]{{\textcolor{magenta}{ \textbf{Rayna:} #1 $\spadesuit$ }}}
 \newcommand{\Suda}[1]{{\textcolor{blue}{ \textbf{Suda:} #1 $\spadesuit$ }}}
@@ -10,12 +18,14 @@
 
 \newtheorem{example}{Example}
 \newtheorem{theorem}{Theorem}
+\newcommand*{\qed}{\hfill\ensuremath{\blacksquare}}
 
 \newcommand{\init}{\mathsf{init}}
 \newcommand{\belief}{\mathsf{belief}}
 \newcommand{\abstr}{\mathsf{abstract}}
 \newcommand{\vis}{\mathit{vis}}
-
+\newcommand{\succs}{\mathit{succ}}
+\newcommand{\beliefs}{\mathcal{P}(L_t)}
 
 \newcommand{\Surveillance}{\mathsf{Surveillance}}
 \newcommand{\beliefF}{\mathit{belief}}
@@ -26,6 +36,7 @@
 
 \newcommand{\post}{\mathit{post}}
 
+\newcommand{\outcome}{\mathit{outcome}}
 \newcommand{\counterex}{\mathcal{C}}
 
 \newcommand{\bools}{\mathbb{B}}
