@@ -1,11 +1,24 @@
 \subsubsection{Forward belief-set propagation}
 Given an abstract counterexample tree $\counterex_\abstr$ we label its nodes with states in $\states_\belief$ in a top-down manner as follows. 
 The root node is labelled with $s_\belief^\init$. If a node $v$ is a node labelled with the belief set $(l_a,B_t) \in \states_\belief$, and  $v'$ is a child of $v$ in $\counterex_\abstr$ labelled with an abstract state $(l_a',A_t')$, then we label $v'$ with the belief set $(l_a',B_t')$, where 
-$B_t' = \post(B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis}.
+$B_t' = \post(B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis-safety}.
 If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node labelled with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
 
 \begin{theorem}\todo{correctness of counterexample analysis}
 \end{theorem}
+
+\begin{figure}
+\begin{center}
+\input{figs/simple-safety-counterex-1.tex}
+\end{center}
+\caption{Abstract counterexample in Example~\ref{ex:simple-safety-unconcretizable}. The leaf nodes are labelled with the abstract belief set $A = \{Q_1,Q_2\}$.}
+\label{fig:simple-safety-counterex-1}
+\end{figure}
+
+\begin{example}\label{ex:simple-safety-unconcretizable}
+Let again $G$ be the surveillance game structure from Example~\ref{ex:simple-surveillance-game}, and consider the surveillance game $(G,\LTLglobally p_5)$. 
+Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{31,39\}$, and the leaf node $v_3$ with the set $B = \{30,32,38\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be spurious and the abstraction partition $\part$ should be refined.
+\end{example}
 
 \subsubsection{Backward partition splitting}
 Consider a path $\pi_\abstr = v_0,\ldots, v_n$ in $\counterex_\abstr$ where $v_0$ is the root node and $v_n$ is a leaf. For each node $n_i$, let $(l_a^i,A_t^i) $ be the abstract state labelling $n_i$ in $\counterex_\abstr$, and let $(l_a^i,B_t^i)$ be the  belief set with which the node was labelled by the the counterexample analysis procedure. We consider the case when $(l_a^n,B_t^n) \models p_k$, that is, $|\{l_t \in B_t^n \mid \vis(l_a,l_t) = \false\}| \leq k$.
@@ -20,10 +33,9 @@ This property intuitively means that if we consider the sets in $A'$ that have n
 \[\gamma(C^j) = \gamma(A_t^j) \cap \{l_t \mid \post(l_a^j,l_t) \cap \gamma(A_t^{j+1}) \subseteq \gamma(C^{j+1})\}.\] 
 Intuitively, this means that the new partition allow us to express precisely the set of states that do not lead to sets in $A_{j+1}'$ that we are trying to avoid. Again, the fact that an appropriate partition $\part$ can be computed follows from the choice of the leaf node $v_n$. The procedure for computing the partition $\part' = \part^0$ that refines $\part$ based on such a path $\pi_\abstr$ is formalized in Algorithm~\ref{}, and the theorem below states the progress property (eliminating the considered counterexample) which it guarantees.
 
+\begin{example}
+We continue with the unconcretizable abstract counterexample tree from Example~\ref{ex:simple-safety-unconcretizable}. We illustrate he refinement procedure for the path $v_0,v_1,v_3$. For node $v_3$, we split $Q_1$ and $Q_2$ using the set $B = \{30,32,38\}$, obtaining the sets $Q_1' = Q_1 \cap \{30,32,38\} = \{30\}$, $Q_2' = Q_1\setminus\{30\}$, $Q_3' = Q_2 \cap \{30,32,38\} = \{32,38\}$ and $Q_4' = Q_2 \setminus \{32,38\}$. We thus obtain a new partition $\part_{v_3} \preceq \part$. In order to propagate the refinement backwards (to ensure eliminating $\counterex_\abstr$) we compute the set of locations from which the target can move to a location in $Q_2'$ and $Q_4'$ that is not visible from location $10$. In this case, these are just the locations $32$ and $38$, which have already been separated from $Q_2$, so here backward propagation does not require further splitting.\qed
+\end{example}
 
 \begin{theorem}\todo{progress property of the refinement procedure: counterexample eliminated}
 \end{theorem}
-
-\begin{example}
-\todo{illustrating example}
-\end{example}

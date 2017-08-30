@@ -151,8 +151,9 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
     for obs in gw.obstacles:
         file.write('!y = {}\n'.format(allstates.index(obs)))
 
-    for n in range(gw.nagents):
-        file.write('!y = {}\n'.format(allstates.index(gw.targets[n][0])))
+    if target_reachability:
+        for n in range(gw.nagents):
+            file.write('!y = {}\n'.format(allstates.index(gw.targets[n][0])))
 
     # writing sys_trans
     file.write('\n[SYS_TRANS]\n')
