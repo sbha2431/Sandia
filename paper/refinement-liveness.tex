@@ -1,12 +1,17 @@
 \subsubsection{Forward belief-set propagation}
 
 To check if an abstract counterexample graph $\counterex_\abstr$ is concretizable, we construct a finite graph $\mathcal{D}$ whose nodes are labelled with elements of $\states_\belief$ and with nodes of $\counterex_\abstr$.
-By construction we will ensure that if a node $d$ in $\mathcal D$ is labelled with a belief state $(l_a,B_t)$, and with a node $v$, then $v$ is labelled wit $(l_a,A_t)$ in $\counterex_\belief$, where $B_t \subseteq \gamma(A_t)$. 
+By construction we will ensure that if a node $d$ in $\mathcal D$ is labelled with a belief state $(l_a,B_t)$, and with a node $v$, then $v$ is labelled with $(l_a,A_t)$ in $\counterex_\belief$, where $B_t \subseteq \gamma(A_t)$. 
 
 Initially $\mathcal D$ contains a single node $d_0$ labelled with $\{s_\belief^\init\}$ and with the initial node $v_0$ of $\counterex_\abstr$. Consider a node $d$ in $\mathcal D$ labelled with a belief state $(l_a,B_t)$ and with a node $v$ in $\counterex_\belief$. For every child $v'$ of $v$, labelled with some abstract state $(l_a',A_t')$ we proceed as follows. We let ${B_t}' = \post(B_t) \cap \gamma(A_t')$. If there exists a node $d'$ in $\mathcal D$ labelled with $(l_a',B_t')$ and with $v'$, then we add an edge from $d$ to $d'$ in $\mathcal{D}$. Otherwise, we create such a node and add the edge. We continue until no more nodes and edges can be added to $\mathcal D$. The procedure is guaranteed to terminate, since both the graph $\counterex_\belief$ and the set $\states_\belief$ are finite, and we add a node labelled with $(v,s_\belief)$ to $\mathcal D$ at most once.
 
 If the graph $\mathcal D$ contains a reachable cycle (it suffices to consider simple cycles, i.e., without repeating intermediate nodes) $\rho = d_0,\ldots,d_n$ with $d_0 = d_n$ such that some $d_i$ is labelled with $(l_a,B_t)$ where $(l_a,B_t) \models p_k$, then we conclude that the abstract counterexample $\counterex_\abstr$ is not concretizable. If no such cycle exists, then $\mathcal D$ is a concrete counterexample graph for the belief game $(G_\belief,\LTLglobally\LTLfinally p_k)$. 
 
+
+\begin{example}\label{ex:simple-liveness-unconcretizable}
+The abstract counterexample graph in the game $(\alpha_\part(G),\LTLglobally \LTLfinally p_2)$ discussed in Example~\ref{ex:simple-liveness-counterex} is not conretizable, since for the path in the abstract graph depicted in Figure~\ref{fig:simple-liveness-counterex} there exists a corresponding path in the graph $\mathcal D$ with a node in the cycle labelled with a set in $G_\belief$ that satisfies $p_2$. More precisely, the cycle in the graph $\mathcal D$ contains a node labelled with $(33,\{22\})$. Intuitively, as the agent moves from the upper to the lower part of the grid along this path, upon not observing the target, it can infer from the sequence of observations that the only possible location of the target is $22$. Thus, this paths is winning for the agent.
+\qed
+\end{example}
 
 \begin{theorem}\todo{correctness of counterexample analysis}
 \end{theorem}
@@ -19,6 +24,7 @@ $\pi_\abstr = v_0,\ldots, v_n,v_0',\ldots,v_m'$ be the sequence of nodes in $\co
 \begin{theorem}\todo{progress property of the refinement procedure: counterexample eliminated}
 \end{theorem}
 
-\begin{example}
-\todo{illustrating example}
+\begin{example}\label{ex:simple-liveness-refinement}
+We refine the abstraction partition $\part$ from Example~\ref{fig:simple-liveness-counterex} using the path identified there, in order to eliminate the abstract counterexample. For this, following the refinement algorithm, we first split the set $Q_1$ into sets $Q_1' = \{22\}$ and $Q_2' = Q_1 \setminus \{22\}$, and let $Q_3' = Q_2$. However, since from some locations in $Q_2'$ and in $Q_3'$ the target can reach locations in $Q_2'$ and $Q_3'$ that are not visible from the agent's position $33$, in order to eliminate the counterexample, we need to propagate the refinement backwards along the path and split $Q_2'$ and $Q_3'$ further. With that, we obtain an abstraction partition with $10$ sets, which is guaranteed to eliminate this abstract counterexample. In fact, in this example this abstraction turns out to be sufficiently precise to obtain a winning strategy for the agent.
+\qed
 \end{example}

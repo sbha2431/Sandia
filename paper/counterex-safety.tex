@@ -2,7 +2,7 @@ A winning strategy for the target in the abstract game $(G_\abstr,\LTLglobally p
 An \emph{abstract counterexample tree} $\counterex_\abstr$ for $(G_\abstr,\LTLglobally p_k)$ is a finite tree  whose nodes are labelled with states in $\states_\abstr$ such that the following conditions are satisfied:
 \begin{itemize}
 \item The root node is labelled with the initial state $s_\abstr^\init$;
-\item Each leaf node is labelled with an abstract state $s_\abstr$ which violates $p_k$, that is, $s_\abstr \not\models p_k$;
+\item A node is labelled with an abstract state  which violates $p_k$ (that is,$s_\abstr$ where $s_\abstr \not\models p_k$) iff it is a leaf;
 \item Each non-leaf node is labelled with an abstract state $s_\abstr$ that satisfies $p_k$, that is, $s_\abstr \models p_k$; 
 \item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $v$ is labelled with $(l_a,A_t)$, then there exists an $A_t'$  such that: (1) $((l_a,A_t),(l_a',A_t')) \in \trans_\abstr$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,A_t),(l_a,A_t')) \in \trans_\abstr$, there is a child $v'$ of $v$ labelled with $(l_a',A_t')$.
 \end{itemize}
@@ -10,8 +10,7 @@ An \emph{abstract counterexample tree} $\counterex_\abstr$ for $(G_\abstr,\LTLgl
 A \emph{concrete counterexample tree} $\counterex_\belief$ for $(G_\belief,\LTLglobally p_k)$ is a finite tree with nodes labelled with states in $\states_\belief$ where:
 \begin{itemize}
 \item The root node is labelled with the initial state $s_\belief^\init$;
-\item Each leaf node is labelled with a concrete belief state $s_\belief$ which violates $p_k$, that is, $s_\belief \not\models p_k$;
-\item Each non-leaf node is labelled with a concrete belief state $s_\abstr$ that satisfies $p_k$, that is, $s_\belief \models p_k$; 
+\item A node is labelled with a belief state which violates $p_k$ (that is,$s_\belief$ where $s_\belief \not\models p_k$) iff it is a leaf;
 \item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $v$ is labelled with $(l_a,B_t)$, then there exists a $B_t'$  such that: (1) $((l_a,B_t),(l_a',B_t')) \in \trans_\belief$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,B_t),(l_a,B_t')) \in \trans_\belief$, there is a child $v'$ of $v$ labelled with $(l_a',B_t')$.
 \end{itemize}
 

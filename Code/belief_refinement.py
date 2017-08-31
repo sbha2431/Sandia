@@ -339,7 +339,10 @@ def analyse_counterexample(fname,gwg,partitionGrid,belief_safety,belief_liveness
                     print 'ABSTRACT BELIEF', beliefstate_succ
                     print 'ABSTRACT BELIEF INVISIBLE', belief_invisible_succ
                     print 'TRUE BELIEF',belief_true_next
-
+                    
+                    #print 'PATH BELIEFS', path_beliefs
+                    #print 'SUCC', (succ,frozenset(belief_true_next))
+                    
                     prefix_length = path_beliefs.index((succ,frozenset(belief_true_next)))
                    
                     refine_states = copy.deepcopy(belief_true_next)

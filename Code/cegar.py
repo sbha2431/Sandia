@@ -15,7 +15,7 @@ import copy
 
 slugs = '/home/rayna/work/tools/slugs/src/slugs'
 
-def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict(),local_refinement=False):
+def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict(),local_refinement=False, precise_refinement=False):
 
     if len(partition_init) > 0:
         partition = copy.deepcopy(partition_init)
@@ -203,8 +203,8 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
             '''
             for k in refinement_map_coarse.iterkeys():
                 partition_coarse  = grid_partition.refine_partition(partition,k,refinement_map_coarse[k])
-            if partition_coarse == partition:
-                if local_refinement and not (partition_local == partition):
+            if precise_refinement or partition_coarse == partition:
+                if not precise_refinement and local_refinement and not (partition_local == partition):
                     print 'USING LOCAL BELIEF REFINEMENT'
                     partition = copy.deepcopy(partition_local)
                 else:    
