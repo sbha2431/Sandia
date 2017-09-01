@@ -23,8 +23,9 @@ If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$
 
 \smallskip
 
+
 \caption{Analysis of abstract counterexample trees for games with safety surveillance objectives.}
-\label{algo:counterex-analysis-safety}
+\label{algo:cex-analysis-safety}
 \end{algorithm}
 
 \begin{theorem}
@@ -99,7 +100,7 @@ $C := \{ Q\in A \mid Q \cap B \neq \emptyset\}$
 \smallskip
 
 \caption{Abstraction partition refinement given an unconcretizable path in an  abstract counterexample tree.}
-\label{algo:counterex-analysis-safety}
+\label{algo:refinement-safety}
 \end{algorithm}
 
 Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample  tree in $(\alpha_\part(G),\LTLglobally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample trees in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that $\counterex'_\abstr \in \gamma(\counterex_\abstr)$ iff $\counterex'_\abstr$ differs from $\counterex_\abstr$ only in the node labels and for every node in $\counterex_\abstr$ labelled with $(l_a,A_t)$, the corresponding node in $\counterex'_\abstr$ is labelled with an abstract state $(l_a,A_t')$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
