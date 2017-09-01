@@ -13,7 +13,8 @@ The abstract counterexample graph in the game $(\alpha_\part(G),\LTLglobally \LT
 \qed
 \end{example}
 
-\begin{theorem}\todo{correctness of counterexample analysis}
+\begin{theorem}
+If Algorithm~\ref{algo:cex-analysis-liveness} returns a path $\pi$ in the graph $\mathcal D$ constructed for $\counterex_\abstr$, then $\counterex_\abstr$ is not concretizable, and the infinite run in $G_\belief$ corresponding to $\pi$ satisfies $\LTLglobally\LTLfinally p_k$, otherwise  $\counterex_\abstr$ is concretizable.
 \end{theorem}
 
 \subsubsection{Backward partition splitting}
@@ -21,7 +22,9 @@ The abstract counterexample graph in the game $(\alpha_\part(G),\LTLglobally \LT
 Consider a path in the graph $\mathcal{D}$ of the form $\pi = d_0,\ldots, d_n,d_0',\ldots,d_m'$ where $d_n = d_m'$, and where for some $0 \leq i \leq m$ for the label $(l_a^,B_t^i)$ it holds that $(l_a^,B_t^i) \models p_k$. Let 
 $\pi_\abstr = v_0,\ldots, v_n,v_0',\ldots,v_m'$ be the sequence of nodes in $\counterex_\abstr$ corresponding to the labels in $\pi$. By construction of $\mathcal D$, $\pi_\abstr$ is a path in $\counterex_\abstr$ and $v_n = v_m'$. We apply the refinement procedure from the previous section to the whole path $\pi_\abstr$, as well as to the to the path-prefix $v_0,\ldots, v_n$.
 
-\begin{theorem}\todo{progress property of the refinement procedure: counterexample eliminated}
+Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample graph in $(\alpha_\part(G),\LTLglobally\LTLfinally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample graphs in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that for every infinite path $\pi$ in $\counterex_\abstr'$ there exists an infinite path $\pi$ in $\counterex_abstr$ such that for every nod in $\pi'$ labelled with $(l_a,A_t')$ the corresponding node in $\counterex_\abstr$ is labelled with an abstract state $(l_a,A_t)$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
+
+\begin{theorem}If $\part'$ is the partition returned by Algorithm~\ref{} for an uncocretizable abstract counterexample $\counterex_\abstr$ in $(\alpha_\part(G),\LTLglobally\LTLfinally p_k)$, then $\gamma_{\part'}(\counterex_\abstr) = \emptyset$, and also $\gamma_{\part''}(\counterex_\abstr) = \emptyset$ for every partition $\part''$ with $\part'' \preceq \part'$.
 \end{theorem}
 
 \begin{example}\label{ex:simple-liveness-refinement}

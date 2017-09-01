@@ -4,7 +4,8 @@ The root node is labelled with $s_\belief^\init$. If $v$ is a node labelled with
 $B_t' = \post(B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis-safety}.
 If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node labelled with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
 
-\begin{theorem}\todo{correctness of counterexample analysis}
+\begin{theorem}
+If Algorithm~\ref{algo:cex-analysis-safety} returns a path $\pi_\abstr$ in $\counterex_\abstr$, then $\counterex_\abstr$ is not concretizable, and $\pi_\abstr$ is a non-concretizable path, otherwise  $\counterex_\abstr$ is concretizable.
 \end{theorem}
 
 \begin{figure}
@@ -37,7 +38,10 @@ Intuitively, this means that the new partition allow us to express precisely the
 We continue with the unconcretizable abstract counterexample tree from Example~\ref{ex:simple-safety-unconcretizable}. We illustrate he refinement procedure for the path $v_0,v_1,v_3$. For node $v_3$, we split $Q_1$ and $Q_2$ using the set $B = \{30,32,38\}$, obtaining the sets $Q_1' = Q_1 \cap \{30,32,38\} = \{30\}$, $Q_2' = Q_1\setminus\{30\}$, $Q_3' = Q_2 \cap \{30,32,38\} = \{32,38\}$ and $Q_4' = Q_2 \setminus \{32,38\}$. We thus obtain a new partition $\part_{v_3} \preceq \part$. In order to propagate the refinement backwards (to ensure eliminating $\counterex_\abstr$) we compute the set of locations from which the target can move to a location in $Q_2'$ and $Q_4'$ that is not visible from location $10$. In this case, these are just the locations $32$ and $38$, which have already been separated from $Q_2$, so here backward propagation does not require further splitting.\qed
 \end{example}
 
-\begin{theorem}\todo{progress property of the refinement procedure: counterexample eliminated}
+
+Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample  tree in $(\alpha_\part(G),\LTLglobally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample trees in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that $\counterex'_\abstr \in \gamma(\counterex_\abstr)$ iff $\counterex'_\abstr$ differs from $\counterex_\abstr$ only in the node labels and for every node in $\counterex_\abstr$ labelled with $(l_a,A_t)$, the corresponding node in $\counterex'_\abstr$ is labelled with an abstract state $(l_a,A_t')$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
+ 
+\begin{theorem}If $\part'$ is the partition returned by Algorithm~\ref{} for an uncocretizable abstract counterexample $\counterex_\abstr$ in $(\alpha_\part(G),\LTLglobally p_k)$, then $\gamma_{\part'}(\counterex_\abstr) = \emptyset$, and also $\gamma_{\part''}(\counterex_\abstr) = \emptyset$ for every partition $\part''$ where $\part'' \preceq \part'$.
 \end{theorem}
 
 \begin{example}\label{ex:simple-safety-realizability}
