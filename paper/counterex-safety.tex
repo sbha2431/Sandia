@@ -6,6 +6,8 @@ An \emph{abstract counterexample tree} $\counterex_\abstr$ for $(G_\abstr,\LTLgl
 \item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $v$ is labelled with $(l_a,A_t)$, then there exists an $A_t'$  such that: (1) $((l_a,A_t),(l_a',A_t')) \in \trans_\abstr$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,A_t),(l_a,A_t')) \in \trans_\abstr$, there is a child $v'$ of $v$ labelled with $(l_a',A_t')$.
 \end{itemize}
 
+\todo{since the process of abstraction increases the power of the target and gives less power to the agent, an abstract counterexample does not necessarily correspond to a winning strategy for the target in the belief-set game}
+
 A \emph{concrete counterexample tree} $\counterex_\belief$ for $(G_\belief,\LTLglobally p_k)$ is a finite tree with nodes labelled with states in $\states_\belief$ where:
 \begin{itemize}
 \item The root node is labelled with the initial state $s_\belief^\init$;

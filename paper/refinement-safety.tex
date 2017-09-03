@@ -1,3 +1,5 @@
+\todo{In order to determine if an abstract counterexample tree is concretizable, we propagate the precise belief-sets corresponding to the abstract moves of the target...}
+
 \subsubsection{Forward belief-set propagation}
 Given an abstract counterexample tree $\counterex_\abstr$ we annotate its nodes with states in $\states_\belief$ in a top-down manner as follows. 
 The root node is labelled with $s_\belief^\init$. 
@@ -46,6 +48,7 @@ Let, again, $G$ be the surveillance game structure from Example~\ref{ex:simple-s
 Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{31,39\}$, and the leaf node $v_3$ with the set $B = \{30,32,38\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.\qed
 \end{example}
 
+\todo{When an abstract counterexample tree is determined unconcretizable, the returned path corresponds to a sequence of moves to agent, for which the size of the concrete belief does not actually exceed the threshold as in the abstract counterexample. We then refine the abstraction in order to precisely capture this information and thus eliminate the abstract counterexample.}
 
 \subsubsection{Backward partition splitting}
 Consider a path $\pi_\abstr = v_0,\ldots, v_n$ in $\counterex_\abstr$ where $v_0$ is the root node and $v_n$ is a leaf. For each node $v_i$, let $(l_a^i,A_t^i) $ be the abstract state labelling $v_i$ in $\counterex_\abstr$, and let $(l_a^i,B_t^i)$ be the  belief set with which the node was annotated by the the counterexample analysis procedure. We consider the case when $(l_a^n,B_t^n) \models p_k$, that is, $|\{l_t \in B_t^n \mid \vis(l_a,l_t) = \false\}| \leq k$.
