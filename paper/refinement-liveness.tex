@@ -1,9 +1,9 @@
 \subsubsection{Forward belief-set propagation}
 
 To check if an abstract counterexample graph $\counterex_\abstr$ is concretizable, we construct a finite graph $\mathcal{D}$ whose nodes are labelled with elements of $\states_\belief$ and with nodes of $\counterex_\abstr$.
-By construction we will ensure that if a node $d$ in $\mathcal D$ is labelled with a belief state $(l_a,B_t)$, and with a node $v$, then $v$ is labelled with $(l_a,A_t)$ in $\counterex_\belief$, where $B_t \subseteq \gamma(A_t)$. 
+By construction we will ensure that if a node $d$ in $\mathcal D$ is labelled with $\langle(l_a,B_t),v \rangle$, where $(l_a,B_t)$ is a belief state, and $v$ is a node in $\counterex_\abstr$, then $v$ is labelled with $(l_a,A_t)$ in $\counterex_\abstr$, and $B_t \subseteq \gamma(A_t)$. 
 
-Initially $\mathcal D$ contains a single node $d_0$ labelled with $\{s_\belief^\init\}$ and with the initial node $v_0$ of $\counterex_\abstr$. Consider a node $d$ in $\mathcal D$ labelled with a belief state $(l_a,B_t)$ and with a node $v$ in $\counterex_\belief$. For every child $v'$ of $v$, labelled with some abstract state $(l_a',A_t')$ we proceed as follows. We let ${B_t}' = \post(l_a,B_t) \cap \gamma(A_t')$. If there exists a node $d'$ in $\mathcal D$ labelled with $(l_a',B_t')$ and with $v'$, then we add an edge from $d$ to $d'$ in $\mathcal{D}$. Otherwise, we create such a node and add the edge. We continue until no more nodes and edges can be added to $\mathcal D$. The procedure is guaranteed to terminate, since both the graph $\counterex_\belief$ and the set $\states_\belief$ are finite, and we add a node labelled with $(v,s_\belief)$ to $\mathcal D$ at most once.
+Initially $\mathcal D$ contains a single node $d_0$ labelled with $\langle\{s_\belief^\init\},v_0\rangle$, where $v_0$ is initial node of $\counterex_\abstr$. Consider a node $d$ in $\mathcal D$ labelled with $\langle(l_a,B_t),v \rangle$. For every child $v'$ of $v$ in $\counterex_\abstr$, labelled with an abstract state $(l_a',A_t')$ we proceed as follows. We let ${B_t}' = \post(l_a,B_t) \cap \gamma(A_t')$. If there exists a node $d'$ in $\mathcal D$ labelled with $\langle (l_a',B_t'),v\rangle$, then we add an edge from $d$ to $d'$ in $\mathcal{D}$. Otherwise, we create such a node and add the edge. We continue until no more nodes and edges can be added to $\mathcal D$. The procedure is guaranteed to terminate, since both  the graph $\counterex_\belief$, and $\states_\belief$ are finite, and we add a node labelled $\langle s_\belief, v\rangle$ to $\mathcal D$ at most once.
 
 If the graph $\mathcal D$ contains a reachable cycle (it suffices to consider simple cycles, i.e., without repeating intermediate nodes) $\rho = d_0,\ldots,d_n$ with $d_0 = d_n$ such that some $d_i$ is labelled with $(l_a,B_t)$ where $(l_a,B_t) \models p_k$, then we conclude that the abstract counterexample $\counterex_\abstr$ is not concretizable. If no such cycle exists, then $\mathcal D$ is a concrete counterexample graph for the belief game $(G_\belief,\LTLglobally\LTLfinally p_k)$. 
 
@@ -21,18 +21,18 @@ annotate $d_0$ with $\langle s_\belief^\init, v_0\rangle$\;
 
 \Do{$\mathcal D \neq \mathcal D'$}{
 $\mathcal D' := \mathcal D$\;
- \ForEach{node $d$ in $\mathcal D$ annotated with $\langle(l_a,B_t),v\rangle$}{
+ \ForEach{node $d$ in $\mathcal D$ labelled with $\langle(l_a,B_t),v\rangle$}{
   \ForEach{child $v'$ of $v$ in $\counterex_\abstr$ labelled $(l_a',A_t')$}{
   $B_t' := \post(l_a,B_t)\cap\gamma(A_t')$\;
-  \eIf{there is a node $d' \in D$ annotated with $(l_a',B_t)$}{add an edge $(d,d')$ to $E$}
-  {add a node $d'$ annotated $(l_a',B_t)$ to $D$\;
+  \eIf{there is a node $d' \in D$ labelled with $\langle (l_a',B_t'),v'\rangle$}{add an edge $(d,d')$ to $E$}
+  {add a node $d'$ labelled $\langle (l_a',B_t'),v'\rangle$ to $D$\;
   add an edge $(d,d')$ to $E$}
 }
 }
 }
 \leIf{there is a lasso path $\pi$ in $\mathcal D$ starting from $d_0$ such that some node in the cycle is annotated with $\langle s_\belief,v\rangle$ and $s_\belief\models p_k$\newline}
 {\KwRet{$\pi$;}}
-{\KwRet{{\sc unconcretizable}}}
+{\KwRet{{\sc concretizable}}}
 
 \smallskip
 
@@ -51,10 +51,10 @@ If Algorithm~\ref{algo:cex-analysis-liveness} returns a path $\pi$ in the graph 
 
 \subsubsection{Backward partition splitting}
 
-Consider a path in the graph $\mathcal{D}$ of the form $\pi = d_0,\ldots, d_n,d_0',\ldots,d_m'$ where $d_n = d_m'$, and where for some $0 \leq i \leq m$ for the label $(l_a^,B_t^i)$ it holds that $(l_a^,B_t^i) \models p_k$. Let 
+Consider a path in the graph $\mathcal{D}$ of the form $\pi = d_0,\ldots, d_n,d_0',\ldots,d_m'$ where $d_n = d_m'$, and where for some $0 \leq i \leq m$ for the label $(l_a^i,B_t^i)$ it holds that $(l_a^i,B_t^i) \models p_k$. Let 
 $\pi_\abstr = v_0,\ldots, v_n,v_0',\ldots,v_m'$ be the sequence of nodes in $\counterex_\abstr$ corresponding to the labels in $\pi$. By construction of $\mathcal D$, $\pi_\abstr$ is a path in $\counterex_\abstr$ and $v_n = v_m'$. We apply the refinement procedure from the previous section to the whole path $\pi_\abstr$, as well as to the to the path-prefix $v_0,\ldots, v_n$.
 
-Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample graph in $(\alpha_\part(G),\LTLglobally\LTLfinally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample graphs in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that for every infinite path $\pi$ in $\counterex_\abstr'$ there exists an infinite path $\pi$ in $\counterex_abstr$ such that for every nod in $\pi'$ labelled with $(l_a,A_t')$ the corresponding node in $\counterex_\abstr$ is labelled with an abstract state $(l_a,A_t)$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
+Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample graph in $(\alpha_\part(G),\LTLglobally\LTLfinally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample graphs in $(\alpha_{\part'}(G),\LTLglobally\LTLfinally p_k)$ such that for every infinite path $\pi$ in $\counterex_\abstr'$ there exists an infinite path $\pi$ in $\counterex_\abstr$ such that for every node in $\pi'$ labelled with $(l_a,A_t')$ the corresponding node in $\counterex_\abstr$ is labelled with an abstract state $(l_a,A_t)$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
 
 \begin{theorem}If $\part'$ is the partition 
 %returned by Algorithm~\ref{algo:refinement-liveness} 
