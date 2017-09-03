@@ -3,7 +3,7 @@
 To check if an abstract counterexample graph $\counterex_\abstr$ is concretizable, we construct a finite graph $\mathcal{D}$ whose nodes are labelled with elements of $\states_\belief$ and with nodes of $\counterex_\abstr$.
 By construction we will ensure that if a node $d$ in $\mathcal D$ is labelled with a belief state $(l_a,B_t)$, and with a node $v$, then $v$ is labelled with $(l_a,A_t)$ in $\counterex_\belief$, where $B_t \subseteq \gamma(A_t)$. 
 
-Initially $\mathcal D$ contains a single node $d_0$ labelled with $\{s_\belief^\init\}$ and with the initial node $v_0$ of $\counterex_\abstr$. Consider a node $d$ in $\mathcal D$ labelled with a belief state $(l_a,B_t)$ and with a node $v$ in $\counterex_\belief$. For every child $v'$ of $v$, labelled with some abstract state $(l_a',A_t')$ we proceed as follows. We let ${B_t}' = \post(B_t) \cap \gamma(A_t')$. If there exists a node $d'$ in $\mathcal D$ labelled with $(l_a',B_t')$ and with $v'$, then we add an edge from $d$ to $d'$ in $\mathcal{D}$. Otherwise, we create such a node and add the edge. We continue until no more nodes and edges can be added to $\mathcal D$. The procedure is guaranteed to terminate, since both the graph $\counterex_\belief$ and the set $\states_\belief$ are finite, and we add a node labelled with $(v,s_\belief)$ to $\mathcal D$ at most once.
+Initially $\mathcal D$ contains a single node $d_0$ labelled with $\{s_\belief^\init\}$ and with the initial node $v_0$ of $\counterex_\abstr$. Consider a node $d$ in $\mathcal D$ labelled with a belief state $(l_a,B_t)$ and with a node $v$ in $\counterex_\belief$. For every child $v'$ of $v$, labelled with some abstract state $(l_a',A_t')$ we proceed as follows. We let ${B_t}' = \post(l_a,B_t) \cap \gamma(A_t')$. If there exists a node $d'$ in $\mathcal D$ labelled with $(l_a',B_t')$ and with $v'$, then we add an edge from $d$ to $d'$ in $\mathcal{D}$. Otherwise, we create such a node and add the edge. We continue until no more nodes and edges can be added to $\mathcal D$. The procedure is guaranteed to terminate, since both the graph $\counterex_\belief$ and the set $\states_\belief$ are finite, and we add a node labelled with $(v,s_\belief)$ to $\mathcal D$ at most once.
 
 If the graph $\mathcal D$ contains a reachable cycle (it suffices to consider simple cycles, i.e., without repeating intermediate nodes) $\rho = d_0,\ldots,d_n$ with $d_0 = d_n$ such that some $d_i$ is labelled with $(l_a,B_t)$ where $(l_a,B_t) \models p_k$, then we conclude that the abstract counterexample $\counterex_\abstr$ is not concretizable. If no such cycle exists, then $\mathcal D$ is a concrete counterexample graph for the belief game $(G_\belief,\LTLglobally\LTLfinally p_k)$. 
 
@@ -23,7 +23,7 @@ annotate $d_0$ with $\langle s_\belief^\init, v_0\rangle$\;
 $\mathcal D' := \mathcal D$\;
  \ForEach{node $d$ in $\mathcal D$ annotated with $\langle(l_a,B_t),v\rangle$}{
   \ForEach{child $v'$ of $v$ in $\counterex_\abstr$ labelled $(l_a',A_t')$}{
-  $B_t' := \post(B_t)\cap\gamma(A_t')$\;
+  $B_t' := \post(l_a,B_t)\cap\gamma(A_t')$\;
   \eIf{there is a node $d' \in D$ annotated with $(l_a',B_t)$}{add an edge $(d,d')$ to $E$}
   {add a node $d'$ annotated $(l_a',B_t)$ to $D$\;
   add an edge $(d,d')$ to $E$}
