@@ -1,4 +1,5 @@
-\todo{since the size of the belief-set game structure is exponential in the size of the original game structure, we employ conservative abstraction}
+In the previous section we used the belief-set game structure in order to state the surveillance objective of the agent. While in principle it is possible to solve the surveillance strategy synthesis problem on this game structure, this is inmost cases computationally infeasible, due to the fact that its size is exponential in the size of the original game structure. To circumvent this construction when possible, we propose an abstraction-based method, which given a surveillance game structure, and a partition of the set of target's locations yields an approximation which is sound with respect to temporal surveillance objectives for the agent.
+
 
 An \emph{abstraction partition} is a family $\part = \{Q_i\}_{i=1}^n$ of subsets of $L_t$, $Q_i \subseteq L_t$ such that the following hold:
 \begin{itemize}

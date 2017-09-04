@@ -1,4 +1,4 @@
-A winning strategy for the target in the abstract game $(G_\abstr,\LTLglobally p_k)$ can be naturally represented as a tree. 
+A winning strategy for the target in a game with safety surveillance objective can be naturally represented as a tree. 
 An \emph{abstract counterexample tree} $\counterex_\abstr$ for $(G_\abstr,\LTLglobally p_k)$ is a finite tree,  whose nodes are labelled with states in $\states_\abstr$ such that the following conditions are satisfied:
 \begin{itemize}
 \item The root node is labelled with the initial state $s_\abstr^\init$;
@@ -6,7 +6,6 @@ An \emph{abstract counterexample tree} $\counterex_\abstr$ for $(G_\abstr,\LTLgl
 \item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $v$ is labelled with $(l_a,A_t)$, then there exists an $A_t'$  such that: (1) $((l_a,A_t),(l_a',A_t')) \in \trans_\abstr$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,A_t),(l_a,A_t')) \in \trans_\abstr$, there is a child $v'$ of $v$ labelled with $(l_a',A_t')$.
 \end{itemize}
 
-\todo{since the process of abstraction increases the power of the target and gives less power to the agent, an abstract counterexample does not necessarily correspond to a winning strategy for the target in the belief-set game}
 
 A \emph{concrete counterexample tree} $\counterex_\belief$ for $(G_\belief,\LTLglobally p_k)$ is a finite tree with nodes labelled with states in $\states_\belief$ where:
 \begin{itemize}
@@ -14,6 +13,8 @@ A \emph{concrete counterexample tree} $\counterex_\belief$ for $(G_\belief,\LTLg
 \item A node is labelled with a belief state which violates $p_k$ (that is, $s_\belief$ where $s_\belief \not\models p_k$) iff it is a leaf;
 \item The tree branches according to all possible transition choices of the agent. Formally, if an internal node $v$ is labelled with $(l_a,B_t)$, then there exists a $B_t'$  such that: (1) $((l_a,B_t),(l_a',B_t')) \in \trans_\belief$ for some $l_a' \in L_a$, and (2) for every $l_a' \in L_a$ such that $((l_a,B_t),(l_a,B_t')) \in \trans_\belief$, there is a child $v'$ of $v$ labelled with $(l_a',B_t')$.
 \end{itemize}
+
+Due to the overapproximation of the belief-sets, not every counterexample in the abstract game corresponds to a winning strategy for the target in the original game.
 
 An abstract counterexample $\counterex_\abstr$ in $(G_\abstr,\LTLglobally p_k)$ is \emph{concretizable} if there exists a concrete counterexample 
 tree $\counterex_\belief$ in $(G_\belief,\LTLglobally p_k)$, which differs from $\counterex_\abstr$ only in the node labels, and each node labelled with $(l_a,A_t)$ in $\counterex_\abstr$ has label $(l_a, B_t)$ in $\counterex_\belief$ for which $B_t \subseteq \gamma(A_t)$.

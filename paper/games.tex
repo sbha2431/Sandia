@@ -1,4 +1,5 @@
-\todo{we define a formal model for synthesis of surveillance strategies ...}
+We begin by defining a formal model for describing surveillance strategy synthesis problems, in the form of a two player game between an agent and a target, in which the agent has only partial information about the target's location.
+
 \subsection{Surveillance Game Structures}\label{sec:surveillance-games}
 We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,\vis)$, with the following components:
 \begin{itemize}
@@ -32,7 +33,7 @@ $\succs_a(l_a,l_t,l_t') = \{l_a' \in L_a \mid  ((l_a,l_t),(l_a',l_t')) \in T\}$.
 
 We assume that for every $s \in \states$ there exists $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state).
 
-We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the agent. Formally, we require that if $\vis(l_a,l_t') = \vis(l_a,l_t'')=\false$, then $\succs_a(l_a,l_t,l_t') = \succs_a(l_a,l_t,l_t'')$. This assumption is natural in the setting when the agent can move in one step only to locations that are in its area of sight.
+We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the agent. Formally, we require that if $\vis(l_a,l_t') = \vis(l_a,l_t'')=\false$, then $\succs_a(l_a,l_t,l_t') = \succs_a(l_a,l_t,l_t'')$. This assumption is natural in the setting when the agent can move in one step only to locations that are in its sight.
 
 \begin{example}\label{ex:simple-surveillance-game}
 Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_a$ and $L_t$ for the agent and the target both consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of both the agent and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or to a square that is part of a wall, or an obstacle, is not allowed. The initial positions of the agent and the target are locations $12$ and $32$ respectively. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(12,32)$.
@@ -45,7 +46,8 @@ The function $\vis$ encodes straight-line visibility: a location $l_t$ is visibl
 
 \subsection{Belief-Set Game Structures}
 
-\todo{since we want to reason about the knowledge the agent has about the position of the target ...}
+In surveillance strategy synthesis we need to state properties of, and reason about, the information which the agent has, i.e. its \emph{belief} about the location of the target. To this end, we can employ a powerset construction which is commonly used to transform a partial-information game into a perfect information one, by explicitly tracking the knowledge one player has as a set of possible states of the other player.
+
 For a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ with the following components:
 \begin{itemize}
 \item $\states_\belief = L_a \times \beliefs$ is the set of states, with $L_a$ the set of locations of the agent, and $\beliefs$ the set of \emph{belief sets} describing information about the location of the target;
@@ -106,6 +108,7 @@ A \emph{strategy for the agent in $G_\belief$} is a function $f_a : S^+ \times \
 The outcome of given strategies $f_a$ and $f_t$ for the agent and the target in $G_\belief$, denoted $\outcome(G_\belief,f_a,f_t)$, is a run $s_0,s_1,\ldots$ of $G_\belief$ such that for every $i \geq 0$, we have $s_{i+1} = f_a(s_0,\ldots,s_i,B_t^i)$, where $B_t^i = f_t(s_0,\ldots,s_i)$.
 
 \subsection{Temporal Surveillance Objectives}
+Since the states of a belief-set game structure track the information, which the agent has, we can state and interpret surveillance objectives for the agent over the belief-set game structure. We now define the syntax and the semantics of the surveillance properties in which we are interested. 
 
 We consider a set of \emph{surveillance predicates} $\SP = \{p_k \mid k \in \nats_{>0}\}$, where for $k \in \nats_{>0}$ we say that a state $(l_a,B_t)$ in the belief game structure satisfies $p_k$ (denoted $(l_a,B_t) \models p_k$) iff 
 $|\{l_t \in B_t \mid \vis(l_a,l_t)  = \false \}| \leq k$. Intuitively, $p_k$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $k \in \nats_{>0}$.
@@ -131,7 +134,7 @@ A more relaxed requirement is that the agent's uncertainty never grows above $5$
 
 
 \subsection{Incorporating Task Specifications}
-We can easily integrate LTL objectives not related to surveillance, i.e., \emph{task specifications}, by considering, in addition to $\SP$, a set $\AP$ of atomic predicates interpreted over states of $G$. In order to define the semantics of $p \in \AP$ over states of $G_\belief$, we restrict ourselves to predicates observable by the agent. 
+We can integrate LTL objectives not related to surveillance, i.e., \emph{task specifications}, by considering, in addition to $\SP$, a set $\AP$ of atomic predicates interpreted over states of $G$. In order to define the semantics of $p \in \AP$ over states of $G_\belief$, we restrict ourselves to predicates observable by the agent. 
 Formally, we require that for $p \in \AP$, and states $(l_a,l_t')$ and $(l_a,l_t'')$ with $\vis(l_a,l_t')=\vis(l_a,l_t'')=\false$ it holds that $(l_a,l_t') \models p$ iff $(l_a,l_t'') \models p$. One class of such predicates are those that depend only on the agent's position.
 
 \begin{example}
@@ -146,4 +149,4 @@ A \emph{surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance 
 
 A \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ for the agent in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_a$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \not\models \varphi$.
 
-\todo{game is zero-sum...}
+It is well-known that two-player perfect-information games with LTL objectives over finite-state game structures are determined, that is exactly one of the players has a winning strategy. This means that, the agent does not have a winning strategy for a given surveillance game, if and only if the target has a winning strategy for this game. We thus refer to winning strategies of the target as \emph{counterexamples}.
