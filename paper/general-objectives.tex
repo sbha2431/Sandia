@@ -1,3 +1,9 @@
 \todo{omega-regular surveillance and task}
+\begin{itemize}
+\item $\LTLglobally p_k \wedge \LTLglobally\LTLfinally p_l$: first check concretizability of all paths in the graph to states violating the safety constraints, if one is not concretizable then done, if all are concretizable, then apply method for liveness
+\item general surveillance objectives: refine for some node where the true belief is more precise than the abstract one. not guaranteed to eliminate counterexample, but refinement loop guaranteed to still terminate since system is finite state and a proper split is done at each step. heuristics for identifying such nodes
+\item $\varphi_{\mathit{surveillance}} \wedge \varphi_{\mathit{task}}$  if surveillance is a conjunction of safety and liveness, then in sequence: safety, liveness, task; otherwise as previous item
+\item full specification language: as for general surveillance
+\end{itemize}
 
-\todo{practical fragment GR(1)}
+\todo{practical fragment GR(1)}: used in implementation
