@@ -1,7 +1,7 @@
 We present two different case studies that illustrate the results of the refinement algorithm. 
 
 \subsection{Belief liveness + task specification}
-Figure \ref{fig:case1} shows a gridworld divided into 'rooms'. The agent needs to patrol the green cell . Additionally, the agent has to 'see' the target or constrain its belief of the target to 1 cell infinitely often i.e, the surveillance specification is $\square \lozenge p_k \leq 1$.
+Figure \ref{fig:case1} shows a gridworld divided into 'rooms'. The agent needs to patrol the green cell . Additionally, the agent has to 'see' the target or constrain its belief of the target to 1 cell infinitely often i.e, the surveillance specification is $\square \lozenge p_1 \wedge \square \lozenge at_goal$ where the goal is the green cell. 
 
 \begin{figure}
 \centering

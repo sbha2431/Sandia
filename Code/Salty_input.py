@@ -257,6 +257,8 @@ def write_to_slugs_part(infile,gw,inittarg,vel=1,partitionGrid =[], belief_safet
     
     # Writing env_liveness
     file.write('\n[ENV_LIVENESS]\n')
+    stri = 'y = {}'.format(gw.targets[0][0])
+    file.write(stri)
     file.close()    
 
 def write_to_slugs_fullobs(infile,gw,inittarg,vel=1):
