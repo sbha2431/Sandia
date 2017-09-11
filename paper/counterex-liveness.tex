@@ -7,7 +7,44 @@ The counterexamples for general surveillance properties are directed graphs, whi
 
 \begin{figure}
 \begin{center}
-\includegraphics[scale=.33]{figs/7x7_liveness.png}
+%\includegraphics[scale=.33]{figs/7x7_liveness.png}
+\begin{tikzpicture}
+\draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
+\filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
+\filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
+\filldraw[fill=red,draw=black] (-0.5,0) rectangle (-1,-0.5);
+\filldraw[fill=red,draw=black] (0,0) rectangle (0.5,-0.5);
+\filldraw[fill=blue!40!white,draw=black] (+0.75,+0.75) circle (0.2cm);
+\filldraw[fill=orange!40!white,draw=black] (0.25,-0.75) circle (0.2cm);
+\draw[blue,thick] (-1.35,-0.75) rectangle (0.75,0.25);
+\draw[blue,thick,->] (0.73,0.75) -> (0.75,0.25);
+\node at (-1.30,+0.75) {\tiny{0}};
+\node at (-0.80,+0.75) {\tiny{1}};
+\node at (-0.30,+0.75) {\tiny{2}};
+\node at (0.20,+0.75) {\tiny{3}};
+\node at (0.73,+0.75) {\tiny{4}};
+\node at (-1.35,+0.25) {\tiny{5}};
+\node at (-0.85,+0.25) {\tiny{6}};
+\node at (-0.35,+0.25) {\tiny{7}};
+\node at (0.25,+0.25) {\tiny{8}};
+\node at (0.75,+0.25) {\tiny{9}};
+\node at (-1.35,-0.25) {\tiny{10}};
+\node at (-0.85,-0.25) {\tiny{11}};
+\node at (-0.35,-0.25) {\tiny{12}};
+\node at (0.25,-0.25) {\tiny{13}};
+\node at (0.75,-0.25) {\tiny{14}};
+\node at (-1.35,-0.75) {\tiny{15}};
+\node at (-0.85,-0.75) {\tiny{16}};
+\node at (-0.35,-0.75) {\tiny{17}};
+\node at (0.25,-0.75) {\tiny{18}};
+\node at (0.75,-0.75) {\tiny{19}};
+\node at (-1.35,-1.25) {\tiny{20}};
+\node at (-0.85,-1.25) {\tiny{21}};
+\node at (-0.35,-1.25) {\tiny{22}};
+\node at (0.25,-1.25) {\tiny{23}};
+\node at (0.75,-1.25) {\tiny{24}};
+\end{tikzpicture}
+
 \end{center}
 \caption{Agent locations on an (infinite) path in the abstract counterexample graph from Example~\ref{ex:simple-liveness-counterex}. In the counterexample graph, the first node is labelled with $(12,32)$, the second with $(19,\{Q_2\})$, and all other nodes with $(19,\{Q_1,Q_2\})$.}
 \label{fig:simple-liveness-counterex}

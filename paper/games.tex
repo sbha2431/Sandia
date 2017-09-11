@@ -9,15 +9,50 @@ We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\
 \item $\vis : \states \to \bools$ is a function that maps a state $(l_a,l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_a$}.
 \end{itemize}
 
+
 \begin{figure}
 \subfloat[Surveilance arena \label{simple-grid}]{
-\includegraphics[scale=.33]{figs/7x7_safety.png}
+%\includegraphics[scale=.33]{figs/7x7_safety.png}
+\begin{tikzpicture}
+\draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
+\filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
+\filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
+\filldraw[fill=red,draw=black] (-0.5,0) rectangle (-1,-0.5);
+\filldraw[fill=red,draw=black] (0,0) rectangle (0.5,-0.5);
+\filldraw[fill=blue!40!white,draw=black] (+0.75,+0.75) circle (0.2cm);
+\filldraw[fill=orange!40!white,draw=black] (0.25,-0.75) circle (0.2cm);
+\node at (-1.30,+0.75) {\tiny{0}};
+\node at (-0.80,+0.75) {\tiny{1}};
+\node at (-0.30,+0.75) {\tiny{2}};
+\node at (0.20,+0.75) {\tiny{3}};
+\node at (0.73,+0.75) {\tiny{4}};
+\node at (-1.35,+0.25) {\tiny{5}};
+\node at (-0.85,+0.25) {\tiny{6}};
+\node at (-0.35,+0.25) {\tiny{7}};
+\node at (0.25,+0.25) {\tiny{8}};
+\node at (0.75,+0.25) {\tiny{9}};
+\node at (-1.35,-0.25) {\tiny{10}};
+\node at (-0.85,-0.25) {\tiny{11}};
+\node at (-0.35,-0.25) {\tiny{12}};
+\node at (0.25,-0.25) {\tiny{13}};
+\node at (0.75,-0.25) {\tiny{14}};
+\node at (-1.35,-0.75) {\tiny{15}};
+\node at (-0.85,-0.75) {\tiny{16}};
+\node at (-0.35,-0.75) {\tiny{17}};
+\node at (0.25,-0.75) {\tiny{18}};
+\node at (0.75,-0.75) {\tiny{19}};
+\node at (-1.35,-1.25) {\tiny{20}};
+\node at (-0.85,-1.25) {\tiny{21}};
+\node at (-0.35,-1.25) {\tiny{22}};
+\node at (0.25,-1.25) {\tiny{23}};
+\node at (0.75,-1.25) {\tiny{24}};
+\end{tikzpicture}
 }
 \hfill
 \subfloat[Transitions from the initial state\label{fig:simple-transitions}]{
 \input{figs/simple-transitions.tex}
 }
-\caption{A simple surveillance game on a grid arena. Walls are shown in gray, obstacles are shown in red, the agent and the target are coloured in blue and orange respectively.}
+\caption{A simple surveillance game on a grid arena. Obstacles are shown in red, the agent and the target are coloured in blue and orange respectively.}
 \label{fig:simple-surveillance-game}
 \end{figure}
 
@@ -25,7 +60,7 @@ The transition relation $T$ encodes the one-step move of both the target and the
 
 $\succs_t(l_a,l_t) = \{l_t' \in L_t \mid \exists l_a'. ((l_a,l_t),(l_a',l_t')) \in T\}$.
 
-We extend $\succs_t$ to sets of locations of the target as follows by defining a function $\post : L_a \times \beliefs \to \beliefs$ such that the set $\post(l_a,L)$, consists of all possible successor locations of the target for states in $\{l_a\} \times L$. Formally, let $\post(l_a, L) = \bigcup_{l_t \in L}\succs_t(l_a,l_t)$.
+We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_a,L)$ consists of all possible successor locations of the target for states in $\{l_a\} \times L$. Formally, let $\post(l_a, L) = \bigcup_{l_t \in L}\succs_t(l_a,l_t)$.
 
 For a state $(l_a,l_t)$ and a successor location of the target $l_t'$, we denote with $\succs_t(l_a,l_t,l_t')$ the set of successor locations of the agent, given that the target moves to $l_t'$: 
 
