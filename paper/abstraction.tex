@@ -79,6 +79,6 @@ Consider again the surveillance game from Example~\ref{ex:simple-surveillance-ga
 \end{example}
 
 An abstract state $(l_a,A_t)$ \emph{satisfies a surveillance predicate $p_k$}, denoted $(l_a,A_t) \models p_k$, iff 
-$|\{l_t \in \gamma(A_t) \mid \vis(l_a,l_t)  = \false \}| \leq k$. Similarly, for an atomic predicate $p \in \AP$, we define $(l_a,A_t) \models p$ iff for every $l_t \in \gamma(A_t)$ it holds that $(l_a,l_t) \models p$. With these definitions in place, we can interpret surveillance objectives over runs of $G_\abstr$.
+$|\{l_t \in \gamma(A_t) \mid \vis(l_a,l_t)  = \false \}| \leq k$. Simply, the number of states in the concretized belief set needs to be less than $k$. Similarly, for an atomic predicate $p \in \AP$, we define $(l_a,A_t) \models p$ iff for every $l_t \in \gamma(A_t)$ it holds that $(l_a,l_t) \models p$. With these definitions in place, we can interpret surveillance objectives over runs of $G_\abstr$.
 
 Strategies (and wining strategies) for the agent and the target in an abstract belief-set game $(\alpha(G,Q),\varphi)$ are defined analogously to strategies (and winning strategies) in $G_\belief$.
