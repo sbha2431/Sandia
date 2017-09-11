@@ -84,7 +84,7 @@ Condition (1) captures the successor locations of the target that can be observe
 %The first condition captures the successor locations of the target that can be observed from the agent's current location $l_a$. Conditions (2) and (3) correspond to belief sets consisting of all possible successor locations of the target not visible from $l_a$. In (2) those are successors of a single possible current position $l_t$ of the target that is visible from $l_a$, while in (3) the belief consist of  successors of all positions in $B_t$ not visible from $l_a$.
 \end{itemize}
 
-\noindent{\textit{Remark}} In our model, before making a move, the agent updates its belief about the target. Thus, the belief set at each step consists of the locations the target can be in, after it moves (since it moves first). Since the target moves again immediately after the agent moves, the agent does not update its belief after it completes its own move. We note that the results in this paper can be easily extended to the case when the belief is updated after each player's move by explicitly incorporating turn-switching in the model. We choose not do so, for the sake of keeping the presentation simple.
+%\noindent{\textit{Remark}} In our model, before making a move, the agent updates its belief about the target. Thus, the belief set at each step consists of the locations the target can be in, after it moves (since it moves first). Since the target moves again immediately after the agent moves, the agent does not update its belief after it completes its own move. We note that the results in this paper can be easily extended to the case when the belief is updated after each player's move by explicitly incorporating turn-switching in the model. We choose not do so, for the sake of keeping the presentation simple.
 
 \begin{figure}
 \input{figs/simple-belief-transitions.tex}
@@ -108,7 +108,7 @@ A \emph{strategy for the agent in $G_\belief$} is a function $f_a : S^+ \times \
 The outcome of given strategies $f_a$ and $f_t$ for the agent and the target in $G_\belief$, denoted $\outcome(G_\belief,f_a,f_t)$, is a run $s_0,s_1,\ldots$ of $G_\belief$ such that for every $i \geq 0$, we have $s_{i+1} = f_a(s_0,\ldots,s_i,B_t^i)$, where $B_t^i = f_t(s_0,\ldots,s_i)$.
 
 \subsection{Temporal Surveillance Objectives}
-Since the states of a belief-set game structure track the information, which the agent has, we can state and interpret surveillance objectives for the agent over the belief-set game structure. We now define the syntax and the semantics of the surveillance properties in which we are interested. 
+Since the states of a belief-set game structure track the information which the agent has, we can state and interpret surveillance objectives for the agent over the belief-set game structure. We now define the syntax and the semantics of the surveillance properties in which we are interested. 
 
 We consider a set of \emph{surveillance predicates} $\SP = \{p_k \mid k \in \nats_{>0}\}$, where for $k \in \nats_{>0}$ we say that a state $(l_a,B_t)$ in the belief game structure satisfies $p_k$ (denoted $(l_a,B_t) \models p_k$) iff 
 $|\{l_t \in B_t \mid \vis(l_a,l_t)  = \false \}| \leq k$. Intuitively, $p_k$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $k \in \nats_{>0}$.

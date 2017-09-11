@@ -62,7 +62,7 @@ def userControlled_belief_multitarget(filename,gwg,numbeliefstates):
             gwg.colorstates[0] = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
         # time.sleep(0.4)
         gwg.render()
-        gwg.draw_state_labels()
+        # gwg.draw_state_labels()
         dirns = ['Left','Right','Up','Down','Belief']
         nextdirns = list(itertools.product(dirns,repeat = len(gwg.moveobstacles)))
         nextstates = data['nodes'][str(currstate)]['trans']
@@ -231,7 +231,7 @@ def userControlled_partition(filename,gwg,partitionGrid,moveobstacles):
         for n in range(1, gwg.nagents):
             gwg.colorstates[0] = gwg.colorstates.intersection(visibility.invis(gwg,agentstate[n]))
         gwg.render()
-        gwg.draw_state_labels()
+        # gwg.draw_state_labels()
         
         nextstates = data['nodes'][str(currstate)]['trans']
         nextstatedirn = {'Left':None,'Right':None,'Down':None,'Up':None,'Belief':set()}

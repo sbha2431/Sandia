@@ -13,7 +13,7 @@ import simulateController
 import counterexample_parser
 import copy
 
-slugs = '/home/rayna/work/tools/slugs/src/slugs'
+slugs = '/home/sudab/Applications/slugs/src/slugs'
 
 def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict(),local_refinement=False, precise_refinement=False):
 
