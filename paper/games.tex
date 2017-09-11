@@ -13,7 +13,7 @@ We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\
 \begin{figure}
 \subfloat[Surveilance arena \label{simple-grid}]{
 %\includegraphics[scale=.33]{figs/7x7_safety.png}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.9]
 \draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
 \filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
@@ -71,9 +71,9 @@ We assume that for every $s \in \states$ there exists $s' \in \states$ such that
 We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the agent. Formally, we require that if $\vis(l_a,l_t') = \vis(l_a,l_t'')=\false$, then $\succs_a(l_a,l_t,l_t') = \succs_a(l_a,l_t,l_t'')$. This assumption is natural in the setting when the agent can move in one step only to locations that are in its sight.
 
 \begin{example}\label{ex:simple-surveillance-game}
-Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_a$ and $L_t$ for the agent and the target both consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of both the agent and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or to a square that is part of a wall, or an obstacle, is not allowed. The initial positions of the agent and the target are locations $12$ and $32$ respectively. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(12,32)$.
+Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_a$ and $L_t$ for the agent and the target both consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of both the agent and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or an obstacle, is not allowed. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(4,18)$.
 
-The function $\vis$ encodes straight-line visibility: a location $l_t$ is visible from a location $l_a$ if there is no obstacle on the straight line between them. Initially the target is not in the area of sight of the agent, but the agent knows the initial position of the target. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{31,33,39\}$, this might no longer be the case. More precisely, if the target moves to location $33$, then the agent observes its location, but if it moves to one of locations $31$ and $39$, then the agent no longer knows its exact location. \qed
+The function $\vis$ encodes straight-line visibility: a location $l_t$ is visible from a location $l_a$ if there is no obstacle on the straight line between them. Initially the target is not in the area of sight of the agent, but the agent knows the initial position of the target. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $19$, then the agent observes its location, but if it moves to one of the others, then the agent no longer knows its exact location. \qed
 \end{example}
 
 
@@ -123,13 +123,13 @@ Condition (1) captures the successor locations of the target that can be observe
 
 \begin{figure}
 \input{figs/simple-belief-transitions.tex}
-\caption{Transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game} where $\vis(12,31) = \vis(12,39) = \false$.}
+\caption{Transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game} where $\vis(4,17) = \vis(4,23) = \false$.}
 \label{fig:simple-belief-game}
 \end{figure}
 
 \begin{example}\label{ex:simple-belief-game}
-Consider again the surveillance game structure from Example~\ref{ex:simple-surveillance-game}. The initial belief set is $\{32\}$, consisting of the initial position of the target. After the first move of the target, there are two possible belief sets: the set $\{33\}$ resulting from the move to a location in the area of sight of the agent, and the belief set $\{31,39\}$ consisting of the two invisible locations reachable in one step from location $32$.
-Figure~\ref{fig:simple-belief-game} shows the successor states of the initial state $(12,\{32\})$ in the belief-set game structure. \qed
+Consider again the surveillance game structure from Example~\ref{ex:simple-surveillance-game}. The initial belief set is $\{18\}$, consisting of the initial position of the target. After the first move of the target, there are two possible belief sets: the set $\{19\}$ resulting from the move to a location in the area of sight of the agent, and the belief set $\{17,23\}$ consisting of the two invisible locations reachable in one step from location $18$.
+Figure~\ref{fig:simple-belief-game} shows the successor states of the initial state $(4,\{18\})$ in the belief-set game structure. \qed
 \end{example}
 
 Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs_a : \states_\belief \times \beliefs \to \mathcal{P}(L_a)$ similarly to the corresponding functions defined for $G$. 
@@ -178,10 +178,9 @@ Suppose that $\mathit{at\_goal}$ is a predicate true exactly when the agent is a
 \end{example}
 
 \subsection{Surveillance Synthesis Problem}
-A \emph{surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the agent for $(G,\varphi)$} is a strategy $f_a$ for the agent in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \models \varphi$.
+A \emph{surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the agent for $(G,\varphi)$} is a strategy $f_a$ for the agent in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that for every strategy $f_a$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \not\models \varphi$.
 
 {\bf Surveillance synthesis problem:} Given a surveillance game $(G,\varphi)$, compute a winning strategy for the agent for $(G,\varphi)$, or determine that such a strategy does not exist.
 
-A \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ for the agent in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_a$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_a,f_t) \not\models \varphi$.
 
 It is well-known that two-player perfect-information games with LTL objectives over finite-state game structures are determined, that is exactly one of the players has a winning strategy. This means that, the agent does not have a winning strategy for a given surveillance game, if and only if the target has a winning strategy for this game. We thus refer to winning strategies of the target as \emph{counterexamples}.

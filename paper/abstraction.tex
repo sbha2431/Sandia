@@ -69,13 +69,13 @@ As for the belief-set game structure, the first condition captures the successor
 
 \begin{figure}
 \input{figs/simple-abstr-transitions.tex}
-\caption{Transitions from the initial state in the abstract game from Example~\ref{ex:simple-abstr-game} where $\alpha_\part(31) = Q_4$ and $\alpha_\part(39) = Q_5$.}
+\caption{Transitions from the initial state in the abstract game from Example~\ref{ex:simple-abstr-game} where $\alpha_\part(17) = Q_4$ and $\alpha_\part(23) = Q_5$.}
 \label{fig:simple-abstr-game}
 \end{figure}
 
 
 \begin{example}\label{ex:simple-abstr-game}
-Consider again the surveillance game from Example~\ref{ex:simple-surveillance-game}, and the abstraction partition $\part = \{Q_1,\ldots,Q_5\}$, where the set $Q_i$ corresponds to the $i$-th row of the grid. For location $31$ of the target we have $\alpha_\part(31) = Q_4$, and for  $39$ we have $\alpha_\part(39) = Q_5$. Thus, the belief set $B = \{31,39\}$ is covered by the abstract belief set $\alpha_Q(B) = \{Q_4,Q_5\}$. Figure~\ref{fig:simple-abstr-game} shows the successors of the initial state $(12,32)$ of the abstract belief-set game structure. The concretization of the abstract belief set $\{Q_4,Q_5\}$ is the set $\{29,30,31,32,33,36,37,38,39,40\}$ of target locations.\qed
+Consider again the surveillance game from Example~\ref{ex:simple-surveillance-game}, and the abstraction partition $\part = \{Q_1,\ldots,Q_5\}$, where the set $Q_i$ corresponds to the $i$-th row of the grid. For location $17$ of the target we have $\alpha_\part(17) = Q_4$, and for  $23$ we have $\alpha_\part(23) = Q_5$. Thus, the belief set $B = \{17,23\}$ is covered by the abstract belief set $\alpha_Q(B) = \{Q_4,Q_5\}$. Figure~\ref{fig:simple-abstr-game} shows the successors of the initial state $(4,18)$ of the abstract belief-set game structure. The concretization of the abstract belief set $\{Q_4,Q_5\}$ is the set $\{15,16,17,18,19,20,21,22,23,24\}$ of target locations.\qed
 \end{example}
 
 An abstract state $(l_a,A_t)$ \emph{satisfies a surveillance predicate $p_k$}, denoted $(l_a,A_t) \models p_k$, iff 
