@@ -1,4 +1,4 @@
-We present the results of our abstraction-based method for surveillance strategy synthesis on two case studies. \Rayna{here some details of the experimental set-up}
+We present the results of our abstraction-based method for surveillance strategy synthesis on two case studies. We use slugs, a generalized reactive synthesis tool detailed in \cite{EhlersR16}. Simulations were run on a Intel i5-5300U 2.30 GHz CPU with 8 Gb of ram. 
 
 \subsection{Liveness surveillance specification + task specification}
 Figure~\ref{fig:case1} shows a gridworld divided into  'rooms'. The surveillance objective requires the agent to infinitely often know precisely the location of the target (either see it, or have a belief consisting of one cell). Additionally, it has to perform the task of patrolling (visiting infinitely often) the green 'goal' cell. Formally, the specification is $\LTLglobally\LTLfinally p_1 \wedge \LTLglobally\LTLfinally \mathit{goal}$. 
