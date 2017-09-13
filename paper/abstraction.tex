@@ -10,15 +10,16 @@ Intuitively, this means that $\mathcal Q$ partitions the set of locations of the
 
 If $\part' =  \{Q_i'\}_{i=1}^m$ is a family of subsets of $L_t$ such that $\bigcup_{i=1}^m Q_i' = L_t$ and for each $Q_i' \in \part'$ there exists $Q_j \in \part$ such that $Q_i \subseteq Q_j$, then $\part'$ is also an abstraction partition, and we say that $\part'$ \emph{refines} $\part$, denoted $\part' \preceq \part$.
 
-For an abstraction partition $\part = \{Q_i\}_{i=1}^n$  we define a function $\alpha_\part : L_t \to \part$ by $\alpha(l_t) = Q$ for the unique $Q \in \part$ with $l_t \in Q$. We denote also with $\alpha_{\part} : \mathcal{P}(L_t) \to \mathcal{P}(\part)$ the \emph{abstraction function} defined by $\alpha_{\part}(L) = \{\alpha_\part(l) \mid l \in L\}$.
-We define a \emph{concretization function} $\gamma :  \mathcal{P}(\part) \cup L_t \to \mathcal{P}(L_t)$
-$
-\gamma(A) =
-\begin{cases}
-\{l_t\} &\text{if } A = l_t \in L_t,\\
-\bigcup_{Q \in A} Q &\text{if } A \in \mathcal{P}(\mathcal{Q}).\\
-\end{cases}
-$
+For $\part = \{Q_i\}_{i=1}^n$  we define a function $\alpha_\part : L_t \to \part$ by $\alpha(l_t) = Q$ for the unique $Q \in \part$ with $l_t \in Q$. We denote also with $\alpha_{\part} : \mathcal{P}(L_t) \to \mathcal{P}(\part)$ the \emph{abstraction function} defined by $\alpha_{\part}(L) = \{\alpha_\part(l) \mid l \in L\}$.
+We define a \emph{concretization function} $\gamma :  \mathcal{P}(\part) \cup L_t \to \mathcal{P}(L_t)$ such that 
+$\gamma(A) = l_t$ if $A = l_t \in L_t$, and  $\gamma(A) = \bigcup_{Q \in A} Q$ if $A \in \mathcal{P}(\part)$.
+%$
+%\gamma(A) =
+%\begin{cases}
+%\{l_t\} &\text{if } A = l_t \in L_t,\\
+%\bigcup_{Q \in A} Q &\text{if } A \in \mathcal{P}(\mathcal{Q}).\\
+%\end{cases}
+%$
 
 Given a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ and an abstraction partition $\part = \{Q_i\}_{i=1}^n$ of the set $L_t$, we define the \emph{abstraction of $G$ w.r.t.\ $\part$} to be the game structure 
 $G_\abstr  = \alpha_{\part}(G)= (\states_\abstr,s^\init_\abstr,\trans_\abstr)$, where
@@ -71,6 +72,7 @@ As for the belief-set game structure, the first condition captures the successor
 \input{figs/simple-abstr-transitions.tex}
 \caption{Transitions from the initial state in the abstract game from Example~\ref{ex:simple-abstr-game} where $\alpha_\part(17) = Q_4$ and $\alpha_\part(23) = Q_5$.}
 \label{fig:simple-abstr-game}
+\vspace{-.7cm}
 \end{figure}
 
 
