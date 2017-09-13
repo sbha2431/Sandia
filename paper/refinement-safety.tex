@@ -57,7 +57,7 @@ Consider a path $\pi_\abstr = v_0,\ldots, v_n$ in $\counterex_\abstr$ where $v_0
 Note that since $\counterex_\abstr$ is a counterexample we have $(l_a^n,A_t^n) \not \models p_k$, and since $k>0$, this means $A_t \in \mathcal{P}(\part)$.
 
 
-We now describe a procedure to compute a partition $\part'$ that refines the current partition $\part$ based on the path $\pi_\abstr$. Intuitively, we split the sets that appear in $A_t^n$ in order to ensure that in the refined abstract game the corresponding abstract state satisfies the surveillance predicate $p_k$. However, we may have to also split sets appearing in abstract states on the path to $v_n$ as we have to ensure that earlier imprecisions on this path do not propagate and include more than the desired newly split sets, thus again leading to the same violation of $p_k$.
+We now describe a procedure to compute a partition $\part'$ that refines the current partition $\part$ based on the path $\pi_\abstr$. Intuitively, we split the sets that appear in $A_t^n$ in order to ensure that in the refined abstract game the corresponding abstract state satisfies the surveillance predicate $p_k$. We may have to also split sets appearing in abstract states on the path to $v_n$, as we have to ensure that earlier imprecisions on this path do not propagate, thus including more than the desired newly split sets, and leading to the same violation of $p_k$.
 
 Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the sets $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A_j' = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
 \[|\{l_t \in \gamma(C^n) \mid \vis(l_a^n,l_t) = \false\}| \leq k \text{, where}\] 
