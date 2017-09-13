@@ -39,6 +39,7 @@ If Algorithm~\ref{algo:cex-analysis-safety} returns a path $\pi_\abstr$ in $\cou
 \begin{center}
 \input{figs/simple-safety-counterex-1.tex}
 \end{center}
+\vspace{-.2cm}
 \caption{Abstract counterexample in Example~\ref{ex:simple-safety-unconcretizable}. The leaf nodes are labelled with the abstract belief set $A = \{Q_1,Q_2\}$.}
 \label{fig:simple-safety-counterex-1}
 \vspace{-.5cm}
@@ -46,7 +47,7 @@ If Algorithm~\ref{algo:cex-analysis-safety} returns a path $\pi_\abstr$ in $\cou
 
 \begin{example}\label{ex:simple-safety-unconcretizable}
 Let $G$ be the surveillance game structure from Example~\ref{ex:simple-surveillance-game}, and consider the surveillance game $(G,\LTLglobally p_5)$. 
-Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{31,39\}$, and the leaf node $v_3$ with the set $B = \{30,32,38\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.\qed
+Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{17,23\}$, and the leaf node $v_3$ with the set $B = \{16,18,22\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.\qed
 \end{example}
 
 When the analysis procedure determines that an abstract counterexample tree is unconcretizable, it returns path in the tree that corresponds to a sequence of moves that the size of the belief-set does not actually exceed the threshold, given that the target behaves in a way consistent with the abstract counterexample.  Based on this path, we can then refine the abstraction in order to precisely capture this information and thus eliminate this abstract counterexample.
