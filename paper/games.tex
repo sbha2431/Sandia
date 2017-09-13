@@ -103,7 +103,8 @@ For a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ we define
 %\end{array}
 %$
 \end{itemize}
-Condition (1) captures the successor locations of the target that can be observed from the agent's current position $l_a$. Condition (2), on the other hand, corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from position $l_a$}. 
+\end{itemize}
+Condition (1) captures the successor locations of the target that can be observed from the agent's current position $l_a$. Condition (2) corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from $l_a$}. 
 %\begin{itemize}
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
@@ -121,7 +122,6 @@ Condition (1) captures the successor locations of the target that can be observe
 %$
 %\end{itemize}
 %The first condition captures the successor locations of the target that can be observed from the agent's current location $l_a$. Conditions (2) and (3) correspond to belief sets consisting of all possible successor locations of the target not visible from $l_a$. In (2) those are successors of a single possible current position $l_t$ of the target that is visible from $l_a$, while in (3) the belief consist of  successors of all positions in $B_t$ not visible from $l_a$.
-\end{itemize}
 
 %\noindent{\textit{Remark}} In our model, before making a move, the agent updates its belief about the target. Thus, the belief set at each step consists of the locations the target can be in, after it moves (since it moves first). Since the target moves again immediately after the agent moves, the agent does not update its belief after it completes its own move. We note that the results in this paper can be easily extended to the case when the belief is updated after each player's move by explicitly incorporating turn-switching in the model. We choose not do so, for the sake of keeping the presentation simple.
 
@@ -141,7 +141,7 @@ Figure~\ref{fig:simple-belief-game} shows the successor states of the initial st
 
 Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs_a : \states_\belief \times \beliefs \to \mathcal{P}(L_a)$ similarly to the corresponding functions defined for $G$. 
 
-A \emph{run} of the belief-set game $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\abstr^\init$, and $(s_i,s_{i+1}) \in T_\belief$ for all $i \geq 0$. 
+A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\abstr^\init$,  $(s_i,s_{i+1}) \in T_\belief$ for all $i$. 
 
 A \emph{strategy for the target in $G_\belief$} is a function $f_t: \states_\belief^+ \to \beliefs$ such that $f_t(\pi\cdot s) = B_t$ implies $B_t \in \succs_t(s)$ for every $\pi \in \states_\abstr^*$ and $s \in \states_\abstr$. That is, a strategy for the target suggests a move resulting in some belief set reachable from some location in the current belief.
 
