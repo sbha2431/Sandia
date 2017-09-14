@@ -64,17 +64,17 @@ Note that since $\counterex_\abstr$ is a counterexample we have $(l_a^n,A_t^n) \
 
 We now describe a procedure to compute a partition $\part'$ that refines the current partition $\part$ based on the path $\pi_\abstr$. Intuitively, we split the sets that appear in $A_t^n$ in order to ensure that in the refined abstract game the corresponding abstract state satisfies the surveillance predicate $p_k$. We may have to also split sets appearing in abstract states on the path to $v_n$, as we have to ensure that earlier imprecisions on this path do not propagate, thus including more than the desired newly split sets, and leading to the same violation of $p_k$.
 
-Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the sets $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A_j' = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
+Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the sets $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A' = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
 
 $\qquad|\{l_t \in \gamma(C^n) \mid \vis(l_a^n,l_t) = \false\}| \leq k \text{, where}$
 
-$\qquad\qquad C^n = \{B_{n,i}' \in A_j' \mid B_{n,i}' \cap B_t^n \neq \emptyset\}.$
+$\qquad\qquad C^n = \{B_{n,i}' \in A' \mid B_{n,i}' \cap B_t^n \neq \emptyset\}.$
 
 This property intuitively means that if we consider the sets in $A'$ that have non-empty intersection with $B_t^n$, an abstract state composed of those sets will satisfy $p_k$. Since $(l_a^n,B_t^n)$ satisfies $p_k$, we can find a partition $\part^n \preceq \part$ that guarantees this property, as shown in Algorithm ~\ref{algo:refinement-safety}.
  
 What remains, in order to eliminate this counterexample, is to ensure that only these sets are reachable via the considered path, by propagating this split backwards, obtaining a sequence of partitions $\part \succeq \part^n \succeq \ldots \succeq \part^0$ refining $\part$. 
 
-Given $\part^{j+1}$, we compute $\part^j$ as follows. For each $j$, we define a set $C^j \subseteq \mathcal{P}(L_t)$ (for $j=n$, the set $C^n$ was defined above). Suppose we have defined $C^{j+1}$ for some $j \geq 0$, and $A_t^j = (l_a^j,\{B_{j,1},\ldots,B_{j,m_j}\})$. We split some of the sets $B_{j,1},\ldots,B_{j,m_j}$ to obtain from $A_t^j$ a set $A_j' = \{B_{j,1}',\ldots,B_{j,m_j'}'\}$ where there exists $C^j \subseteq A_j'$ with
+Given $\part^{j+1}$, we compute $\part^j$ as follows. For each $j$, we define a set $C^j \subseteq \mathcal{P}(L_t)$ (for $j=n$, the set $C^n$ was defined above). Suppose we have defined $C^{j+1}$ for some $j \geq 0$, and $A_t^j = (l_a^j,\{B_{j,1},\ldots,B_{j,m_j}\})$. We split some of the sets $B_{j,1},\ldots,B_{j,m_j}$ to obtain from $A_t^j$ a set $A' = \{B_{j,1}',\ldots,B_{j,m_j'}'\}$ where there exists $C^j \subseteq A'$ with
 \[\gamma(C^j) = \{l_t \in \gamma(A_t^j) \mid \post(l_a^j,\{l_t\}) \cap \gamma(A_t^{j+1}) \subseteq \gamma(C^{j+1})\}.\]
 This means that using the new partition we can express precisely the set of states that do not lead to sets in $A_{j+1}'$ that we are trying to avoid. 
 The fact that an appropriate partition $\part$ can be computed, follows from the choice of the leaf node $v_n$. 
@@ -99,7 +99,7 @@ A  :=&  \{Q \cap B_t^n\mid Q \in A_t^n , Q \cap B_t^n \neq \emptyset \}\cup &\\
 \end{flalign*}
 
 $\part' := (\part \setminus A_t^n )  \cup A$;
-$C := \{ Q\in A \mid Q \cap B_t \neq \emptyset\}$
+$C := \{ Q\in A \mid Q \cap B_t^n \neq \emptyset\}$
 
 \For{$j = n-1,\ldots,0$}{
 \lIf{$A_t^j \in L_t$}{{\bf break}}
@@ -124,7 +124,7 @@ $C := \{ Q\in A \mid Q \cap B \neq \emptyset\}$
 \end{algorithm}
 %}
 
-Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample  tree in $(\alpha_\part(G),\LTLglobally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample trees in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that $\counterex'_\abstr \in \gamma(\counterex_\abstr)$ iff $\counterex'_\abstr$ differs from $\counterex_\abstr$ only in the node labels and for every node in $\counterex_\abstr$ labelled with $(l_a,A_t)$, the corresponding node in $\counterex'_\abstr$ is labelled with an abstract state $(l_a,A_t')$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
+Let $\part$ and $\part'$ be two counterexample partitions such that $\part' \preceq \part$. Let $\counterex_\abstr$ be an abstract counterexample  tree in $(\alpha_\part(G),\LTLglobally p_k)$. We define $\gamma_{\part'}(\counterex_\abstr)$ to be the set of abstract counterexample trees in $(\alpha_{\part'}(G),\LTLglobally p_k)$ such that $\counterex'_\abstr \in \gamma_{\part'}(\counterex_\abstr)$ iff $\counterex'_\abstr$ differs from $\counterex_\abstr$ only in the node labels and for every node in $\counterex_\abstr$ labelled with $(l_a,A_t)$, the corresponding node in $\counterex'_\abstr$ is labelled with an abstract state $(l_a,A_t')$ such that $\gamma(A_t') \subseteq \gamma(A_t)$.
  
 The theorem below states the progress property (eliminating the considered counterexample) of Algorithm~\ref{algo:refinement-safety}.
 
