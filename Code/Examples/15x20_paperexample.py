@@ -60,13 +60,13 @@ partition[(2,1,0)] = {148,149,150,151,152,168,169,170,171,172,188,189,190,191,19
 
 cexfile = 'Examples/slugs_output_1agent15x20_8.txt'
 gwfile = 'Examples/slugs_output_1agent15x20_8.png'
-print ('Writing slugs input file...')
-Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
+# print ('Writing slugs input file...')
+# Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
 print ('Converting input file...')
 conv_time_start = start_time - time.time()
 os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
 conv_time = conv_time_start - time.time()
-print('Checking realizability of full spec...')
+print('Computing controller...')
 sp = subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
 sp.wait()
 print 'Total time taken is ', time.time() - start_time, ' s'

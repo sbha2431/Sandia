@@ -1,7 +1,7 @@
-We now describe a procedure which determines whether an abstract counterexample for a safety surveillance objective is concretizable. This procedure essentially constructs the precise belief-sets corresponding to the abstract moves of the target that constitute the abstract counterexample.
+We now describe a procedure that determines whether an abstract counterexample for a safety surveillance objective is concretizable. This procedure essentially constructs the precise belief sets corresponding to the abstract moves of the target that constitute the abstract counterexample.
 
 \subsubsection{Forward belief-set propagation}
-Given an abstract counterexample tree $\counterex_\abstr$ we annotate its nodes with states in $\states_\belief$ in a top-down manner as follows. 
+Given an abstract counterexample tree $\counterex_\abstr$, we annotate its nodes with states in $\states_\belief$ in a top-down manner as follows. 
 The root node is labelled with $s_\belief^\init$. 
 If $v$ is a node annotated with the belief set $(l_a,B_t) \in \states_\belief$, and  $v'$ is a child of $v$ in $\counterex_\abstr$ labelled with an abstract state $(l_a',A_t')$, then we annotate $v'$ with the belief set $(l_a',B_t')$, where 
 $B_t' = \post(l_a,B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis-safety}.
