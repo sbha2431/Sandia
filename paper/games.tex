@@ -13,7 +13,7 @@ We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\
 \begin{figure}
 \subfloat[Surveillance arena \label{simple-grid}]{
 %\includegraphics[scale=.33]{figs/7x7_safety.png}
-\begin{tikzpicture}[scale=0.85]
+\begin{tikzpicture}[scale=0.8]
 \draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
 \filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
@@ -47,12 +47,12 @@ We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\
 \node at (0.25,-1.25) {\tiny{23}};
 \node at (0.75,-1.25) {\tiny{24}};
 \end{tikzpicture}
-}
-\hfill
+\hspace{.3cm}}
+%\hfill
 \subfloat[Transitions from the initial state\label{fig:simple-transitions}]{
 \input{figs/simple-transitions.tex}
 }
-\vspace{-0.35cm}
+\vspace{-0.1cm}
 \caption{A simple surveillance game on a grid arena. Obstacles are shown in red, the agent (at location 4) and the target (at location 18) are coloured in blue and orange respectively.}
 \label{fig:simple-surveillance-game}
 \vspace{-.7cm}
