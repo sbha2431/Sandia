@@ -9,6 +9,10 @@ import time
 import grid_partition
 import Salty_input
 import subprocess
+
+import time
+
+
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 
 nrows = 15

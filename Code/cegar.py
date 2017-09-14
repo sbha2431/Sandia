@@ -16,7 +16,8 @@ import copy
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 
 def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,belief_safety,belief_liveness,target_reachability,partition_init = dict(),local_refinement=False, precise_refinement=False):
-
+    start_time = time.time()
+    conv_time = 0
     if len(partition_init) > 0:
         partition = copy.deepcopy(partition_init)
     else:
@@ -27,7 +28,9 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         filename = 'slugs_input_'+str(gwg.nagents)+'agents.structuredslugs'
         Salty_input.write_to_slugs_fullobs(infile,gwg,moveobstacles[0],velocity)
         print ('Converting input file...')
+        conv_time_start = time.time()
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+        conv_time += time.time() - conv_time_start
         print('Checking realizability of LTL spec ...')
         sp = subprocess.Popen(slugs + ' --counterStrategy ' + infile+'.slugsin > ' + cexfile,shell=True, stdout=subprocess.PIPE)
         sp.wait()
@@ -55,7 +58,9 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         print ('Writing slugs input file...')
         Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
         print ('Converting input file...')
+        conv_time_start = time.time()
         os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+        conv_time += time.time() - conv_time_start
         print('Checking realizability of full spec...')
         sp = subprocess.Popen(slugs + ' --counterStrategy ' + infile+'.slugsin > ' + cexfile,shell=True, stdout=subprocess.PIPE)
         sp.wait()
@@ -237,7 +242,9 @@ def cegar_loop(gwg,moveobstacles,velocity,beliefparts,infile,outfile,cexfile,bel
         sp = subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
         sp.wait()
         print('Simulating controller ...')
-        
+        print 'Total time taken is ', time.time() - start_time, ' s'
+        print 'Total time taken for file conversion is ', conv_time, ' s'
+        print 'Actual time taken is ', (time.time() - start_time) - conv_time, ' s'
         simulateController.userControlled_partition(outfile,gwg,partition,moveobstacles)
         
 
