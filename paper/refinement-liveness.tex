@@ -8,7 +8,8 @@ Initially $\mathcal D$ contains a single node $d_0$ labelled with $\langle\{s_\b
 If the graph $\mathcal D$ contains a reachable cycle (it suffices to consider simple cycles, i.e., without repeating intermediate nodes) $\rho = d_0,\ldots,d_n$ with $d_0 = d_n$ such that some $d_i$ is labelled with $(l_a,B_t)$ where $(l_a,B_t) \models p_k$, then we conclude that the abstract counterexample $\counterex_\abstr$ is not concretizable. If no such cycle exists, then $\mathcal D$ is a concrete counterexample graph for the belief game $(G_\belief,\LTLglobally\LTLfinally p_k)$. 
 
 %\comment{
-\begin{algorithm}[t] \small
+\begin{algorithm}[b] \small
+\vspace{-.5cm}
 \KwIn{surveillance game $(G,\LTLglobally\LTLfinally p_k)$, abstract counterexample graph $\counterex_\abstr$ with initial node $v_0$}
 \KwOut{a path $\pi$ in a graph $\mathcal D$ or {\sc concretizable}}
 

@@ -9,12 +9,13 @@ If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$
 %\Suda{We can move this algorithm to the appendix right? The process is described in the previous paragraph anyway.}
 
 %\comment{
-\begin{algorithm}
+\begin{algorithm}[b]
+\vspace{-.4cm}
 \small
 \KwIn{surveillance game $(G,\LTLglobally p_k)$,\newline abstract counterexample tree $\counterex_\abstr$}
 \KwOut{a path $\pi$ in $\counterex_\abstr$ or {\sc concretizable}}
 
-\smallskip
+%\smallskip
 
 \While{there is a node $v$ in $\counterex_\abstr$ whose children\newline are not annotated with states in $\states_\belief$}{
  let $(l_a,B_t)$ be the state with which $v$ is annotated\;
@@ -26,7 +27,7 @@ If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$
 {\KwRet{$\pi$;}}
 {\KwRet{{\sc concretizable}}}
 
-\smallskip
+%\smallskip
 
 
 \caption{Analysis of abstract counterexample trees for games with safety surveillance objectives.}
@@ -83,12 +84,13 @@ We continue with the unconcretizable abstract counterexample tree from Example~\
 \end{example}
 
 %\comment{
-\begin{algorithm}
+\begin{algorithm}[b]
+\vspace{-.4cm}
 \small
 \KwIn{surveillance game $(G,\LTLglobally p_k)$, abstraction partition $\part$,\newline unconcretizable path $\pi = v_0,\ldots,v_n$ in $\counterex_\abstr$}
 \KwOut{an abstraction partition $\part'$ such that $\part' \preceq \part$}
 
-\smallskip
+%\smallskip
 
 let $(l_a^j,A_t^j)$ be the label of $v_j$, and $(l_a^j,B_t^j)$ its annotation;
 \begin{flalign*}
@@ -96,8 +98,7 @@ A  :=&  \{Q \cap B_t^n\mid Q \in A_t^n , Q \cap B_t^n \neq \emptyset \}\cup &\\
 & \{Q \setminus B_t^n\mid Q \in A_t^n , Q \setminus B_t^n \neq \emptyset \};
 \end{flalign*}
 
-$\part' := (\part \setminus A_t^n )  \cup A$
-
+$\part' := (\part \setminus A_t^n )  \cup A$;
 $C := \{ Q\in A \mid Q \cap B_t \neq \emptyset\}$
 
 \For{$j = n-1,\ldots,0$}{
@@ -110,16 +111,16 @@ A  := &\{Q \cap B\mid Q \in A_t^j , Q \cap B \neq \emptyset \}\cup &\\
 \end{flalign*}
 
 
-$\part' := (\part' \setminus A_t^j )  \cup A$
-
+$\part' := (\part' \setminus A_t^j )  \cup A$;
 $C := \{ Q\in A \mid Q \cap B \neq \emptyset\}$
 } 
 \KwRet{$\part'$}
 
-\smallskip
+%\smallskip
 
 \caption{Abstraction partition refinement given an unconcretizable path in an  abstract counterexample tree.}
 \label{algo:refinement-safety}
+
 \end{algorithm}
 %}
 
