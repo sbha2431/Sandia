@@ -9,7 +9,7 @@ The counterexamples for general surveillance properties are directed graphs, whi
 \begin{minipage}{0.2\textwidth}
 \begin{center}
 %\includegraphics[scale=.33]{figs/7x7_liveness.png}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=0.9]
 \draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
 \filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
@@ -48,10 +48,11 @@ The counterexamples for general surveillance properties are directed graphs, whi
 \end{center}
 \end{minipage}
 \begin{minipage}{0.28\textwidth}
-\caption{Agent locations on an (infinite) path in the abstract counterexample graph from Example~\ref{ex:simple-liveness-counterex}. In the counterexample graph, the first node is labelled with $(12,32)$, the second with $(19,\{Q_2\})$, and all other nodes with $(19,\{Q_1,Q_2\})$.}
+\vspace{0.1cm}
+\caption{\small Agent locations on an (infinite) path in the abstract counterexample graph from Example~\ref{ex:simple-liveness-counterex}. In the counterexample graph, the first node is labelled with $(12,32)$, the second with $(19,\{Q_2\})$, and all other nodes with $(19,\{Q_1,Q_2\})$.}
 \label{fig:simple-liveness-counterex}
 \end{minipage}
-\vspace{-.5cm}
+\vspace{-.65cm}
 \end{figure}
 
 \begin{example}\label{ex:simple-liveness-counterex}
