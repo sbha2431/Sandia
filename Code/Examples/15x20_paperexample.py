@@ -12,7 +12,7 @@ import subprocess
 
 import time
 
-
+start_time = time.time()
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 
 nrows = 15
@@ -63,9 +63,15 @@ gwfile = 'Examples/slugs_output_1agent15x20_8.png'
 print ('Writing slugs input file...')
 Salty_input.write_to_slugs_part(infile,gwg,moveobstacles[0],velocity, partition,belief_safety,belief_liveness,target_reachability)
 print ('Converting input file...')
+conv_time_start = start_time - time.time()
 os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+conv_time = conv_time_start - time.time()
 print('Checking realizability of full spec...')
 sp = subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
 sp.wait()
+print 'Total time taken is ', time.time() - start_time, ' s'
+print 'Total time taken for file conversion is ', conv_time, ' s'
+print 'Actual time taken is ', (time.time() - start_time) - conv_time, ' s'
+
 simulateController.userControlled_partition(outfile,gwg,partition,moveobstacles)
 

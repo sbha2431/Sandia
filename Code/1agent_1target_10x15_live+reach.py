@@ -23,10 +23,10 @@ belief_safety = 0
 belief_liveness = 1
 target_reachability = True
 
-outfile = 'Examples/output_10x15_live+reach'
-infile = 'Examples/input_10x15_live+reach'
-cexfile = 'Examples/counterexample_10x15_live+reach.txt'
-gwfile = 'Examples/gridworldfig_10x15_live+reach.png'
+outfile = 'Examples/output_10x15_live+reach2'
+infile = 'Examples/input_10x15_live+reach2'
+cexfile = 'Examples/counterexample_10x15_live+reach2.txt'
+gwfile = 'Examples/gridworldfig_10x15_live+reach2.png'
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
