@@ -6,7 +6,7 @@ The root node is labelled with $s_\belief^\init$.
 If $v$ is a node annotated with the belief set $(l_a,B_t) \in \states_\belief$, and  $v'$ is a child of $v$ in $\counterex_\abstr$ labelled with an abstract state $(l_a',A_t')$, then we annotate $v'$ with the belief set $(l_a',B_t')$, where 
 $B_t' = \post(l_a,B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis-safety}.
 If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node annotated with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
-\Suda{We can move this algorithm to the appendix right? The process is described in the previous paragraph anyway.}
+%\Suda{We can move this algorithm to the appendix right? The process is described in the previous paragraph anyway.}
 \begin{algorithm}[h]
 \small
 \KwIn{surveillance game $(G,\LTLglobally p_k)$,\newline abstract counterexample tree $\counterex_\abstr$}
