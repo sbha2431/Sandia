@@ -61,7 +61,7 @@ We now consider a relaxed requirement, namely, that the uncertainty drops to at 
 $(G,\LTLglobally \LTLfinally p_2)$.
 
 Let $\part = \{Q_1,Q_2\}$ be the partition from Example~\ref{ex:simple-safety-unconcretizable}. %that is, $Q_1$, corresponds to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ contains the locations from the other three columns of the grid. 
-Figure~\ref{fig:simple-liveness-counterex} shows an infinite path (in lasso form) in the abstract game $(\alpha_\part(G),\LTLglobally \LTLfinally p_2)$.  The figure depicts only the corresponding trajectory (sequence of positions) of the agent. The initial abstract state is $(4,18)$, the second node on the path is labeled with the abstract state $(9,\{Q_2\})$, and all other nodes on the path are labeled with abstract states of the form $(l_a,\{Q_1,Q_2\})$. As each abstract state in the cycle violates $p_2$, the path violates $\LTLglobally \LTLfinally p_2$. The same holds for all infinite paths in the existing abstract counterexample graph.
+Figure~\ref{fig:simple-liveness-counterex} shows an infinite path (in lasso form) in the abstract game $(\alpha_\part(G),\LTLglobally \LTLfinally p_2)$.  The figure depicts only the corresponding trajectory (sequence of positions) of the agent. The initial abstract state is $(4,18)$, the second node on the path is labeled with $(9,\{Q_2\})$, and all other nodes on the path are labeled with abstract states of the form $(l_a,\{Q_1,Q_2\})$. As each abstract state in the cycle violates $p_2$, the path violates $\LTLglobally \LTLfinally p_2$. The same holds for all infinite paths in the existing abstract counterexample graph.
 \qed
 \end{example}
 
