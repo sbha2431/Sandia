@@ -54,7 +54,7 @@ Let $G$ be the surveillance game structure from Example~\ref{ex:simple-surveilla
 Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{17,23\}$, and the leaf node $v_3$ with the set $B = \{16,18,22\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.\qed
 \end{example}
 
-When the analysis procedure determines that an abstract counterexample tree is unconcretizable, it returns path in the tree that corresponds to a sequence of moves that the size of the belief-set does not actually exceed the threshold, given that the target behaves in a way consistent with the abstract counterexample.  Based on this path, we can then refine the abstraction in order to precisely capture this information and thus eliminate this abstract counterexample.
+When the analysis procedure determines that an abstract counterexample tree is unconcretizable, it returns a path in the tree that corresponds to a sequence of moves ensuring that the size of the belief-set does not actually exceed the threshold, given that the target behaves in a way consistent with the abstract counterexample.  Based on this path, we can then refine the abstraction in order to precisely capture this information and thus eliminate this abstract counterexample.
 
 
 \subsubsection{Backward partition splitting}
@@ -64,17 +64,17 @@ Note that since $\counterex_\abstr$ is a counterexample we have $(l_a^n,A_t^n) \
 
 We now describe a procedure to compute a partition $\part'$ that refines the current partition $\part$ based on the path $\pi_\abstr$. Intuitively, we split the sets that appear in $A_t^n$ in order to ensure that in the refined abstract game the corresponding abstract state satisfies the surveillance predicate $p_k$. We may have to also split sets appearing in abstract states on the path to $v_n$, as we have to ensure that earlier imprecisions on this path do not propagate, thus including more than the desired newly split sets, and leading to the same violation of $p_k$.
 
-Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the sets $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A' = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
+Formally, if $A_t^n = (l_a^n,\{B_{n,1},\ldots,B_{n,m_n}\})$, then we split some of the sets $B_{n,1},\ldots,B_{n,m_n}$ to obtain from $A_t^n$ a set $A'_n = \{B_{n,1}',\ldots,B_{n,m_n'}'\}$ such that
 
 $\qquad|\{l_t \in \gamma(C^n) \mid \vis(l_a^n,l_t) = \false\}| \leq k \text{, where}$
 
-$\qquad\qquad C^n = \{B_{n,i}' \in A' \mid B_{n,i}' \cap B_t^n \neq \emptyset\}.$
+$\qquad\qquad C^n = \{B_{n,i}' \in A'_n \mid B_{n,i}' \cap B_t^n \neq \emptyset\}.$
 
-This property intuitively means that if we consider the sets in $A'$ that have non-empty intersection with $B_t^n$, an abstract state composed of those sets will satisfy $p_k$. Since $(l_a^n,B_t^n)$ satisfies $p_k$, we can find a partition $\part^n \preceq \part$ that guarantees this property, as shown in Algorithm ~\ref{algo:refinement-safety}.
+This property intuitively means that if we consider the sets in $A'_n$ that have non-empty intersection with $B_t^n$, an abstract state composed of those sets will satisfy $p_k$. Since $(l_a^n,B_t^n)$ satisfies $p_k$, we can find a partition $\part^n \preceq \part$ that guarantees this property, as shown in Algorithm~\ref{algo:refinement-safety}.
  
 What remains, in order to eliminate this counterexample, is to ensure that only these sets are reachable via the considered path, by propagating this split backwards, obtaining a sequence of partitions $\part \succeq \part^n \succeq \ldots \succeq \part^0$ refining $\part$. 
 
-Given $\part^{j+1}$, we compute $\part^j$ as follows. For each $j$, we define a set $C^j \subseteq \mathcal{P}(L_t)$ (for $j=n$, the set $C^n$ was defined above). Suppose we have defined $C^{j+1}$ for some $j \geq 0$, and $A_t^j = (l_a^j,\{B_{j,1},\ldots,B_{j,m_j}\})$. We split some of the sets $B_{j,1},\ldots,B_{j,m_j}$ to obtain from $A_t^j$ a set $A' = \{B_{j,1}',\ldots,B_{j,m_j'}'\}$ where there exists $C^j \subseteq A'$ with
+Given $\part^{j+1}$, we compute $\part^j$ as follows. For each $j$, we define a set $C^j \subseteq \mathcal{P}(L_t)$ (for $j=n$, the set $C^n$ was defined above). Suppose we have defined $C^{j+1}$ for some $j \geq 0$, and $A_t^j = (l_a^j,\{B_{j,1},\ldots,B_{j,m_j}\})$. We split some of the sets $B_{j,1},\ldots,B_{j,m_j}$ to obtain from $A_t^j$ a set $A'_j = \{B_{j,1}',\ldots,B_{j,m_j'}'\}$ where there exists $C^j \subseteq A'_j$ with
 \[\gamma(C^j) = \{l_t \in \gamma(A_t^j) \mid \post(l_a^j,\{l_t\}) \cap \gamma(A_t^{j+1}) \subseteq \gamma(C^{j+1})\}.\]
 This means that using the new partition we can express precisely the set of states that do not lead to sets in $A_{j+1}'$ that we are trying to avoid. 
 The fact that an appropriate partition $\part$ can be computed, follows from the choice of the leaf node $v_n$. 
