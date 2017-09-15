@@ -69,7 +69,7 @@ For a state $(l_a,l_t)$ and a successor location of the target $l_t'$, we denote
 
 $\succs_a(l_a,l_t,l_t') = \{l_a' \in L_a \mid  ((l_a,l_t),(l_a',l_t')) \in T\}$.
 
-We assume that, for every $s \in \states$, there exists $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state). We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the agent. Formally, we require that if $\vis(l_a,l_t') = \vis(l_a,l_t'')=\false$, then $\succs_a(l_a,l_t,l_t') = \succs_a(l_a,l_t,l_t'')$. This assumption is natural in the setting when the agent can move in one step only to locations that are in its sight.
+We assume that, for every $s \in \states$, there exists $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state). We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the agent. Formally, we require that if $\vis(l_a,l_t''') = \vis(l_a,l_t'''')=\false$, then $\succs_a(l_a,l_t',l_t''') = \succs_a(l_a,l_t'',l_t'''')$ for all $l_t',l_t'',l_t''',l_t'''' \in L_t$. This assumption is natural in the setting when the agent can move in one step only to locations that are in its sight.
 
 \begin{example}\label{ex:simple-surveillance-game}
 Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_a$ and $L_t$ for the agent and the target consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of both the agent and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or an obstacle, is not allowed. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(4,18)$.
@@ -90,7 +90,7 @@ For a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ we define
 \begin{itemize}
 \item $\states_\belief = L_a \times \beliefs$ is the set of states, with $L_a$ the set of locations of the agent, and $\beliefs$ the set of \emph{belief sets} describing information about the location of the target;
 \item $s^\init_\belief = (l_a^\init,\{l_t^\init\})$ is the initial state;
-\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_a, B_t),(l_a', B_t')) \in \trans_\belief$ iff one of these holds:
+\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_a, B_t),(l_a', B_t')) \in \trans_\belief$ iff $l_a' \in  \succs_a(l_a,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
 \begin{itemize}
 \item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \post(l_a,B_t)$, $\vis(l_a,l_t') = \true$;
 \item[(2)] $B_t' = \{l_t' \in \post(l_a,B_t)  \mid  \vis(l_a,l_t') = \false \}$.

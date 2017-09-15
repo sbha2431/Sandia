@@ -30,10 +30,11 @@ $G_\abstr  = \alpha_{\part}(G)= (\states_\abstr,s^\init_\abstr,\trans_\abstr)$, 
 %, where we let $A_t^{\init} = l_t^\init$ if $\vis(l_a,l_t) = \true$, and we define $A_t^{\init} = \{\alpha_{\part}(l_t^\init)\}$ in case $\vis(l_a,l_t) = \false$.
 \item $\trans_\abstr \subseteq \states_\abstr \times \states_\abstr$ is the transition relation such that $((l_a, A_t),(l_a', A_t')) \in \trans_\abstr$ if and only if one of the following two conditions is satisfied:
 \begin{itemize}
-\item[(1)] $A_t' = l_t'$, $l_t' \in \post(\gamma(A_t))$ and $\vis(l_a,l_t') = \true$.
-
-\item[(2)] $A_t' = \alpha_{\part}(\{l_t' \in \post(\gamma(A_t))  |  \vis(l_a,l_t') = \false\})$.
-
+\item[(1)] $A_t' = l_t'$, $l_t' \in \post(\gamma(A_t))$ and $\vis(l_a,l_t') = \true$, and
+$l_a' \in \succs_a(l_a,l_t,l_t')$ for some $l_t \in \gamma(A_t)$.
+\item[(2)] $A_t' = \alpha_{\part}(\{l_t' \in \post(\gamma(A_t))  |  \vis(l_a,l_t') = \false\})$, and
+$l_a' \in \succs_a(l_a,l_t,l_t')$ for some $l_t \in \gamma(A_t)$ and some
+$l_t' \in \post(\gamma(A_t))$ with $\vis(l_a,l_t') = \false$.
 %\item[(1)] $A_t' = l_t'$ for some $l_t' \in L_t$, where $\vis(l_a,l_t') = \true$, and $((l_a,l_t),(l_a',l_t')) \in \trans$ for some $l_t \in \gamma(A_t)$;
 
 %\item[(2)] $A_t' = \alpha_{\part}(B_t')$, where 
