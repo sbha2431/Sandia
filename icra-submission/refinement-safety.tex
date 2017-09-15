@@ -4,11 +4,11 @@ We now describe a procedure that determines whether an abstract counterexample f
 Given an abstract counterexample tree $\counterex_\abstr$, we annotate its nodes with states in $\states_\belief$ in a top-down manner as follows. 
 The root node is labelled with $s_\belief^\init$. 
 If $v$ is a node annotated with the belief set $(l_a,B_t) \in \states_\belief$, and  $v'$ is a child of $v$ in $\counterex_\abstr$ labelled with an abstract state $(l_a',A_t')$, then we annotate $v'$ with the belief set $(l_a',B_t')$, where 
-$B_t' = \post(l_a,B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation is given in Algorithm~\ref{algo:cex-analysis-safety}.
-If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node annotated with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
-%\Suda{We can move this algorithm to the appendix right? The process is described in the previous paragraph anyway.}
+$B_t' = \post(l_a,B_t) \cap \gamma(A_t')$. The counterexample analysis procedure based on this annotation will be named \cexsafety.
+If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$ for which $(l_a,B_t) \not\models p_k$, then the new annotation gives us a concrete counterexample tree $\counterex_\belief$, which by construction concertizes $\counterex_\abstr$. Conversely, if there exists a leaf node annotated with $(l_a,B_t)$ such that $(l_a,B_t) \models p_k$, then the procedure \cexsafety\ returns a path $\pi_\abstr$ from the root of $\counterex_\abstr$ to one such leaf node.
+%we can conclude that the abstract counterexample tree $\counterex_\abstr$ is not concretizable and use the path from the root of the tree to this leaf node to refine the partition $\part$.
 
-%\comment{
+\comment{
 \begin{algorithm}[b]
 \vspace{-.4cm}
 \small
@@ -33,10 +33,10 @@ If each of the leaf nodes of the tree is annotated with a belief set $(l_a,B_t)$
 \caption{Analysis of abstract counterexample trees for games with safety surveillance objectives.}
 \label{algo:cex-analysis-safety}
 \end{algorithm}
-%}
+}
 
 \begin{theorem}
-If Algorithm~\ref{algo:cex-analysis-safety} returns a path $\pi_\abstr$ in $\counterex_\abstr$, then $\counterex_\abstr$ is not concretizable, and $\pi_\abstr$ is a non-concretizable path, otherwise  $\counterex_\abstr$ is concretizable.
+If \cexsafety\ returns a path $\pi_\abstr$ in $\counterex_\abstr$, then $\counterex_\abstr$ is not concretizable, and $\pi_\abstr$ is a non-concretizable path, otherwise  $\counterex_\abstr$ is concretizable.\looseness=-1
 \end{theorem}
 
 \begin{figure}
@@ -51,7 +51,9 @@ If Algorithm~\ref{algo:cex-analysis-safety} returns a path $\pi_\abstr$ in $\cou
 
 \begin{example}\label{ex:simple-safety-unconcretizable}
 Let $G$ be the surveillance game structure from Example~\ref{ex:simple-surveillance-game}, and consider the surveillance game $(G,\LTLglobally p_5)$. 
-Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in Algorithm~\ref{algo:cex-analysis-safety} annotates node $v_1$ with the concrete belief set $\{17,23\}$, and the leaf node $v_3$ with the set $B = \{16,18,22\}$. Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.\qed
+Let $\part = \{Q_1,Q_2\}$ consist of the set $Q_1$, corresponding to the first two columns of the grid in Figure~\ref{simple-grid} and the set $Q_2$ containing the locations from the other three columns of the grid. Figure~\ref{fig:simple-safety-counterex-1} shows a counterexample tree $\counterex_\abstr$ in the abstract game $(\alpha_\part(G),\LTLglobally p_5)$. The analysis in \cexsafety\ annotates node $v_1$ with the concrete belief set $\{17,23\}$, and the leaf node $v_3$ with the set $B = \{16,18,22\}$.  Then, since $|B|\leq 5$, \cexsafety\  returns the path $v_0,v_1,v_3$. 
+%Thus, this counterexample tree $\counterex_\abstr$ is determined to be unconcretizable and the partition $\part$ should be refined.
+\qed
 \end{example}
 
 When the analysis procedure determines that an abstract counterexample tree is unconcretizable, it returns path in the tree that corresponds to a sequence of moves that the size of the belief-set does not actually exceed the threshold, given that the target behaves in a way consistent with the abstract counterexample.  Based on this path, we can then refine the abstraction in order to precisely capture this information and thus eliminate this abstract counterexample.
