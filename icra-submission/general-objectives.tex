@@ -1,0 +1,12 @@
+We have described refinement procedures for safety and liveness surveillance objectives. If we are given a conjunction of such objectives, we first apply the refinement procedure for safety, and if no path for which we can refine is found, we then apply the refinenment procedure for liveness. 
+
+In the general case, we check if the counterexample contains a state for which the concrete belief is a strict subset of the abstract one. If this is not the case, then the counterexample is concretizable, otherwise we refine the abstraction to make this belief precise. In the special case when we have a conjunction of a surveillance and task specifications, we first refine with respect to the surveillance objective as described above, and if this is not possible, with respect to such a node. Since the set of states in the game is finite, the iterative refinement will terminate, either with a concretizable counterexample, or with a surveillance strategy.  
+
+
+%\begin{itemize}
+%\item $\LTLglobally p_k \wedge \LTLglobally\LTLfinally p_l$: first check concretizability of all paths in the graph to states violating the safety constraints, if one is not concretizable then done, if all are concretizable, then apply method for liveness
+%\item general surveillance objectives: refine for some node where the true belief is more precise than the abstract one. not guaranteed to eliminate counterexample, but refinement loop guaranteed to still terminate since system is finite state and a proper split is done at each step. heuristics for identifying such nodes
+%\item $\varphi_{\mathit{surveillance}} \wedge \varphi_{\mathit{task}}$  if surveillance is a conjunction of safety and liveness, then in sequence: safety, liveness, task; otherwise as previous item
+%\item full specification language: as for general surveillance
+%\end{itemize}
+
