@@ -1,0 +1,109 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+\usepackage[english]{babel}
+\usepackage{hyperref}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{ltl} 
+\usepackage{multirow}
+\usepackage{calc}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,backgrounds,calc,shapes,decorations,automata,snakes}
+\usetikzlibrary{mindmap}
+
+\usefonttheme{professionalfonts}
+\usepackage{appendixnumberbeamer}
+
+\setbeamertemplate{sections/subsections in toc}[sections numbered]
+\setbeamercolor{section in toc}{parent=normal text}
+\setbeamertemplate{section in toc shaded}[default][60]
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{tcolorbox}
+
+\usepackage{media9}
+\usepackage{multimedia}
+
+\makeatletter
+%\setbeamertemplate{footline}[text line]{\strut\hfill\insertframenumber/\inserttotalframenumber\hspace*{1em}\hskip-\beamer@leftmargin}
+\makeatother
+
+
+\input{macros}
+
+\begin{document}
+
+\begin{frame}
+\frametitle{Synthesis of surveillance strategies  {\small [submitted to ICRA'18]} \newline \small S.\ Bharadwaj, R. Dimitrova, and U. Topcu}
+
+ Temporal evolution of uncertainty as a synthesis objective
+
+\bigskip
+
+\input{grid.tex}
+
+\uncover<4>{
+\bigskip
+\structure{Challenge:} Exponential size of the set of uncertainty sets
+
+\bigskip
+\structure{Approach:} Abstraction-based surveillance strategy synthesis
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Safety surveillance objectives}
+
+
+\structure{Surveillance :} the uncertainty should never grow above 10 cells
+
+\smallskip
+
+\structure{Task specification:} visit the goal location infinitely often
+
+
+\bigskip
+
+ \begin{center} 
+\movie[
+  height = 4cm,
+  width = 7cm,
+  showcontrols,
+  poster,
+  borderwidth=1pt
+] 
+{}{video-safety.mp4}
+
+ \end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Liveness surveillance objectives}
+
+
+\structure{Surveillance :} infinitely often know precisely the target's location
+
+\smallskip
+
+\structure{Task specification:} visit the goal location infinitely often
+
+
+\bigskip
+
+ \begin{center} 
+\movie[
+  height = 4cm,
+  width = 7cm,
+  showcontrols,
+  poster,
+  borderwidth=1pt
+] 
+{}{video-liveness.mp4}
+
+ \end{center}
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,164 @@
+\usepackage{stmaryrd}
+
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO:}} #1\\}
+
+\newcommand{\RM}[1]{{\textcolor{red}{ \textbf{RM:} #1 $\clubsuit$ }}}
+\newcommand{\RD}[1]{{\textcolor{blue}{ \textbf{RD:} #1 $\spadesuit$ }}}
+\newcommand{\LF}[1]{{\textcolor{magenta}{ \textbf{LF:} #1 $\spadesuit$ }}}
+\newcommand{\HH}[1]{{\textcolor{brown}{ \textbf{HH:} #1 $\spadesuit$ }}}
+
+\newcommand{\mcomment}[1]{}
+
+\DeclareMathOperator*{\sign}{sign}
+
+\newcommand{\ie}{i.\,e.\xspace}
+\newcommand{\as}{a.\,s.\xspace}
+\newcommand{\wlg}{w.\,l.\,o.\,g.\xspace}
+\newcommand{\wrt}{w.\,r.\,t.\xspace}
+
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\nats}{\mathbb{N}}
+\newcommand{\set}[1]{\ensuremath{\{ {#1} \}}}
+
+\newcommand{\pctl}{PCTL\xspace}
+\newcommand{\pctlstar}{PCTL$^*$\xspace}
+\newcommand{\ctlstar}{CTL$^*$\xspace}
+\newcommand{\atlstar}{ATL$^*$\xspace}
+
+
+\newcommand{\atoms}{AP}
+\newcommand{\true}{\mathsf{tt}}
+\newcommand{\false}{\mathsf{ff}}
+\newcommand{\probX}{\mathbb{P}}
+\newcommand{\pquant}{\probX^{\quantifierTiny}}
+\newcommand{\pforall}{\probX^{\forall}}
+\newcommand{\pexists}{\probX^{\exists}}
+
+\newcommand{\bfx}{\mathbf{x}}
+\newcommand{\bfe}{\mathbf{e}}
+
+\newcommand{\init}{\iota}
+\newcommand{\pprog}{(\bfx,C)}
+\newcommand{\mdp}{(S,\rho)}
+\newcommand{\dtmc}{(S^\alpha,\rho^\alpha)}
+\newcommand{\Distr}{\mathit{Distr}}
+\newcommand{\Supp}{\mathit{Supp}}
+\newcommand{\Prob}{\mathit{Prob}}
+\newcommand{\Paths}{\mathsf{Paths}}
+
+\newcommand{\Pree}{\mathsf{Pre}_{\exists}}
+\newcommand{\Pref}{\mathsf{Pre}_{\forall}}
+
+\newcommand{\Player}{\mathsf{Player}}
+
+
+\newcommand{\sem}[1]{[\![#1]\!]}
+\newcommand{\Safe}{\mathsf{Safe}}
+\newcommand{\Reach}{\mathsf{Reach}}
+\newcommand{\Outcome}{\mathsf{Outcome}}
+
+\newcommand{\at}{\mathit{at}}
+\newcommand{\inm}{\mathit{in}}
+\newcommand{\preserve}{\mathit{preserve}}
+
+\newcommand{\close}{\mathit{close}}
+\newcommand{\far}{\mathit{far}}
+\newcommand{\origin}{\mathit{origin}}
+
+\newcommand{\abs}[1]{|#1|}
+\newcommand{\inv}[1]{#1^{-1}}
+
+\newcommand{\sched}{\alpha}
+\newcommand{\event}{\mathcal{E}}
+\newcommand{\pevent}{\omega}
+\newcommand{\indicator}[1]{[#1]}
+\newcommand{\SampleSpace}{\Omega}
+\newcommand{\SigmaAlgebra}{\mathcal{F}}
+\newcommand{\Measure}{\mu}
+\newcommand{\ProbabilitySpace}{(\SampleSpace, \SigmaAlgebra, \Measure)}
+\newcommand{\CondProb}[2]{\mathbb{P}(#1 \; | \; #2)}
+\newcommand{\Exp}[1]{\mathbb{E}(#1)}
+\newcommand{\CExp}[3][{}]{\mathbb{E}^{#1}(#2 \; | \; #3)}
+\newcommand{\Set}[1]{\{#1\}}
+\newcommand{\SetCond}[2]{\{#1 \;:\; #2\}}
+
+\newcommand{\qual}{\mathsf{qualitative}}
+\newcommand{\quan}{\mathsf{quantitative}}
+\newcommand{\infst}{\mathsf{Inf}}
+
+\newcommand{\probOr}{\otimes}
+\newcommand{\porder}{\succ}
+
+\newcommand{\quantifier}{\protect\rotatebox[origin=c]{180}{\ensuremath{\mathrm Q}}}
+\newcommand{\quantifierTiny}{\protect\rotatebox[origin=c]{180}{\tiny\ensuremath{\mathrm Q}}}
+\newcommand{\nqRule}[1]{\ensuremath{\textsc{#1}}}
+\newcommand{\qRule}[3][\quantifierTiny]{\ensuremath{\nqRule{#3}^{#1}}_{#2}}
+\newcommand{\qDiscRule}[3][\quantifierTiny]{\ensuremath{\overline{\nqRule{#3}}^{#1}}_{#2}}
+
+\newtheorem{appxprop}{Proposition}
+\newtheorem{appxlemma}{Lemma}
+
+% colors 
+\definecolor{darkred}{rgb}{0.7 0 0}
+\definecolor{lightred}{rgb}{1 0.2 0}
+\definecolor{ired}{rgb}{0.8 0.36 0.36}
+\definecolor{darkgreen}{rgb}{0 0.5 0}
+\definecolor{darkblue}{rgb}{0 0 0.7}
+\definecolor{lightblue}{rgb}{0.390 0.582 0.925}
+\definecolor{darkgray}{rgb}{0.3 0.3 0.3}
+\definecolor{gray}{rgb}{0.5 0.5 0.5}
+\definecolor{lightgray}{rgb}{0.90 0.90 0.90}
+\newcommand\bluet[1]{\textcolor{darkblue}{#1}}
+\newcommand\magentat[1]{\textcolor{magenta}{#1}}
+\newcommand\redt[1]{\textcolor{darkred}{#1}}
+\newcommand\greent[1]{\textcolor{darkgreen}{#1}}
+\newcommand\oranget[1]{\textcolor{orange}{#1}}
+
+
+\newcommand{\colorize}[4]{\only<#1>{#4}\only<#2>{\textcolor{#3}{#4}}}
+
+\newcommand{\colthree}[7]{
+\only<#1>{\textcolor{#4}{#7}}
+\only<#2>{\textcolor{#5}{#7}}
+\only<#3>{\textcolor{#6}{#7}}
+}
+\newcommand{\coltwo}[5]{
+\only<#1>{\textcolor{#3}{#5}}
+\only<#2>{\textcolor{#4}{#5}}
+}
+
+\tikzset{
+    invisible/.style={opacity=0},
+    emph/.style={color=magenta},
+    alert/.style={color=red},
+    anotherhl/.style={color=blue},
+    bold/.style={very thick},
+    emph on/.style={alt={#1{emph}{}}},
+    alert on/.style={alt={#1{alert}{}}},
+    anotherhl on/.style={alt={#1{anotherhl}{}}},
+    arrow on/.style={alt={#1{->}{}}},
+    bold on/.style={alt={#1{bold}{}}},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+        \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+        },
+    }
+    
+\newcommand{\ifstmt}{\underline{\text{if}}\ }
+\newcommand{\thenstmt}{\ \underline{\text{then}}\ }
+\newcommand{\elsestmt}{\underline{\text{else}}\ }
+\newcommand{\assertstmt}{\textbf{assert}}
+\newcommand{\uniform}{\textbf{Uniform}}
+\newcommand{\bernoulli}{\textbf{Bernoulli}}
+\newcommand{\boolt}{\underline{\text{bool}}\ }
+\newcommand{\intt}{\underline{\text{int}}\ }
+\newcommand{\doublet}{\underline{\text{double}}\ }
+
+\newcommand{\modc}[1]{\text{mc}(#1)}
+
+\newcommand{\SharpSAT}{\#SAT}
+\newcommand{\SharpSMT}{\#SMT}
+
+\newcommand{\SharpP}{\#P}
+    
