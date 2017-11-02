@@ -1,0 +1,16 @@
+\begin{center}
+\begin{tikzpicture}[scale=1]
+\draw[step=0.5cm,color=gray] (-2.5,-1) grid (1.5,1);
+\filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
+\filldraw[fill=red,draw=black] (-0.5,0) rectangle (-1,-0.5);
+\filldraw[fill=red,draw=black] (-0.5,0.5) rectangle (-1,0);
+\filldraw[fill=red,draw=black] (0,0.5) rectangle (-0.5,0);
+
+\node at (0.25,0.75) {\includegraphics[scale=0.015]{./pics/agent.pdf}};
+\filldraw[fill=white,draw=orange,very thick] (-1.5,0) rectangle (-1,0.5);
+\filldraw[fill=white,draw=orange,very thick] (-2,0) rectangle (-1.5,0.5);
+\filldraw[fill=white,draw=orange,very thick] (-1.5,-0.5) rectangle (-1,0);
+\node at (-1.25,-0.25) {\includegraphics[scale=0.015]{./pics/target.pdf}};
+
+\end{tikzpicture}
+\end{center}

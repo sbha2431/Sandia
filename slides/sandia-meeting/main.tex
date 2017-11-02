@@ -43,13 +43,53 @@
 
 \input{grid.tex}
 
-\uncover<4>{
+\end{frame}
+
+\begin{frame}
+\frametitle{Types of surveillance objectives}
+
+\smallskip
+
+\input{grid-small.tex}
+
+
+\begin{itemize}
+\item {\bf Safety:} critical surveillance requirements
+\smallskip
+
+The agent must keep its uncertainty about the target's position contained below a specified threshold at all times.
+
+\smallskip
+
+
+\item {\bf Liveness:} persistent monitoring requirements
+
+\smallskip
+
+The agent can allow the uncertainty about the target's position to grow, as long as it can guarantee reducing the uncertainty below a threshold at a future time.
+
+\end{itemize}
+
+\smallskip 
+
+\textcolor{magenta}{Combination of such requirements tailored to suit the mission\looseness=-1} 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Synthesis of surveillance strategies  {\small [submitted to ICRA'18]} \newline \small S.\ Bharadwaj, R. Dimitrova, and U. Topcu}
+
+ Temporal evolution of uncertainty as a synthesis objective
+
+\bigskip
+
+\input{grid-4.tex}
+
 \bigskip
 \structure{Challenge:} Exponential size of the set of uncertainty sets
 
 \bigskip
 \structure{Approach:} Abstraction-based surveillance strategy synthesis
-}
 \end{frame}
 
 \begin{frame}
