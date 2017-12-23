@@ -15,7 +15,7 @@ def invis(gw, state,visdist):
         statecoords[1] += 0.5
         line = shapely.geometry.LineString([targcoords, statecoords])
         dist = np.sqrt((targcoords[0]-statecoords[0])**2 + (targcoords[1]-statecoords[1])**2)
-        if visdist <= dist: # if target is not too far
+        if dist <= visdist: # if target is not too far
             for obs in gw.obstacles:
                 obscoordsupleft = list(gw.coords(obs))
                 obscoordsupright = [obscoordsupleft[0] + 0.99, obscoordsupleft[1]]
@@ -28,7 +28,7 @@ def invis(gw, state,visdist):
                     break
         else:
             invisstates.add(s)
-    invisstates = invisstates - set(gw.walls)
+    invisstates = invisstates - set(gw.obstacles)
     return frozenset(invisstates)
 
 
