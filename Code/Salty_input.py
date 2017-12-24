@@ -225,8 +225,8 @@ def write_to_slugs_part(infile,gw,init,initmovetarget,targets,vel=1,visdist = 5,
         file.write(stri)
     return invisibilityset
 
-def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist = 5,allowed_states = [],fullvis_states = [],partitionGrid =[], belief_safety = 0, belief_liveness = 0, target_reachability = False):
-    nonbeliefstates = allowed_states
+def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist = 5,allowed_states = [],fullvis_states = [],partitionGrid =dict(), belief_safety = 0, belief_liveness = 0, target_reachability = False):
+    nonbeliefstates = gw.states
     beliefcombs = powerset(partitionGrid.keys())
 
     allstates = copy.deepcopy(nonbeliefstates)
@@ -252,16 +252,19 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
     #     file.write('u{}:0...{}\n'.format(v,gw.nactions-1))
 
     file.write('[ENV_INIT]\n')
-    file.write('st = {}\n'.format(initmovetarget))
+    if initmovetarget in allowed_states:
+        file.write('st = {}\n'.format(initmovetarget))
+    else:
+        file.write('st = {}\n'.format(allstates[-1]))
 
     file.write('[SYS_INIT]\n')
     file.write('s = {}\n'.format(init))
 
     # writing env_trans
     file.write('\n[ENV_TRANS]\n')
-    for st in allstates:
-        if st in nonbeliefstates:
-            for s in nonbeliefstates:
+    for st in set(allstates) - (set(nonbeliefstates) - set(allowed_states)): #Only allowed states and belief states
+        if st in allowed_states:
+            for s in allowed_states:
                 stri = "(s = {} /\\ st = {}) -> ".format(s,st)
                 beliefset = set()
                 for a in range(gw.nactions):
@@ -273,12 +276,12 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                                 if not t == s and t not in targets: # not allowed to move on agent's position
                                     try:
                                         partgridkeyind = [inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]
+                                        t2 = partitionGrid.keys()[partgridkeyind]
+                                        beliefset.add(t2)
                                     except:
                                         print t
-                                    t2 = partitionGrid.keys()[partgridkeyind]
-                                    beliefset.add(t2)
                         elif t not in allowed_states:
-                            stri += 'st\' = {} \\/'.format(allstates)
+                            stri += 'st\' = {} \\/'.format(allstates[-1])
                 if len(beliefset) > 0:
                     b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                     stri += ' st\' = {} \\/'.format(b2)
@@ -287,9 +290,15 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                 file.write(stri)
                 file.write("s = {} -> !st' = {}\n".format(s,s))
                 # file.write("s = {} -> !st = {}\n".format(s,s))
-
+        elif st == allstates[-1]:
+            stri = "st = {} -> ".format(st)
+            for t in fullvis_states:
+                stri += "st' = {} \\/ ".format(t)
+            stri += "st' = {}".format(st)
+            stri += '\n'
+            file.write(stri)
         else:
-            for s in nonbeliefstates:
+            for s in allowed_states:
                 invisstates = invisibilityset[s]
                 visstates = set(nonbeliefstates) - invisstates
 
@@ -329,7 +338,8 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
 
     # Writing env_safety
     for obs in gw.obstacles:
-        file.write('!st = {}\n'.format(obs))
+        if obs in allowed_states:
+            file.write('!st = {}\n'.format(obs))
 
     if target_reachability:
         for t in targets:
@@ -338,27 +348,31 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
     # writing sys_trans
     file.write('\n[SYS_TRANS]\n')
     for s in nonbeliefstates:
-        uset = list(itertools.product(range(len(gw.actlist)),repeat=vel))
-        stri = "s = {} -> ".format(s)
-        for u in uset:
-            # for v in range(vel):
-            #     stri += "u{} = {} /\\ ".format(v,u[v])
-            # stri = stri[:-3]
-            # stri += ' -> '
-            snext = copy.deepcopy(s)
-            for v in range(vel):
-                act = gw.actlist[u[v]]
-                snext = np.nonzero(gw.prob[act][snext])[0][0]
-            stri += '(s\' = {}) \\/'.format(snext)
-        stri = stri[:-3]
-        stri += '\n'
-        file.write(stri)
+        if s in allowed_states:
+            uset = list(itertools.product(range(len(gw.actlist)),repeat=vel))
+            stri = "s = {} -> ".format(s)
+            for u in uset:
+                # for v in range(vel):
+                #     stri += "u{} = {} /\\ ".format(v,u[v])
+                # stri = stri[:-3]
+                # stri += ' -> '
+                snext = copy.deepcopy(s)
+                for v in range(vel):
+                    act = gw.actlist[u[v]]
+                    snext = np.nonzero(gw.prob[act][snext])[0][0]
+                stri += '(s\' = {}) \\/'.format(snext)
+            stri = stri[:-3]
+            stri += '\n'
+            file.write(stri)
+        else:
+            file.write("!s = {}\n".format(s))
 # Writing sys_safety
     for obs in gw.obstacles:
-        file.write('!s = {}\n'.format(obs))
+        if obs in allowed_states:
+            file.write('!s = {}\n'.format(obs))
 
 
-    for s in set(nonbeliefstates):
+    for s in set(allowed_states):
         stri = 'st = {} -> !s = {}\n'.format(s,s)
         file.write(stri)
         stri = 'st = {} -> !s\' = {}\n'.format(s,s)
@@ -395,9 +409,9 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
 
     stri  = ''
     if belief_liveness >0:
-        for y in range(len(nonbeliefstates)):
-            stri+='st = {}'.format(y)
-            if y < len(nonbeliefstates) - 1:
+        for st in allowed_states:
+            stri+='st = {}'.format(st)
+            if st != allowed_states[-1]:
                 stri+=' \\/ '
         for b in beliefcombs:
             beliefset = set()
@@ -418,7 +432,15 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                 stri+=stri1
             if count == len(nonbeliefstates):
                 stri+= ' \\/ st = {}'.format(len(nonbeliefstates)+beliefcombs.index(b))
-
+        stri += '\\/ st = {}'.format(allstates[-1])
+        for st in set(nonbeliefstates)- set(allowed_states):
+            stri += '\\/ st = {}'.format(st)
         stri += '\n'
         file.write(stri)
+
+    file.write('\n[ENV_LIVENESS]\n')
+    for t in targets:
+        file.write('st = {}\n'.format(t+1))
+
     return invisibilityset
+
