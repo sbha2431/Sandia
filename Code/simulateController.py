@@ -236,7 +236,7 @@ def userControlled_partition_dist(filename,gwg,partitionGrid,moveobstacles,allow
                         if gridstate in allowed_states[m]:
                             for n in nextstatedirn[m]['Belief']:
                                 nexttargetstate[m] = automaton[m][n]['State']['st']
-                                nextbeliefs = beliefcombs[m][len(beliefcombs[m]) - (len(allstates[m]) - allstates[m].index(nexttargetstate[m]))]
+                                nextbeliefs = beliefcombs[m][nexttargetstate[m] - len(xstates)]
                                 if any(gridstate in partitionGrid[m][x] for x in nextbeliefs):
                                     nextstate[m] = copy.deepcopy(n)
                                     print 'Environment state in automaton is', allstates[m].index(nexttargetstate[m])
@@ -245,7 +245,7 @@ def userControlled_partition_dist(filename,gwg,partitionGrid,moveobstacles,allow
                                     invisstates = invisibilityset[m][nextagentstate[m]]
                                     visstates = set(xstates) - invisstates
                                     if nexttargetstate[m] not in xstates:
-                                        beliefcombstate = beliefcombs[m][allstates[m].index(nexttargetstate[m]) - len(xstates)]
+                                        beliefcombstate = beliefcombs[m][nexttargetstate[m] - len(xstates)]
                                         beliefstates = set()
                                         for b in beliefcombstate:
                                             beliefstates = beliefstates.union(partitionGrid[m][b])

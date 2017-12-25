@@ -280,7 +280,7 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                                         beliefset.add(t2)
                                     except:
                                         print t
-                        elif t not in allowed_states:
+                        elif t not in allowed_states and t not in gw.obstacles:
                             stri += 'st\' = {} \\/'.format(allstates[-1])
                 if len(beliefset) > 0:
                     b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
@@ -321,7 +321,8 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                         for a in range(gw.nactions):
                             for t in np.nonzero(gw.prob[gw.actlist[a]][b])[0]:
                                 if not t in invisibilityset[s]:
-                                    stri += ' st\' = {} \\/'.format(t)
+                                    if t in allowed_states:
+                                        stri += ' st\' = {} \\/'.format(t)
                                 else:
                                     if t in gw.targets[0]:
                                         continue
@@ -388,7 +389,7 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                 stri = 'st = {} -> '.format(len(nonbeliefstates)+beliefcombs.index(b))
                 counter = 0
                 stri += '('
-                for x in nonbeliefstates:
+                for x in allowed_states:
                     invisstates = invisibilityset[x]
                     beliefset_invis = beliefset.intersection(invisstates)
                     if len(beliefset_invis) > belief_safety:
