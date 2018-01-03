@@ -78,7 +78,7 @@ for n in range(gwg.nagents):
     print 'output file: ', outfile
     print 'input file name:', infile
     iset = Salty_input.write_to_slugs_part_dist(infile,gwg,initial[n],moveobstacles[0],targets[n],vel[n],visdist[n],
-                                                allowed_states[n],fullvis_states[n], pg[n], belief_safety = 1, belief_liveness = 0, target_reachability = True)
+                                                allowed_states[n],fullvis_states[n], pg[n], belief_safety = 0, belief_liveness = 10, target_reachability = True)
     invisibilityset.append(iset)
     print ('Converting input file...')
     os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')

@@ -246,19 +246,25 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
     file.write('[INPUT]\n')
     file.write('st:0...{}\n'.format(len(allstates) -1))
 
+
     file.write('[OUTPUT]\n')
+    file.write('sane:0...1\n')
     file.write('s:0...{}\n'.format(len(gw.states)-1))
+
     # for v in range(vel):
     #     file.write('u{}:0...{}\n'.format(v,gw.nactions-1))
 
     file.write('[ENV_INIT]\n')
+
     if initmovetarget in allowed_states:
         file.write('st = {}\n'.format(initmovetarget))
     else:
         file.write('st = {}\n'.format(allstates[-1]))
 
     file.write('[SYS_INIT]\n')
+    file.write('sane=0\n')
     file.write('s = {}\n'.format(init))
+
 
     # writing env_trans
     file.write('\n[ENV_TRANS]\n')
@@ -348,6 +354,8 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
 
     # writing sys_trans
     file.write('\n[SYS_TRANS]\n')
+    file.write("s = s' <-> sane= 0\n")
+    file.write("!s = s' <-> sane= 1\n")
     for s in nonbeliefstates:
         if s in allowed_states:
             uset = list(itertools.product(range(len(gw.actlist)),repeat=vel))
@@ -421,7 +429,7 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
             beliefset =  beliefset -set(gw.targets[0])
             stri1 = ' \\/ (st = {} /\\ ('.format(len(nonbeliefstates)+beliefcombs.index(b))
             count = 0
-            for x in nonbeliefstates:
+            for x in allowed_states:
                 truebelief = beliefset.intersection(invisibilityset[x])
                 if len(truebelief) <= belief_liveness:
                     if count > 0:
@@ -429,19 +437,19 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
                     stri1 += ' s = {} '.format(nonbeliefstates.index(x))
                     count+=1
             stri1+='))'
-            if count > 0 and count < len(nonbeliefstates):
+            if count > 0 and count < len(allowed_states):
                 stri+=stri1
-            if count == len(nonbeliefstates):
+            if count == len(allowed_states):
                 stri+= ' \\/ st = {}'.format(len(nonbeliefstates)+beliefcombs.index(b))
-        stri += '\\/ st = {}'.format(allstates[-1])
+        stri += ' \\/ st = {}'.format(allstates[-1])
         for st in set(nonbeliefstates)- set(allowed_states):
-            stri += '\\/ st = {}'.format(st)
+            stri += ' \\/ st = {}'.format(st)
         stri += '\n'
         file.write(stri)
 
     file.write('\n[ENV_LIVENESS]\n')
-    for t in targets:
-        file.write('st = {}\n'.format(t+1))
+    # for t in targets:
+    #     file.write('st = {}\n'.format(t+1))
 
     return invisibilityset
 
