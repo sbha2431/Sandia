@@ -72,7 +72,7 @@ gs = [12,25]
 print 'Writing input file...'
 # invisibilityset = Salty_input.write_to_slugs_part(infile,gwg,initial[0],moveobstacles[0],targets[0],2,visdist,gs, partitionGrid, belief_safety = 0, belief_liveness = 10, target_reachability = True)
 invisibilityset = []
-for n in range(gwg.nagents):
+for n in range(1):
     outfile = 'test{}.json'.format(n)
     infile = 'test{}'.format(n)
     print 'output file: ', outfile

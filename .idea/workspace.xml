@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="99965ad5-12fd-43bf-a676-0fdc8f4e1a67" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Code/Dist_example_15x20.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/Dist_example.py" afterPath="$PROJECT_DIR$/Code/Dist_example.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/Main.py" afterPath="$PROJECT_DIR$/Code/Main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/Salty_input.py" afterPath="$PROJECT_DIR$/Code/Salty_input.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/imp_info_example_15x20.py" afterPath="$PROJECT_DIR$/Code/imp_info_example_15x20.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/simulateController.py" afterPath="$PROJECT_DIR$/Code/simulateController.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DARPA.iws" />
@@ -27,35 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code/Main.py">
+      <file leaf-file-name="imp_info_example_5x5.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code/imp_info_example_5x5.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="80" column="131" selection-start-line="80" selection-start-column="129" selection-end-line="80" selection-end-column="131" />
-              <folding>
-                <element signature="e#22#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dist_example.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code/Dist_example.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="71" column="49" selection-start-line="71" selection-start-column="49" selection-end-line="71" selection-end-column="49" />
-              <folding>
-                <element signature="e#22#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dist_example_15x20.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Code/Dist_example_15x20.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3526646">
-              <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="9" />
               <folding>
                 <element signature="e#23#46#0" expanded="true" />
               </folding>
@@ -63,12 +39,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test3.structuredslugs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code/test3.structuredslugs">
+      <file leaf-file-name="visibility.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code/visibility.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="3965" column="20" selection-start-line="3965" selection-start-column="20" selection-end-line="3965" selection-end-column="20" />
+              <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="impinfotest0.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code/impinfotest0.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="impinfotest0.structuredslugs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code/impinfotest0.structuredslugs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2003" column="18" selection-start-line="2003" selection-start-column="18" selection-end-line="2003" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="imp_info_example_15x20.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Code/imp_info_example_15x20.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6866953">
+              <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+              <folding>
+                <element signature="e#45#68#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -77,7 +85,7 @@
         <entry file="file://$PROJECT_DIR$/Code/Salty_input.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="449" column="36" selection-start-line="449" selection-start-column="36" selection-end-line="449" selection-end-column="36" />
+              <caret line="466" column="0" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
               <folding>
                 <element signature="e#22#40#0" expanded="true" />
                 <element signature="e#144#289#0" expanded="false" />
@@ -85,27 +93,8 @@
                 <element signature="e#461#560#0" expanded="false" />
                 <element signature="e#651#816#0" expanded="false" />
                 <element signature="e#1012#8897#0" expanded="false" />
+                <element signature="e#9121#18468#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test2.structuredslugs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code/test2.structuredslugs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="563" column="19" selection-start-line="563" selection-start-column="19" selection-end-line="563" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test0.structuredslugs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Code/test0.structuredslugs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14339" column="20" selection-start-line="14339" selection-start-column="20" selection-end-line="14339" selection-end-column="20" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -114,12 +103,22 @@
         <entry file="file://$PROJECT_DIR$/Code/simulateController.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="231" column="37" selection-start-line="231" selection-start-column="25" selection-end-line="231" selection-end-column="37" />
+              <caret line="389" column="54" selection-start-line="389" selection-start-column="54" selection-end-line="389" selection-end-column="54" />
               <folding>
                 <element signature="e#165#285#0" expanded="false" />
                 <element signature="e#316#1423#0" expanded="false" />
                 <element signature="e#1775#6196#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test0.structuredslugs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Code/test0.structuredslugs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -174,13 +173,17 @@
         <option value="$PROJECT_DIR$/Code/gridworld.py" />
         <option value="$PROJECT_DIR$/Code/test.structuredslugs" />
         <option value="$PROJECT_DIR$/Code/test1.structuredslugs" />
-        <option value="$PROJECT_DIR$/Code/simulateController.py" />
-        <option value="$PROJECT_DIR$/Code/Main.py" />
         <option value="$PROJECT_DIR$/Code/Dist_example.py" />
-        <option value="$PROJECT_DIR$/Code/Salty_input.py" />
-        <option value="$PROJECT_DIR$/Code/test0.structuredslugs" />
         <option value="$PROJECT_DIR$/Code/test3.structuredslugs" />
         <option value="$PROJECT_DIR$/Code/Dist_example_15x20.py" />
+        <option value="$PROJECT_DIR$/Code/Main.py" />
+        <option value="$PROJECT_DIR$/Code/test0.structuredslugs" />
+        <option value="$PROJECT_DIR$/Code/Salty_input.py" />
+        <option value="$PROJECT_DIR$/Code/impinfotest0.json" />
+        <option value="$PROJECT_DIR$/Code/impinfotest0.structuredslugs" />
+        <option value="$PROJECT_DIR$/Code/imp_info_example_5x5.py" />
+        <option value="$PROJECT_DIR$/Code/simulateController.py" />
+        <option value="$PROJECT_DIR$/Code/imp_info_example_15x20.py" />
       </list>
     </option>
   </component>
@@ -216,7 +219,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -226,32 +228,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DARPA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sandia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DARPA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sandia" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Code" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -287,41 +266,7 @@
       <recent name="$PROJECT_DIR$/Code/Examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Dist_example_15x20">
-    <configuration default="false" name="1agent_1target_10x15_live+reach" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Code" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="DARPA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Code/1agent_1target_10x15_live+reach.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="15x20_paperexample" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Code/Examples" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="DARPA" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Code/Examples/15x20_paperexample.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.imp_info_example_15x20">
     <configuration default="false" name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -369,6 +314,40 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="DARPA" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Code/Dist_example_15x20.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="imp_info_example_15x20" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="DARPA" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Code/imp_info_example_15x20.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="imp_info_example_5x5" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="DARPA" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Code/imp_info_example_5x5.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -496,19 +475,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.1agent_1target_10x15_live+reach" />
-      <item index="1" class="java.lang.String" itemvalue="Python.15x20_paperexample" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Main" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Dist_example" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Dist_example_15x20" />
+      <item index="0" class="java.lang.String" itemvalue="Python.Main" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Dist_example" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Dist_example_15x20" />
+      <item index="3" class="java.lang.String" itemvalue="Python.imp_info_example_15x20" />
+      <item index="4" class="java.lang.String" itemvalue="Python.imp_info_example_5x5" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Dist_example_15x20" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Main" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Dist_example" />
-        <item index="3" class="java.lang.String" itemvalue="Python.1agent_1target_10x15_live+reach" />
-        <item index="4" class="java.lang.String" itemvalue="Python.15x20_paperexample" />
+        <item index="0" class="java.lang.String" itemvalue="Python.imp_info_example_15x20" />
+        <item index="1" class="java.lang.String" itemvalue="Python.imp_info_example_5x5" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Dist_example_15x20" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Main" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Dist_example" />
       </list>
     </recent_temporary>
   </component>
@@ -522,12 +501,6 @@
       <created>1489509899765</created>
       <option name="number" value="Default" />
       <updated>1489509899765</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Fixed counterexample issues">
-      <created>1493138681402</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1493138681402</updated>
     </task>
     <task id="LOCAL-00012" summary="Added more examples">
       <created>1493147483054</created>
@@ -817,7 +790,13 @@
       <option name="project" value="LOCAL" />
       <updated>1514088689937</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="added distributed capability">
+      <created>1514964653632</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1514964653633</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -837,21 +816,21 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32778355" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29760665" sideWeight="0.5021834" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3444329" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21852237" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33506763" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30593133" sideWeight="0.4978166" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32882413" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40686783" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298647" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30385014" sideWeight="0.4978166" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40686783" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32778355" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -938,11 +917,6 @@
           <option name="timeStamp" value="303" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Code/simulateController.py</url>
-          <line>236</line>
-          <option name="timeStamp" value="306" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Code/Dist_example.py</url>
           <line>48</line>
           <option name="timeStamp" value="307" />
@@ -958,9 +932,19 @@
           <option name="timeStamp" value="314" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Code/Dist_example_15x20.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="315" />
+          <url>file://$PROJECT_DIR$/Code/imp_info_example_15x20.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="316" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Code/simulateController.py</url>
+          <line>434</line>
+          <option name="timeStamp" value="351" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Code/imp_info_example_5x5.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="353" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -973,75 +957,15 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="316" />
+      <option name="time" value="354" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Code/test0.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/test1.structuredslugs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1760" column="17" selection-start-line="1760" selection-start-column="17" selection-end-line="1760" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding>
-            <element signature="e#22#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Dist_example.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="e#22#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Dist_example_15x20.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="137" selection-start-line="60" selection-start-column="137" selection-end-line="60" selection-end-column="137" />
-          <folding>
-            <element signature="e#23#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Salty_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="324" column="40" selection-start-line="324" selection-start-column="40" selection-end-line="324" selection-end-column="40" />
-          <folding>
-            <element signature="e#22#40#0" expanded="true" />
-            <element signature="e#144#289#0" expanded="false" />
-            <element signature="e#312#432#0" expanded="false" />
-            <element signature="e#461#560#0" expanded="false" />
-            <element signature="e#651#816#0" expanded="false" />
-            <element signature="e#1012#8897#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code/test2.structuredslugs">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="538" column="18" selection-start-line="538" selection-start-column="18" selection-end-line="538" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1107,6 +1031,7 @@
             <element signature="e#461#560#0" expanded="false" />
             <element signature="e#651#816#0" expanded="false" />
             <element signature="e#1012#8897#0" expanded="false" />
+            <element signature="e#9121#18468#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1147,6 +1072,7 @@
             <element signature="e#461#560#0" expanded="false" />
             <element signature="e#651#816#0" expanded="false" />
             <element signature="e#1012#8897#0" expanded="false" />
+            <element signature="e#9121#18468#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1203,13 +1129,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Visgame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2168875">
-          <caret line="49" column="4" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code/send_email.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1259,13 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/paper/intro.tex">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15280136">
-          <caret line="6" column="603" selection-start-line="6" selection-start-column="603" selection-end-line="6" selection-end-column="603" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code/belief_refinement.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1301,21 +1213,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/visibility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/gridworld.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Code/test0.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1330,19 +1227,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/simulateController.py">
+    <entry file="file://$PROJECT_DIR$/Code/Visgame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="231" column="37" selection-start-line="231" selection-start-column="25" selection-end-line="231" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.7886266">
+          <caret line="49" column="4" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/test3.structuredslugs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5841035">
+          <caret line="3965" column="20" selection-start-line="3965" selection-start-column="20" selection-end-line="3965" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/Dist_example_15x20.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.77537435">
+          <caret line="100" column="21" selection-start-line="100" selection-start-column="21" selection-end-line="100" selection-end-column="21" />
           <folding>
-            <element signature="e#165#285#0" expanded="false" />
-            <element signature="e#316#1423#0" expanded="false" />
-            <element signature="e#1775#6196#0" expanded="false" />
+            <element signature="e#23#46#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/test0.slugsin">
+    <entry file="file://$PROJECT_DIR$/Code/test2.slugsin">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1351,56 +1260,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code/test2.structuredslugs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="15.609982">
           <caret line="563" column="19" selection-start-line="563" selection-start-column="19" selection-end-line="563" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/test0.structuredslugs">
+    <entry file="file://$PROJECT_DIR$/Code/Parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14339" column="20" selection-start-line="14339" selection-start-column="20" selection-end-line="14339" selection-end-column="20" />
-          <folding />
+        <state vertical-scroll-proportion="0.81191224">
+          <caret line="1252" column="0" selection-start-line="1252" selection-start-column="0" selection-end-line="1252" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Main.py">
+    <entry file="file://$PROJECT_DIR$/Code/test0.slugsin">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="80" column="131" selection-start-line="80" selection-start-column="129" selection-end-line="80" selection-end-column="131" />
-          <folding>
-            <element signature="e#22#45#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-0.46391752">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/test3.structuredslugs">
+    <entry file="file://$PROJECT_DIR$/Code/gridworld.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="3965" column="20" selection-start-line="3965" selection-start-column="20" selection-end-line="3965" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Salty_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="449" column="36" selection-start-line="449" selection-start-column="36" selection-end-line="449" selection-end-column="36" />
-          <folding>
-            <element signature="e#22#40#0" expanded="true" />
-            <element signature="e#144#289#0" expanded="false" />
-            <element signature="e#312#432#0" expanded="false" />
-            <element signature="e#461#560#0" expanded="false" />
-            <element signature="e#651#816#0" expanded="false" />
-            <element signature="e#1012#8897#0" expanded="false" />
-          </folding>
+          <caret line="366" column="0" selection-start-line="366" selection-start-column="0" selection-end-line="366" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Code/Dist_example.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.7413793">
           <caret line="71" column="49" selection-start-line="71" selection-start-column="49" selection-end-line="71" selection-end-column="49" />
           <folding>
             <element signature="e#22#45#0" expanded="true" />
@@ -1408,12 +1296,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Code/Dist_example_15x20.py">
+    <entry file="file://$PROJECT_DIR$/Code/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3526646">
-          <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="74" column="16" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="16" />
+          <folding>
+            <element signature="e#22#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/impinfotest0.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/visibility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/Salty_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="466" column="0" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
+          <folding>
+            <element signature="e#22#40#0" expanded="true" />
+            <element signature="e#144#289#0" expanded="false" />
+            <element signature="e#312#432#0" expanded="false" />
+            <element signature="e#461#560#0" expanded="false" />
+            <element signature="e#651#816#0" expanded="false" />
+            <element signature="e#1012#8897#0" expanded="false" />
+            <element signature="e#9121#18468#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/test0.structuredslugs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/impinfotest0.structuredslugs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2003" column="18" selection-start-line="2003" selection-start-column="18" selection-end-line="2003" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/simulateController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="389" column="54" selection-start-line="389" selection-start-column="54" selection-end-line="389" selection-end-column="54" />
+          <folding>
+            <element signature="e#165#285#0" expanded="false" />
+            <element signature="e#316#1423#0" expanded="false" />
+            <element signature="e#1775#6196#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/imp_info_example_5x5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="9" />
           <folding>
             <element signature="e#23#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Code/imp_info_example_15x20.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6866953">
+          <caret line="106" column="34" selection-start-line="106" selection-start-column="34" selection-end-line="106" selection-end-column="34" />
+          <folding>
+            <element signature="e#45#68#0" expanded="true" />
           </folding>
         </state>
       </provider>
