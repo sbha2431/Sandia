@@ -1,12 +1,12 @@
-We begin by defining a formal model for describing surveillance strategy synthesis problems, in the form of a two-player game between an agent and a target, in which the agent has only partial information about the target's location.
+We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location.
 
 \subsection{Surveillance Game Structures}\label{sec:surveillance-games}
-We define a \emph{surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,\vis)$, with the following components:
+We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,\Vis)$, with the following components:
 \begin{itemize}
-\item $\states = L_a \times L_t$ is the set of states, with $L_a$ the set of locations of the agent, and $L_t$ the locations of the target;
-\item $s^\init = (l_a^\init,l_t^\init)$ is the initial state;
+\item $\states = L_1^a \times L_2^a \dots L_n^a \times L^t$ is the set of states, with $L^a_i$ the set of locations of sensor $i$, and $L^t$ the locations of the target;
+\item $s^\init = (l_1^\init\times \dots l_n^\init,l_t^\init)$ is the initial state;
 \item $\trans \subseteq \states \times \states$ is the transition relation describing the possible moves of the agent and the target; and
-\item $\vis : \states \to \bools$ is a function that maps a state $(l_a,l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_a$}.
+\item $\Vis = \states \times \bool^n \to \bools$ is a function $(\vis_1,\dots,\vis_n)$ where $\vis_i: \states \to \bools$ is a function that maps a state $(l_i,l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}.
 \end{itemize}
 
 
@@ -191,3 +191,4 @@ A \emph{surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance 
 
 
 It is well-known that two-player perfect-information games with LTL objectives over finite-state game structures are determined, that is exactly one of the players has a winning strategy. This means that the agent does not have a winning strategy for a given surveillance game, if and only if the target has a winning strategy for this game. We refer to winning strategies of the target as \emph{counterexamples}.
+
