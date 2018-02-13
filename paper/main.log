@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.7.20)  11 FEB 2018 16:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.7.20)  13 FEB 2018 17:50
 entering extended mode
 **./main.tex
 (main.tex
@@ -920,11 +920,40 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 30.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (games.tex
-(figs/simple-transitions.tex) (figs/simple-belief-transitions.tex) [1{C:/Progra
-mData/MiKTeX/2.9/pdftex/config/pdftex.map}
+! Undefined control sequence.
+l.4 ... a tuple $G  = (\states,s^\init,\trans,\Vis
+                                                  )$, with the following com...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<recently read> \Vis 
+                     
+l.9 \item $\Vis
+                = \states \times \bool^n \to \bools$ is a function $(\vis_1,...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.9 \item $\Vis = \states \times \bool
+                                      ^n \to \bools$ is a function $(\vis_1,...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+(figs/simple-transitions.tex) [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex
+.map}
 
 
-]
+] (figs/simple-belief-transitions.tex)
 Underfull \hbox (badness 2189) in paragraph at lines 137--139
 []\OT1/ptm/m/n/10 Consider the surveil-lance game struc-ture
  []
@@ -932,12 +961,32 @@ Underfull \hbox (badness 2189) in paragraph at lines 137--139
 
 LaTeX Warning: Citation `BaierKatoen08' on page 2 undefined on input line 165.
 
-)
-Underfull \hbox (badness 2318) in paragraph at lines 193--49
+
+Underfull \hbox (badness 2318) in paragraph at lines 193--194
 []\OT1/ptm/m/n/10 It is well-known that two-player perfect-information
  []
 
-(distgames.tex)
+) (distgames.tex
+Underfull \hbox (badness 6332) in paragraph at lines 2--4
+[]\OT1/ptm/m/n/10 Given a surveil-lance game $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10
+ G; '\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 where $\OML/cmm/m/it/10 G \OT1/cmr/m/n/
+10 =
+ []
+
+[2]
+Underfull \hbox (badness 6332) in paragraph at lines 8--10
+[]\OT1/ptm/m/n/10 Given a surveil-lance game $\OT1/cmr/m/n/10 (\OML/cmm/m/it/10
+ G; '\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 where $\OML/cmm/m/it/10 G \OT1/cmr/m/n/
+10 =
+ []
+
+
+Underfull \hbox (badness 1412) in paragraph at lines 10--11
+\OT1/ptm/m/n/10 then the com-posed strat-egy for all agents $\OML/cmm/m/it/10 f
+[] \OT1/cmr/m/n/10 =
+ []
+
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -949,9 +998,8 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the US letter (8.5in X 11in) paper size.
 
-[2]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
- [3
+[3
 
 ]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
@@ -959,18 +1007,21 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 0996501115E11C0C2F25C078995021D7;748.
+(rerunfilecheck)             Checksum: 24BB9F74549FF72B26841C4FA7094ABC;816.
 
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 78.
  ) 
 Here is how much of TeX's memory you used:
- 22092 strings out of 493323
- 440653 string characters out of 3139054
- 548655 words of memory out of 3000000
- 25204 multiletter control sequences out of 15000+200000
+ 22095 strings out of 493323
+ 440686 string characters out of 3139054
+ 550655 words of memory out of 3000000
+ 25206 multiletter control sequences out of 15000+200000
  46612 words of font info for 107 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,11n,96p,685b,1004s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -980,22 +1031,23 @@ KTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9
 ype1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publ
 ic/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr
-10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:
-/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmss8.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
-cm/cmti8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/m
-sam10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm
-10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Progra
-m Files/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/ur
-w/times/utmri8a.pfb>
-Output written on main.pdf (3 pages, 217004 bytes).
+10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/font
+s/type1/public/amsfonts/cm/cmss8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
+ublic/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
+/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti8.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/ut
+mri8a.pfb>
+Output written on main.pdf (3 pages, 229942 bytes).
 PDF statistics:
- 162 PDF objects out of 1000 (max. 8388607)
- 22 named destinations out of 1000 (max. 500000)
- 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 170 PDF objects out of 1000 (max. 8388607)
+ 23 named destinations out of 1000 (max. 500000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
 
