@@ -1,5 +1,16 @@
-\subsection{Composition of local surveillance games}
-Given $n$ surveillance games $(G_i,\varphi_i)$ for $i = 1,\dots,n$, we define 
+\subsection{Belief subgames}
+Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $\tilde{G}_S$ is a \emph{subgame} of $G$
+
+\subsection{Decomposition of local surveillance games}
+Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we aim to decompose the problem into $n$ surveillance games $(G_i,\varphi_i)$ for $i = 1,\dots,n$, where $G_i = (\states_i,s^\init_i,\trans,\vis)$. The decomposition must satisfy the following properties
+\begin{itemize}
+\item If we have winning strategy for the agent in each game $f_i$ such that $\outcome(G_{\belief_i},f_{a_i},f_{t_i}) \models \varphi_i$, then the composed strategy for all agents $f_a = f_{a_1} \bigoplus f_{a_2} \dots \bigoplus f_{a_n}$ must be winning for the global property, i.e, $\outcome(G_{\belief},f_{a},f_{t}) \models \varphi$
+\end{itemize}
+
+
+and $\cup_iS_i = S$. 
+
+\todo{\textbf{Change definitions of surveillance game to allow for visibility function to be decoupled}}
 
 
 \subsection{Distributed surveillance problem}
