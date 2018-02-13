@@ -1,5 +1,8 @@
 \subsection{Belief subgames}
-Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $\tilde{G}_S$ is a \emph{subgame} of $G$
+Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $G_{\tilde{S}} = (\tilde{S},)$ is a \emph{subgame} of $G$ if 
+\begin{itemize}
+\item $\tilde{S} \subseteq S$
+\end{itemize}
 
 \subsection{Decomposition of local surveillance games}
 Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we aim to decompose the problem into $n$ surveillance games $(G_i,\varphi_i)$ for $i = 1,\dots,n$, where $G_i = (\states_i,s^\init_i,\trans,\vis)$. The decomposition must satisfy the following properties
