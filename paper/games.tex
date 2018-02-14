@@ -5,8 +5,10 @@ We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = 
 \begin{itemize}
 \item $\states = L_1^a \times L_2^a \dots L_n^a \times L^t$ is the set of states, with $L^a_i$ the set of locations of sensor $i$, and $L^t$ the locations of the target;
 \item $s^\init = (l_1^\init\times \dots l_n^\init,l_t^\init)$ is the initial state;
-\item $\trans \subseteq \states \times \states$ is the transition relation describing the possible moves of the agent and the target; and
-\item $\Vis = \states \times \bool^n \to \bools$ is a function $(\vis_1,\dots,\vis_n)$ where $\vis_i: \states \to \bools$ is a function that maps a state $(l_i,l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}.
+\item $\trans \subseteq \states \times \states$ is the transition relation describing the possible joint moves of the sensors and the target; and
+\item given $n$ \textit{visibility functions} $(\vis_1,\dots,\vis_n)$ where $\vis_i: L_i^a \times L^t \to \bools$ is a function that maps a state $(l_i,l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}, $\Vis = \states \to \bools$ is a function that maps to $\true$ if the set $I = \{i: \vis_i(l_i^a,l^t) = \true\}$ is non-empty. Simply, $\Vis$ outputs $\true$ if the target is in view with \emph{at least one} of the sensors.
+
+
 \end{itemize}
 
 
@@ -16,12 +18,14 @@ We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = 
 \begin{tikzpicture}[scale=0.8]
 \draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
 \filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
+
 \filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
 \filldraw[fill=red,draw=black] (-0.5,0) rectangle (-1,-0.5);
 \filldraw[fill=red,draw=black] (0,0) rectangle (0.5,-0.5);
 \filldraw[fill=blue!40!white,draw=black] (+0.75,+0.75) circle (0.2cm);
 \filldraw[fill=orange!40!white,draw=black] (0.25,-0.75) circle (0.2cm);
-\node at (-1.30,+0.75) {\tiny{0}};
+\filldraw[fill=blue!40!white,draw=black]  (-1.25,+0.75) circle (0.2cm);
+\node at (-1.25,+0.75) {\tiny{0}};
 \node at (-0.80,+0.75) {\tiny{1}};
 \node at (-0.30,+0.75) {\tiny{2}};
 \node at (0.20,+0.75) {\tiny{3}};
@@ -53,7 +57,7 @@ We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = 
 \input{figs/simple-transitions.tex}
 }
 \vspace{-0.1cm}
-\caption{A simple surveillance game on a grid arena. Obstacles are shown in red, the agent (at location 4) and the target (at location 18) are coloured in blue and orange respectively.}
+\caption{A simple surveillance game on a grid arena. Obstacles are shown in red, the sensors (at locations 0 and 4) and the target (at location 18) are coloured in blue and orange respectively.}
 \label{fig:simple-surveillance-game}
 \vspace{-.7cm}
 \end{figure}
