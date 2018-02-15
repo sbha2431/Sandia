@@ -1,8 +1,13 @@
 \subsection{Belief subgames}
-Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $G_{\tilde{S}} = (\tilde{S},)$ is a \emph{subgame} of $G$ if 
+Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $G^{i}_{\tilde{S}} = (\tilde{S},\tilde{s}_i^{init},\tilde{T},\tilde{\vis}_i)$ is a \emph{subgame} of $G$ corresponding to sensor $i$. 
+
 \begin{itemize}
-\item $\tilde{S} \subseteq S$
+\item $\tilde{S}= \tilde{L} \times \tilde{L}_t$ where $\tilde{L}\subseteq L$, and $\tilde{L}_t \subseteq L$. 
+\item $\tilde{T} \subseteq \tilde{S} \times \tilde{S} \subseteq T$
+\item 
 \end{itemize}
+
+
 
 \subsection{Decomposition of local surveillance games}
 Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we aim to decompose the problem into $n$ surveillance games $(G_i,\varphi_i)$ for $i = 1,\dots,n$, where $G_i = (\states_i,s^\init_i,\trans,\vis)$. The decomposition must satisfy the following properties
