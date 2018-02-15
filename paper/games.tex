@@ -57,17 +57,17 @@ We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = 
 \input{figs/simple-transitions.tex}
 }
 \vspace{-0.1cm}
-\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 0 and 4) coloured in blue and green respectively and the target (at location 18) is orange.}
+\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 0 and 4) coloured in blue and green respectively and the target (at location 18) is orange.\todo{\textbf{modify for 2 sensor example}}}
 \label{fig:simple-surveillance-game}
 \vspace{-.7cm}
 \end{figure}
 
 
-The transition relation $T$ encodes the one-step move of the target and the $n$ sensors, where the target moves first and the sensors move jointly second. For a state $(l,l^t)$ we denote $\succs_t(l,l^t)$ as the set of successor locations of the target:
+The transition relation $T$ encodes the one-step move of the target and the $n$ sensors, where the target moves first and the sensors move jointly second. For a state $(l,l_t)$ we denote $\succs_t(l,l^t)$ as the set of successor locations of the target:
 
 $\succs_t(l,l_{t}) = \{l_{t}' \in L_t \mid \exists l'.\ ((l,l_t),(l',l_t')) \in T\}$.
 
-We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l,L)$ consists of all possible successor locations of the target for states in $\{l\} \times L$. Formally, let $\post(l_a, L) = \bigcup_{l_t \in L_t}\succs_t(l,l_t)$.
+We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l,L)$ consists of all possible successor locations of the target for states in $\{l\} \times L$. Formally, let $\post(l, L) = \bigcup_{l_t \in L_t}\succs_t(l,l_t)$.
 
 For a state $(l,l_t)$ and a successor location of the target $l_t'$, we denote with $\succs(l,l_t,l_t')$ the set of successor locations of the sensors, given that the target moves to $l_t'$: 
 
@@ -132,7 +132,7 @@ Condition (1) captures the successor locations of the target that can be observe
 \input{figs/simple-belief-transitions.tex}
 
 \vspace{-.3cm}
-\caption{Transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game} where $\vis(4,17) = \vis(4,23) = \false$.}
+\caption{Transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game} where $\vis(4,17) = \vis(4,23) = \false$. \todo{\textbf{Modify for 2 sensor example}}}
 \label{fig:simple-belief-game}
 \vspace{-.5cm}
 \end{figure}
@@ -189,7 +189,7 @@ Suppose that $\mathit{at\_goal}$ is a predicate true exactly when the agent is a
 \end{example}
 
 \subsection{Surveillance Synthesis Problem}
-A \emph{global surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_a$ for the sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_a,f_t) \not\models \varphi$.
+A \emph{global surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
 
 {\bf Global surveillance synthesis problem:} Given a surveillance game $(G,\varphi)$, compute a joint winning strategy for the agent for $(G,\varphi)$, or determine that such a strategy does not exist.
 
