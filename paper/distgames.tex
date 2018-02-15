@@ -1,10 +1,14 @@
 \subsection{Belief subgames}
-Given a surveillance game $(G,\varphi)$ where $G = (\states,s^\init,\trans,\vis)$, we say $G^{i}_{\tilde{S}} = (\tilde{S},\tilde{s}_i^{init},\tilde{T},\tilde{\vis}_i)$ is a \emph{subgame} of $G$ corresponding to sensor $i$. 
+Given a surveillance game $(G,\varphi)$ with $i$ sensors where $G = (\states,s^\init,\trans,\vis)$, we construct a belief subgame corresponding to each sensor $i$. To do this, we select a subset of states $\widetilde{L}_i \subseteq L_i$ and $\widetilde{L}^i_t \subseteq L_t$ which forms the state space $\widetilde{S}_i$ of the subgame. We append a state $\hat{l}^i_t$ to $\widetilde{L}^i_t$ that corresponds to when the target leaves the states $\widetilde{L}_t$ corresponding to the subgame. This ensures that all transitions in the subgame stay in the subgame. More formally, we say $G^{i}_{\hat{S}} = (\widetilde{S},\widetilde{s}_i^{init},\widetilde{T},\widetilde{\vis}_i)$ is a \emph{subgame} of $G$ corresponding to sensor $i$ where 
 
 \begin{itemize}
-\item $\tilde{S}= \tilde{L} \times \tilde{L}_t$ where $\tilde{L}\subseteq L$, and $\tilde{L}_t \subseteq L$. 
-\item $\tilde{T} \subseteq \tilde{S} \times \tilde{S} \subseteq T$
-\item 
+\item $\widetilde{S}_i= \widetilde{L}_i \times (\widetilde{L}^i_t \cup \hat{l}^i_t)$ where $\widetilde{L}_i\subseteq L_i$, and $\widetilde{L}_t \subseteq L$. 
+\item The transitions $\widetilde{T}$ are defined as a union of the following sets \todo{\textbf{Is there a more compact way of defining this?}} \[\widetilde{T} = \begin{cases}
+ \{\left((l_i,l_t),(l_i',l_t')\right) \in T \mid l_i,l_i' \in \widetilde{L}_i, l_t,l_t' \in \widetilde{L}_t \} \; \cup \\
+ \{\left((l_i,l_t),(l_i',\hat{l}^i)\right) \; \forall \left((l_i,l_t),(l_i',l_t')\right) \in T \mid l_t' \notin \widetilde{L}_t^i \} \; \cup \\
+ \{\left((l_i,\hat{l}^i),(l_i',\hat{l}^i)\right) \; \forall \left((l_i,l_t),(l_i',l_t')\right) \in T \}
+\end{cases} \]  
+\item $\widetilde{\vis}_i$
 \end{itemize}
 
 
