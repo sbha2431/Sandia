@@ -1,4 +1,4 @@
-We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location.
+We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location. For ease of notation the definitions are provided for the case of a single target. 
 
 \subsection{Surveillance Game Structures}\label{sec:surveillance-games}
 We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,\Vis)$, with the following components:
@@ -107,6 +107,7 @@ For a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ we define
 %$
 \end{itemize}
 \end{itemize}
+$B_t$ is the 
 Condition (1) captures the successor locations of the target that can be observed from one of the sensors' current location $l$. Condition (2) corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from $l$}. 
 %\begin{itemize}
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
@@ -142,7 +143,7 @@ Consider the surveillance game structure from Example~\ref{ex:simple-surveillanc
 Figure~\ref{fig:simple-belief-game} shows the successor states of the initial state $((0,4),\{18\})$ in $G_\belief$. \qed
 \end{example}
 
-Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs : \states_\belief \times \beliefs \to \mathcal{P}(L_a)$ similarly to the corresponding functions defined for $G$. 
+Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs : \states_\belief \times \beliefs \to \mathcal{P}(L)$ similarly to the corresponding functions defined for $G$. 
 
 A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\belief^\init$,  $(s_i,s_{i+1}) \in T_\belief$ for all $i$. 
 
@@ -174,7 +175,7 @@ Intuitively, the safety surveillance formula $\LTLglobally p_k$ is satisfied if 
 \begin{example}
 We can specify that the sensors are required to always know with certainty the location of the target as
 $\LTLglobally p_1$.
-A more relaxed requirement is that the agent's uncertainty never grows above $5$ locations, and it infinitely often reduces this uncertainty to at most $2$ locations: $\LTLglobally p_5 \wedge \LTLglobally\LTLfinally p_2$.
+A more relaxed requirement is that the sensors' uncertainty never grows above $5$ locations, and it infinitely often reduces this uncertainty to at most $2$ locations: $\LTLglobally p_5 \wedge \LTLglobally\LTLfinally p_2$.
 \qed
 \end{example}
 
@@ -183,10 +184,10 @@ A more relaxed requirement is that the agent's uncertainty never grows above $5$
 %We can integrate LTL objectives not related to surveillance, i.e., \emph{task specifications}, by considering, in addition to $\SP$, a set $\AP$ of atomic predicates interpreted over states of $G$. In order to define the semantics of $p \in \AP$ over states of $G_\belief$, we restrict ourselves to predicates observable by the agent. 
 %Formally, we require that for $p \in \AP$, and states $(l_a,l_t')$ and $(l_a,l_t'')$ with $\vis(l_a,l_t')=\vis(l_a,l_t'')=\false$ it holds that $(l_a,l_t') \models p$ iff $(l_a,l_t'') \models p$. One class of such predicates are those that depend only on the agent's position.
 
-\begin{example}
-Suppose that $\mathit{at\_goal}$ is a predicate true exactly when the agent is at some designated goal location. We can then state that the agent visits the goal infinitely often while always maintaining belief uncertainty of at most $10$ locations using the LTL formula $\LTLglobally\LTLfinally \mathit{at\_goal} \wedge \LTLglobally p_{10}$.
-\qed
-\end{example}
+%\begin{example}
+%Suppose that $\mathit{at\_goal}$ is a predicate true exactly when the agent is at some designated goal location. We can then state that the agent visits the goal infinitely often while always maintaining belief uncertainty of at most $10$ locations using the LTL formula $\LTLglobally\LTLfinally \mathit{at\_goal} \wedge \LTLglobally p_{10}$.
+%\qed
+%\end{example}
 
 \subsection{Surveillance Synthesis Problem}
 A \emph{global surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
