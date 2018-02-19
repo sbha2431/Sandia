@@ -1,32 +1,55 @@
+For the remainder of this section, let $G = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n,\Vis)$ be a multi-agent surveillance game structure with $n$ sensors.
 \subsection{Surveillance subgames}
-Given a surveillance game structure $G$ with $i$ sensors where $G = (\states,s^\init,\trans,\vis)$, we construct a \emph{surveillance subgame} corresponding to each sensor $i$. To do this, we select a subset of states $\widetilde{L}_i \subseteq L_i$ and $\widetilde{L}^i_t \subseteq L_t$ which forms the state space $\widetilde{S}_i$ of the subgame. We append a state $\hat{l}^i_t$ to $\widetilde{L}^i_t$ that corresponds to when the target leaves the states $\widetilde{L}_t$ corresponding to the subgame. This ensures that all transitions in the subgame stay in the subgame. More formally, we say $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$ is a \emph{subgame} of $G$ corresponding to sensor $i$ where 
+%Given a surveillance game structure $G$ with $i$ sensors where $G = (\states,s^\init,\trans,\vis)$, 
+We now describe how to construct a tuple of single-agent surveillance game structures $(G^{1}_{\hat{S}},\ldots,(G^{1}_{\hat{S}})$ that contains one  \emph{surveillance subgame} $G^{i}_{\hat{S}}$ for each mobile sensor  $i$. The construction is parametrised by a subset of sensor locations $\widetilde{L}_i \subseteq L_i$ and a subset of target locations $\widetilde{L}^i_t \subseteq L_t$ for each sensor $i$. These sets of locations form the state space $\widetilde{S}_i$ of the subgame $G^{i}_{\hat{S}}$.
+\Rayna{The sets $\widetilde{L}^i_t$  should partition $L_t$, that is, the whole space is "covered" by the mobile sensors. It would perhaps be simpler if we define the game structures so that all sensors and the target have the same set of locations, and then partition the set of locations into the subgames.}
+Additionally, to each $\widetilde{L}^i_t$ we add an \emph{auxiliary location} $\hat{l}^i_t$ that encapsulates all possible locations of the target that are outside of this subgame's region, i.e., all locations in $\widetilde{L}_t \setminus \widetilde{L}^i_t$.  We then model transitions leaving or entering $\widetilde{L}^i_t$ as transitions to or from location $\hat{l}^i_t$ respectively.
+\Rayna{We can perhaps use a different letter than $l$ instead of $\hat l$.}
+%This ensures that all transitions in the subgame stay in the subgame. 
 
+More formally, given $\widetilde{L}_i \subseteq L_i$ and  $\widetilde{L}^i_t \subseteq L_t$ we define the \emph{subgame} of $G$ corresponding to sensor $i$ as the tuple $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$  where \Rayna{What is $\hat{S}$?}
 \begin{itemize}
-\item $\widetilde{S}_i= \widetilde{L}_i \times (\widetilde{L}^i_t \cup \hat{l}^i_t)$ where $\widetilde{L}_i\subseteq L_i$, and $\widetilde{L}_t \subseteq L$. 
-\item Informally, any transitions in in $T$ that involve the target staying in $\widetilde{L}^i_t$ are kept. Those transitions that involve either entering or exiting $\widetilde{L}^i_t$ are replaced with $\hat{l}^i_t$ which is the state representing all states in $L_t$ not in $\widetilde{L}^i_t$. Formally, the transitions $\widetilde{T}$ are defined as a union of the following sets \todo{\textbf{Is there a more compact way of defining this?}} For all $\tilde{l_i} \in \widetilde{L}_i$, and $((\tilde{l}_i,l_t),(\tilde{l}_i',l_t')) \in T$, \[\widetilde{T}_i \triangleq \begin{cases}
- \{((\tilde{l}_i,l_t),(\tilde{l}_i',l_t')) \mid l_t,l_t' \in \widetilde{L}^i_t \} \; \cup \\
- \{((l_i,l_t),(l_i',\hat{l}^i_t)) \} \mid l_t' \notin \widetilde{L}_t^i, l_t \in \widetilde{L}_t^i \}  \; \cup \\
- \{((l_i,\hat{l}^i_t),(l_i',\hat{l}^i_t)) \mid l_t,l_t' \notin \widetilde{L}_t^i \}  \; \cup \\
- \{((l_i,\hat{l}^i_t),(l_i',l_t')) \mid l_t \notin \widetilde{L}_t^i, l_t' \in \widetilde{L}_t^i \} 
-  \end{cases}   \]
-  
-\item Informally, we state the visibility function for the subgame $\widetilde{\vis}_i$ must follow the values of the visibiity function of the corresponding sensor $\vis_i$ except in the case that the target is outside of the states of the subgame, i.e, it is in state $\hat{l}^t_i$. Formally,  \[\widetilde{\vis}_i(\tilde{l}_i,l_t) = \begin{cases}
-\vis_i(\tilde{l}_i,l_t) & l_t \in \widetilde{L}_t^i \\
-\false & l_t \notin \widetilde{L}_t^i
+\item $\widetilde{S}_i= \widetilde{L}_i \times (\widetilde{L}^i_t \cup \hat{l}^i_t)$ is the set of states.
+\item The set $\widetilde{T}_i$ consists of two types of transitions: the transitions in $T{\downarrow } i$ that originate and end in locations part of the subgame's region are preserved as they are, while the transitions of the target exiting or entering $\widetilde{L}^i_t$ are replaced by transitions to and from location $\hat{l}^i_t$ respectively, since $\hat{l}^i_t$ represents all target locations outside of  $\widetilde{L}^i_t$. 
+Formally, for every pair of states $(\widetilde{l}_i,\widetilde{l}_t) \in \widetilde{S}_i$ and $(\widetilde{l}_i',\widetilde{l}_t') \in \widetilde{S}_i$ we have that $((\widetilde{l}_i,\widetilde l_t),(\widetilde{l}_i',\widetilde l_t')) \in \widetilde T_i$ if and only if there exists a transition
+ $((\widetilde{l}_i,l_t),(\widetilde{l}_i',l_t')) \in T{\downarrow}i$ for which the following conditions are satisfied:
+ \begin{itemize}
+ \item if $\widetilde l_t \in \widetilde L_t ^i$ and $\widetilde l_t' \in \widetilde L_t ^i$, then 
+ $\widetilde l_t = l_t$ and $\widetilde l_t'= l_t'$, that is, we have a \emph{transition internal for the region $\widetilde L_t^i$};
+ \item if $\widetilde l_t \in \widetilde L_t ^i$ and $\widetilde l_t' =  \hat l^i_t$, then 
+ $l_t \in \widetilde L_t^i$ and $l_t' \not\in \widetilde L_t^i$, that is, we have a \emph{transition exiting the region $\widetilde L_t^i$}; 
+ \item if $\widetilde l_t= \hat l^i_t$ and $\widetilde l_t' \in  \widetilde L_t ^i$, then 
+ $l_t \not \in \widetilde L_t^i$ and $l_t' \in \widetilde L_t^i$, that is, we have a \emph{transition entering the region $\widetilde L_t^i$}; 
+ \item if $\widetilde l_t= \hat l^i_t$ and $\widetilde l_t' =  \hat l^i_t$, then 
+ $l_t \not \in \widetilde L_t^i$ and $l_t' \not\in \widetilde L_t^i$, that is, we have a \emph{transition completely outside $\widetilde L_t^i$}.
+\end{itemize}  
+\Rayna{Rewrote the definition of $\widetilde T_i$ in a more clear way. Old version in comment.}
+%Formally, the transitions $\widetilde{T}$ are defined as a union of the following sets \todo{\textbf{Is there a more compact way of defining this?}} For all $\widetilde{l_i} \in \widetilde{L}_i$, and $((\widetilde{l}_i,l_t),(\widetilde{l}_i',l_t')) \in T$, \[\widetilde{T}_i \triangleq \begin{cases}
+% \{((\widetilde{l}_i,l_t),(\widetilde{l}_i',l_t')) \mid l_t,l_t' \in \widetilde{L}^i_t \} \; \cup \\
+% \{((l_i,l_t),(l_i',\hat{l}^i_t)) \} \mid l_t' \notin \widetilde{L}_t^i, l_t \in \widetilde{L}_t^i \}  \; \cup \\
+% \{((l_i,\hat{l}^i_t),(l_i',\hat{l}^i_t)) \mid l_t,l_t' \notin \widetilde{L}_t^i \}  \; \cup \\
+% \{((l_i,\hat{l}^i_t),(l_i',l_t')) \mid l_t \notin \widetilde{L}_t^i, l_t' \in \widetilde{L}_t^i \} 
+%  \end{cases}   \]
+  \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^{i}_{\hat{S}}$ agrees with the visibiity function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$ are invisible to the sensor in the subgame. Formally, 
+ \[\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \begin{cases}
+\vis_i(\widetilde{l}_i,l_t) & l_t \in \widetilde{L}_t^i, \\
+\false & l_t \notin \widetilde{L}_t^i.
 \end{cases}
 \]
 \end{itemize}
-Note that in this construction, sensor $i$ is not able to leave the subset of states $\tilde{L}_i$ and all information of the target when it is not in $\tilde{L}_t^i$ is hidden as the state $\hat{l}_t^i$ represents any state not in $\tilde{L}_t^i$. Finally we remark that the previously defined notions of $\succs_t(\tilde{l}_i,\tilde{l}^i_{t})$, $\succs_t(\tilde{l}_i,\tilde{L}^i_{t})$, and $\succs(\tilde{l}_i,\tilde{l}^{t},\tilde{l}_{t}')$ for the global game structure $G$ follow analogously in this construction for $\widetilde{T}$ which we denote as $\widetilde{\succs}$.
+Note that in this construction, sensor $i$ is not able to leave the region of locations $\widetilde{L}_i$. Furthermore, all the information about the target's behaviour outside of  the subgame's region is completely hidden from the mobile sensor controller, since all locations outside of  $\widetilde{L}_t^i$ are represented by the single location $\hat{l}_t^i$.
+Finally we remark that the previously defined notions of $\succs_t(\widetilde{l}_i,\widetilde{l}^i_{t})$, $\succs_t(\widetilde{l}_i,\widetilde{L}^i_{t})$, and $\succs(\widetilde{l}_i,\widetilde{l}^{t},\widetilde{l}_{t}')$ for the global game structure $G$ follow analogously in this construction for $\widetilde{T}$ which we denote as $\widetilde{\succs}$.
 
 \subsection{Belief subgame}
-Given a surveillance subgame $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T},\widetilde{\vis}_i)$, we can construct a belief subgame $G^{i}_{\tilde{S}_\belief} = (\widetilde{\states}_{i_\belief},\tilde{s}^\init_{i_\belief},\tilde{\trans}_{i_\belief})$ 
+\Rayna{I think we should define in the previous section single-agent surveillance game structures as a special case of multi-agent surveillance game structures. Then, since a surveillance subgame is essentially a single-agent surveillance game, and since there is nothing specific in the definition below, we can remove this subsection and  move the last remark to the next subsection.}
+Given a surveillance subgame $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T},\widetilde{\vis}_i)$, we can construct a belief subgame $G^{i}_{\widetilde{S}_\belief} = (\widetilde{\states}_{i_\belief},\widetilde{s}^\init_{i_\belief},\widetilde{\trans}_{i_\belief})$ 
 
 \begin{itemize}
-\item $\states_{i_\belief} = \tilde{L}_i \times \mathcal{P}(\tilde{L}^i_t \cup \hat{l}_t^i)$ is the set of states,
-\item $\tilde{\trans}_{i_\belief} \subseteq \tilde{\states}_{i_\belief} \times \tilde{\states}_{i_\belief}$ is the transition relation where $((\tilde{l}_i, B_t),(\tilde{l}_i', B_t')) \in \tilde{\trans}_{i_\belief}$ iff $\tilde{l}_i' \in  \tilde{\succs}(\tilde{l}_i,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
+\item $\states_{i_\belief} = \widetilde{L}_i \times \mathcal{P}(\widetilde{L}^i_t \cup \hat{l}_t^i)$ is the set of states,
+\item $\widetilde{\trans}_{i_\belief} \subseteq \widetilde{\states}_{i_\belief} \times \widetilde{\states}_{i_\belief}$ is the transition relation where $((\widetilde{l}_i, B_t),(\widetilde{l}_i', B_t')) \in \widetilde{\trans}_{i_\belief}$ iff $\widetilde{l}_i' \in  \widetilde{\succs}(\widetilde{l}_i,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
 \begin{itemize}
-\item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \widetilde{\post}(\tilde{l}_i,B_t)$, $\widetilde{\vis}_i(l,l_t') = \true$;
-\item[(2)] $B_t' = \{l_t' \in \widetilde{\post}(\tilde{l}_i,B_t)  \mid  \widetilde{\vis}_i(l,l_t') = \false \}$.
+\item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)$, $\widetilde{\vis}_i(l,l_t') = \true$;
+\item[(2)] $B_t' = \{l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)  \mid  \widetilde{\vis}_i(l,l_t') = \false \}$.
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
 %\item[(2)] $\begin{array}{lll}
@@ -39,11 +62,12 @@ Given a surveillance subgame $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i
 
  For brevity, we omit the definitions of $\widetilde{\succs}_t$, $\widetilde{\succs}$, runs and strategies for the belief subgames as the definitions follow trivially from those for the belief games but in the subspace of transitions and states as defined above.
 
-The outcome of given strategies $f_{i}$ and $f_{t_i}$ for sensor $i$ and the target in the subgame, $\outcome(G^{i}_{\tilde{S}_\belief},f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G^{i}_{\tilde{S}_\belief}$ such that for every $k \geq 0$, we have $s_{k+1} = f_i(s_0,\ldots,s_k,B^k_{t_i})$, where $B^k_{t_i} = f_{t_i}(s_0,\ldots,s_k)$.
+The outcome of given strategies $f_{i}$ and $f_{t_i}$ for sensor $i$ and the target in the subgame, $\outcome(G^{i}_{\widetilde{S}_\belief},f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G^{i}_{\widetilde{S}_\belief}$ such that for every $k \geq 0$, we have $s_{k+1} = f_i(s_0,\ldots,s_k,B^k_{t_i})$, where $B^k_{t_i} = f_{t_i}(s_0,\ldots,s_k)$.
 
 \paragraph*{Remark}$B^k_{t_i}$ is the belief that sensor $i$ holds on the position of the target. Since the subgame for each sensor will be executing concurrently, the global belief on the location of the target will be a combination of the knowledge of the individual sensors. This is discussed in more detail in the sequel.
 
 \subsection{Global belief vs local belief}
+\Rayna{We need to define the composition of subgames. Things like timestep $k$ have no formal meaning otherwise.}
 Given $n$ belief subgames, at timestep $k$, sensor $i$ holds belief $B^k_{t_i}$. This is the \emph{local} belief as it is held by a single sensor and is not shared with the others. We first present the following fact: \todo{\textbf{not sure if this is a theorem, but not sure what else to call it.}}
 \begin{theorem} 
 At timestep $k$, if there exists $i\in \{1\dots n\}$ such that $B^k_{t_i} = \{l_t\}$ for $l_t \in \widetilde{L}_i^t$, then for all $j \neq i$, we have $\hat{l}^t_j \in B^k_{t_j}$.
@@ -61,10 +85,12 @@ The global belief is defined as one of two cases:
 l_t & \exists \; i \;\; |B^k_{t_i}| = \{l_t\} 
 \end{cases}
 \]
+\Rayna{Souldn't we have intersection instead of union in the above definition? }
 Note that from corollary \ref{corr:uniqi}, we ensure that the $i$ satisfying the second condition is unique and hence, if the target is in vision, the size of our global belief is 1. 
-\subsection{Composition of subgame policies}
+\subsection{Composition of subgame strategies}
 Given $n$ belief subgames each with a surveillance objective $\varphi_i$, and a strategy for the corresponding sensor $f_{s_i}$, we compose the subgame strategies into a global strategy in the following way.
 
+\Rayna{Here the composition of strategies should be defined without referring to its properties, or the local or global objectives. Later, we have to establish correspondence between local and global objectives (under certain assumptions).}
  \todo{\textbf{fill in}}
  
 
@@ -72,8 +98,9 @@ Given $n$ belief subgames each with a surveillance objective $\varphi_i$, and a 
 
 
 \subsection{Distributed surveillance synthesis problem}
-Given a global surveillance game $(G,\varphi)$ with $n$ sensors, compute a winning strategy for each sensor subgame $G^{i}_{\tilde{S}_\belief}$ with local surveillance objective $\varphi_i$ such that the composition of the $n$ winning policies guarantees that the global surveillance objective $\varphi$ is satisfied. Formally, compute the winning strategy $f_i$ for the sensor in each belief subgame such that if $\outcome(G^{i}_{\tilde{S}_\belief},f_{s_i},f_{t_i}) \models \varphi_i$, then the composed strategy for all agents $f_s = f_{s_1} \bigoplus f_{s_2} \dots \bigoplus f_{s_n}$ must be winning for the global property, i.e, $\outcome(G_{\belief},f_{s},f_{t}) \models \varphi$
+Given a global surveillance game $(G,\varphi)$ with $n$ sensors, compute a winning strategy for each sensor subgame $G^{i}_{\widetilde{S}_\belief}$ with local surveillance objective $\varphi_i$ such that the composition of the $n$ winning policies guarantees that the global surveillance objective $\varphi$ is satisfied. Formally, compute the winning strategy $f_i$ for the sensor in each belief subgame such that if $\outcome(G^{i}_{\widetilde{S}_\belief},f_{s_i},f_{t_i}) \models \varphi_i$, then the composed strategy for all agents $f_s = f_{s_1} \bigoplus f_{s_2} \dots \bigoplus f_{s_n}$ must be winning for the global property, i.e, $\outcome(G_{\belief},f_{s},f_{t}) \models \varphi$
 
+\Rayna{The definition above mixes up several things (1) the distributed surveillance synthesis problem where each sensor has only a local objective (2) the reduction from a given multi-agent surveillance synthesis problem (satisfying some restriction) to a distributed surveillance synthesis problem with local objectives such that  the composition of the resulting strategies satisfies the global objectives. This property of the reduction is something we have to prove.}
 
 
 

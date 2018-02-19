@@ -66,6 +66,9 @@ We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = 
 
 The transition relation $T$ encodes the one-step move of the target and the $n$ sensors: First, the target makes a move, after that, the sensors move jointly in a synchronized manner. 
 
+We denote with $T\downarrow i$ the projection of $T$ on the sets of locations of the target and the sensor with index $i$. Formally, we define
+$T{\downarrow }i = \{(l_i,l_t) \in L_i \times L_t \mid \exists l_1,\ldots,l_{i-1},l_{i+1},\ldots,l_n : (l_1,\ldots,l_n,l_t) \in T.\}$
+
 For a state $(l,l_t)$ we denote $\succs_t(l,l_t)$ as the set of successor locations of the target:
 
 $\succs_t(l,l_{t}) = \{l_{t}' \in L_t \mid \exists l'.\ ((l,l_t),(l',l_t')) \in T\}$.
