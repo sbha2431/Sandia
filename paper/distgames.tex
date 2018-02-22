@@ -41,7 +41,7 @@ Finally we remark that the previously defined notions of $\succs_t(\widetilde{l}
 
 \subsection{Belief subgame}
 \Rayna{I think we should define in the previous section single-agent surveillance game structures as a special case of multi-agent surveillance game structures. Then, since a surveillance subgame is essentially a single-agent surveillance game, and since there is nothing specific in the definition below, we can remove this subsection and  move the last remark to the next subsection.}
-Given a surveillance subgame $G^{i}_{\hat{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$, we can construct a belief subgame $G^{i}_{\widetilde{S}_\belief} = (\widetilde{\states}_{i_\belief},\widetilde{s}^\init_{i_\belief},\widetilde{\trans}_{i_\belief})$ 
+Given a surveillance subgame $G^{i}_{\tilde{S}} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$, we can construct a belief subgame $G^{i}_{\widetilde{S}_\belief} = (\widetilde{\states}_{i_\belief},\widetilde{s}^\init_{i_\belief},\widetilde{\trans}_{i_\belief})$ 
 
 \begin{itemize}
 \item $\states_{i_\belief} = \widetilde{L}_i \times \mathcal{P}(\widetilde{L}^i_t \cup k_i)$ is the set of states,
@@ -65,8 +65,14 @@ The outcome of given strategies $f_{i}$ and $f_{t_i}$ for sensor $i$ and the tar
 
 \paragraph*{Remark}$B^k_{t_i}$ is the belief that sensor $i$ holds on the position of the target. Since the subgame for each sensor will be executing concurrently, the global belief on the location of the target will be a combination of the knowledge of the individual sensors. This is discussed in more detail in the sequel.
 
+\subsection{Composition of subgames}
+Given $n$ belief subgames $(G^{1}_{\tilde{S}_\belief},\ldots,G^{n}_{\tilde{S}_\belief})$ over state partition $\widetilde{L}$, we define a \emph{run} in the composed belief game $G_\belief$ as an infinite sequence $s_0,s_1,\ldots$ of states where $s_k = (\tilde{s}_{1_k} \ldots \tilde{s}_{n_k})$ is the combined state of all the subgames at timestep $k$, and  $(\tilde{s}_{i_k},\tilde{s}_{{i+1}_k}) \in \tilde{T}_{i_\belief}$ for all $k$. 
+
+Given a strategy for each sensor $f_{s_i}$ in the corresponding subgames, we compose the subgame strategies into a global strategy in the same way. 
+
+
 \subsection{Global belief vs local belief}
-\Rayna{We need to define the composition of subgames. Things like timestep $k$ have no formal meaning otherwise.}
+
 Given $n$ belief subgames, at timestep $k$, sensor $i$ holds belief $B^k_{t_i}$. This is the \emph{local} belief as it is held by a single sensor and is not shared with the others. We first present the following fact: \todo{\textbf{not sure if this is a theorem, but not sure what else to call it.}}
 \begin{theorem} 
 At timestep $k$, if there exists $i\in \{1\dots n\}$ such that $B^k_{t_i} = \{l_t\}$ for $l_t \in \widetilde{L}_i^t$, then for all $j \neq i$, we have $\hat{l}^t_j \in B^k_{t_j}$.
@@ -78,19 +84,11 @@ By construction of the subgames \textbf{more to come}
 There can exist at most one $i\in \{1\dots n\}$ such that $B|^k_{t_i}| = 1$ and $\hat{l}^t_j \in B^k_{t_j} \notin B|^k_{t_i}|$.
 \end{corollary}
 Intuitively, this states that if the target is in vision of sensor $i$, all the other sensors must have $\hat{l}^t_j$ in their belief sets. Recall that $\hat{l}^t_j$ indicates that the target is not in the state space of the subgame corresponding to sensor $j$. The corollary states that if the target is in vision of sensor $i$, then no other sensor can claim to see the same target. 
-The global belief is defined as one of two cases:
-\[B^k_t \triangleq \begin{cases}
-\bigcup_{i}B^k_{t_i} & \forall \, i \in \{1\dots n\} \;\; |B^k_{t_i}| > 1\\
-l_t & \exists \; i \;\; |B^k_{t_i}| = \{l_t\} 
-\end{cases}
+The global belief is defined as:
+\[B^k_t \triangleq 
+\bigcap_{i}^n B^k_{t_i}
 \]
-\Rayna{Souldn't we have intersection instead of union in the above definition? }
-Note that from corollary \ref{corr:uniqi}, we ensure that the $i$ satisfying the second condition is unique and hence, if the target is in vision, the size of our global belief is 1. 
-\subsection{Composition of subgame strategies}
-Given $n$ belief subgames each with a surveillance objective $\varphi_i$, and a strategy for the corresponding sensor $f_{s_i}$, we compose the subgame strategies into a global strategy in the following way.
 
-\Rayna{Here the composition of strategies should be defined without referring to its properties, or the local or global objectives. Later, we have to establish correspondence between local and global objectives (under certain assumptions).}
- \todo{\textbf{fill in}}
  
 
 

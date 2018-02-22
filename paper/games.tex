@@ -1,4 +1,5 @@
-We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location. For ease of notation the definitions are provided for the case of a single target. \Rayna{I think we should remove the last sentence, since we are not looking at multiple targets yet, and it is not just a simple extension of notation.}
+We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location. 
+%For ease of notation the definitions are provided for the case of a single target. \Rayna{I think we should remove the last sentence, since we are not looking at multiple targets yet, and it is not just a simple extension of notation.}
 
 \subsection{Surveillance Game Structures}\label{sec:surveillance-games}
 We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,(\vis_1,\dots,\vis_n),\Vis)$, with the following components:
@@ -152,7 +153,7 @@ A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states i
 
 A \emph{strategy for the target in $G_\belief$} is a function $f_t: \states_\belief^+ \to \beliefs$ such that $f_t(\pi\cdot s) = B_t$ implies $B_t \in \succs_t(s)$ for every $\pi \in \states_\belief^*$ and $s \in \states_\belief$. That is, a strategy for the target suggests a move resulting in some belief set reachable from some location in the current belief.
 
-A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S^+ \times \beliefs \to S$ such that $f_s(\pi\cdot s,B_t) = (l_a',B_t')$ implies $B_t' = B_t$ and $l_a' \in \succs_a(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play and the current belief about the target's position.
+A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S^+ \times \beliefs \to S$ such that $f_s(\pi\cdot s,B_t) = (l_s',B_t')$ implies $B_t' = B_t$ and $l_a' \in \succs_s(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play and the current belief about the target's position.
 
 The outcome of given strategies $f_s$ and $f_t$ for the sensors and the target in $G_\belief$, denoted $\outcome(G_\belief,f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G_\belief$ such that for every $i \geq 0$, we have $s_{i+1} = f_s(s_0,\ldots,s_i,B_t^i)$, where $B_t^i = f_t(s_0,\ldots,s_i)$.
 
