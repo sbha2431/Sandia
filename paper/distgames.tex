@@ -38,8 +38,8 @@ Formally, for every pair of states $(\widetilde{l}_i,\widetilde{l}_t) \in \widet
 
   \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^i$ agrees with the visibiity function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$  (summarized by location $k_i$) are invisible to the sensor in the subgame. Formally, 
  \[\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \begin{cases}
-\vis_i(\widetilde{l}_i,l_t) & l_t \in \widetilde{L}_t^i, \\
-\false & l_t  = k_i.
+\vis_i(\widetilde{l}_i,l_t) & \text{if } l_t \in \widetilde{L}_t^i, \\
+\false & \text{if } l_t  = k_i.
 \end{cases}
 \]
 \end{itemize}
@@ -50,33 +50,34 @@ In Figure \ref{part-grid}, we have two subgames: $G^1$ for the green sensor and 
 \end{example}
 
 Note that in this construction, sensor $i$ is not able to leave the region of locations $\widetilde{L}_i$. Furthermore, all the information about the target's behaviour outside of  the subgame's region is completely hidden from the mobile sensor controller, since all locations outside of  $\widetilde{L}_t^i$ are represented by the single location $k_i$.
-Finally we remark that the previously defined notions of $\succs_t(\widetilde{l}_i,\widetilde{l}^i_{t})$, $\succs_t(\widetilde{l}_i,\widetilde{L}^i_{t})$, and $\succs(\widetilde{l}_i,\widetilde{l}^{t},\widetilde{l}_{t}')$ for the global game structure $G$ follow analogously in this construction for $\widetilde{T}$ which we denote as $\widetilde{\succs}$.
+%Finally we remark that the previously defined notions of $\succs_t(\widetilde{l}_i,\widetilde{l}^i_{t})$, $\succs_t(\widetilde{l}_i,\widetilde{L}^i_{t})$, and $\succs(\widetilde{l}_i,\widetilde{l}^{t},\widetilde{l}_{t}')$ for the global game structure $G$ follow analogously in this construction for $\widetilde{T}$ which we denote as $\widetilde{\succs}$.
+In the next subsection we discuss the local knowledge (belief)  of sensor $i$ in the game structure $G^i$.
 
-\subsection{Belief subgame}
-\Rayna{I think we should define in the previous section single-agent surveillance game structures as a special case of multi-agent surveillance game structures. Then, since a surveillance subgame is essentially a single-agent surveillance game, and since there is nothing specific in the definition below, we can remove this subsection and  move the last remark to the next subsection.}
-Given a surveillance subgame $G^{i} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$, we can construct a belief subgame $G^{i}_\belief = (\widetilde{\states}_{i_\belief},\widetilde{s}^\init_{i_\belief},\widetilde{\trans}_{i_\belief})$ 
+\subsection{Local beliefs in surveillance subgames}\label{sec:local-games}
+A surveillance subgame is a game structure with a single mobile sensor, and thus, can be seen as a special case of multi-agent surveillance game structure. With this, the definition of  belief-set game structures from Section~\ref{sec:belief-gs} directly applies to surveillance subgames.
 
-\begin{itemize}
-\item $\states_{i_\belief} = \widetilde{L}_i \times \mathcal{P}(\widetilde{L}^i_t \cup k_i)$ is the set of states,
-\item $\widetilde{\trans}_{i_\belief} \subseteq \widetilde{\states}_{i_\belief} \times \widetilde{\states}_{i_\belief}$ is the transition relation where $((\widetilde{l}_i, B_t),(\widetilde{l}_i', B_t')) \in \widetilde{\trans}_{i_\belief}$ iff $\widetilde{l}_i' \in  \widetilde{\succs}(\widetilde{l}_i,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
-\begin{itemize}
-\item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)$, $\widetilde{\vis}_i(l,l_t') = \true$;
-\item[(2)] $B_t' = \{l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)  \mid  \widetilde{\vis}_i(l,l_t') = \false \}$.
-%\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
-%there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
-%\item[(2)] $\begin{array}{lll}
-%B_t' = \{l_t' & \mid & \vis(l_a,l_t') = \false \text{ and } \\
-%&& \exists l_t \in B_t.\ ((l_a,l_t),(l_a',l_t')) \in \trans\}. 
-%\end{array}
-%$
-\end{itemize}
-\end{itemize}
+In the belief-set game structure for a surveillance subgame $G^{i} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$ the belief sets represent the local belief of sensor $i$. More specifically, a belief set in $G^{i}_\belief$ is an element of  $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$, and can thus contain the auxiliary location. Intuitively, if $ k_i$ is present in the sensor's current belief, then the target could possibly be outside of the local set of locations $\widetilde L_i$ , or if the belief is the singleton $\{k_i\}$, then sensor $i$ knows for sure that the target is outside of its region.  
+We define the \emph{global interpretation} $\llbracket B_t\rrbracket$ of a belief set $B_t$ in $G^{i}_\belief$, which is a set of locations in $G$, as
+ \[\llbracket B_t\rrbracket = \begin{cases}
+B_t & \text{if } k_i \not\in B_t, \\
+B_t \cup (L \setminus \widetilde L_i) & \text{if } k_i  \in B_t.
+\end{cases}
+\]
 
- For brevity, we omit the definitions of $\widetilde{\succs}_t$, $\widetilde{\succs}$, runs and strategies for the belief subgames as the definitions follow trivially from those for the belief games but in the subspace of transitions and states as defined above.
+%belief subgame  $G^{i}_\belief= (\widetilde{\states}_{i_\belief},\widetilde{s}^\init_{i_\belief},\widetilde{\trans}_{i_\belief})$ 
+%\begin{itemize}
+%\item $\states_{i_\belief} = \widetilde{L}_i \times \mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$ is the set of states,
+%\item $\widetilde{\trans}_{i_\belief} \subseteq \widetilde{\states}_{i_\belief} \times \widetilde{\states}_{i_\belief}$ is the transition relation where $((\widetilde{l}_i, B_t),(\widetilde{l}_i', B_t')) \in \widetilde{\trans}_{i_\belief}$ iff $\widetilde{l}_i' \in  \widetilde{\succs}(\widetilde{l}_i,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
+%\begin{itemize}
+%\item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)$, $\widetilde{\vis}_i(l,l_t') = \true$;
+%\item[(2)] $B_t' = \{l_t' \in \widetilde{\post}(\widetilde{l}_i,B_t)  \mid  \widetilde{\vis}_i(l,l_t') = \false \}$.
+%\end{itemize}
+%\end{itemize}
+% For brevity, we omit the definitions of $\widetilde{\succs}_t$, $\widetilde{\succs}$, runs and strategies for the belief subgames as the definitions follow trivially from those for the belief games but in the subspace of transitions and states as defined above.
 
-The outcome of given strategies $f_{i}$ and $f_{t_i}$ for sensor $i$ and the target in the subgame, $\outcome(G^{i}_{\belief},f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G^{i}_\belief$ such that for every $k \geq 0$, we have $s_{k+1} = f_i(s_0,\ldots,s_k,B^k_{t_i})$, where $B^k_{t_i} = f_{t_i}(s_0,\ldots,s_k)$.
+Strategies of sensor $i$ in the belief-set game $G^{i}_\belief$ depend only on the sequence of states in this game, and thus, only on local information. Following the definitions in Section~\ref{sec:belief-gs}, the outcome of a pair of given strategies $f_{i}$ and $f_{t_i}$ for the sensor and the target in $G^{i}_{\belief}$  is a sequence of  states in  $G^{i}_{\belief}$, each of which is a pair consisting of a location of sensor $i$ and a belief-set for sensor $i$ in $G^{i}_{\belief}$.
 
-\paragraph*{Remark}$B^k_{t_i}$ is the belief that sensor $i$ holds on the position of the target. Since the subgame for each sensor will be executing concurrently, the global belief on the location of the target will be a combination of the knowledge of the individual sensors. This is discussed in more detail in the sequel.
+%\paragraph*{Remark}$B^k_{t_i}$ is the belief that sensor $i$ holds on the position of the target. Since the subgame for each sensor will be executing concurrently, the global belief on the location of the target will be a combination of the knowledge of the individual sensors. This is discussed in more detail in the sequel.
 
 \subsection{Composition of subgames}
 Given $n$ belief subgames $(G^{1}_{\tilde{S}_\belief},\ldots,G^{n}_{\tilde{S}_\belief})$ over state partition $\widetilde{L}$, we define a \emph{run} in the composed belief game $G_\belief$ as an infinite sequence $s_0,s_1,\ldots$ of states where $s_k = (\tilde{s}_{1_k} \ldots \tilde{s}_{n_k})$ is the combined state of all the subgames at timestep $k$, and  $(\tilde{s}_{i_k},\tilde{s}_{{i+1}_k}) \in \tilde{T}_{i_\belief}$ for all $k$. 
