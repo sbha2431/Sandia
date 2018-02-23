@@ -2,7 +2,7 @@ We begin by defining a formal model for describing multi-agent surveillance stra
 %For ease of notation the definitions are provided for the case of a single target. \Rayna{I think we should remove the last sentence, since we are not looking at multiple targets yet, and it is not just a simple extension of notation.}
 
 \subsection{Surveillance Game Structures}\label{sec:surveillance-games}
-We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,(\vis_1,\dots,\vis_n),\Vis)$, with the following components:
+We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,(\vis_1,\dots,\vis_n))$, with the following components:
 \begin{itemize}
 \item $\states = L_s \times L_t$ is the set of states, where $L_{s} = L_1 \times L_2 \times\dots \times L_n$ is the set of joint locations of the $n$ sensors, $L_i$ is the set of possible locations of sensor $i$,  and $L_t$ is the set of possible locations of the target;
 \item $s^\init = (l^{\init}_1,\ldots,l^{\init}_n,l_t^\init)$ is the initial state;
@@ -14,50 +14,13 @@ Additionally. we define the \emph{joint visibility function} $\Vis : \states \to
 
 \begin{figure}
 \subfloat[Surveillance arena \label{simple-grid}]{
-%\includegraphics[scale=.33]{figs/7x7_safety.png}
-\begin{tikzpicture}[scale=0.8]
-\draw[step=0.5cm,color=gray] (-1.5,-1.5) grid (1,1);
-\filldraw[fill=blue,draw=black] (+0.75,+0.75) circle (0.2cm);
-
-\filldraw[fill=red,draw=black] (0,0) rectangle (-0.5,-0.5);
-\filldraw[fill=red,draw=black] (-0.5,0) rectangle (-1,-0.5);
-\filldraw[fill=red,draw=black] (0,0) rectangle (0.5,-0.5);
-\filldraw[fill=blue!40!white,draw=black] (+0.75,+0.75) circle (0.2cm);
-\filldraw[fill=orange!40!white,draw=black] (0.25,-0.75) circle (0.2cm);
-\filldraw[fill=green!40!white,draw=black]  (-1.25,+0.75) circle (0.2cm);
-\node at (-1.25,+0.75) {\tiny{0}};
-\node at (-0.80,+0.75) {\tiny{1}};
-\node at (-0.30,+0.75) {\tiny{2}};
-\node at (0.20,+0.75) {\tiny{3}};
-\node at (0.73,+0.75) {\tiny{4}};
-\node at (-1.33,+0.25) {\tiny{5}};
-\node at (-0.85,+0.25) {\tiny{6}};
-\node at (-0.35,+0.25) {\tiny{7}};
-\node at (0.25,+0.25) {\tiny{8}};
-\node at (0.75,+0.25) {\tiny{9}};
-\node at (-1.28,-0.27) {\tiny{10}};
-\node at (-0.78,-0.27) {\tiny{11}};
-\node at (-0.28,-0.27) {\tiny{12}};
-\node at (0.28,-0.27) {\tiny{13}};
-\node at (0.75,-0.25) {\tiny{14}};
-\node at (-1.3,-0.75) {\tiny{15}};
-\node at (-0.8,-0.75) {\tiny{16}};
-\node at (-0.3,-0.75) {\tiny{17}};
-\node at (0.25,-0.75) {\tiny{18}};
-\node at (0.75,-0.75) {\tiny{19}};
-\node at (-1.35,-1.25) {\tiny{20}};
-\node at (-0.85,-1.25) {\tiny{21}};
-\node at (-0.35,-1.25) {\tiny{22}};
-\node at (0.25,-1.25) {\tiny{23}};
-\node at (0.75,-1.25) {\tiny{24}};
-\end{tikzpicture}
+\input{figs/7x7.tex}
 \hspace{.3cm}}
 %\hfill
 \subfloat[Transitions from the initial state\label{fig:simple-transitions}]{
 \input{figs/simple-transitions.tex}
 }
-\vspace{-0.1cm}
-\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 0 and 4) coloured in blue and green respectively and the target (at location 18) is orange.\todo{\textbf{modify for 2 sensor example}}}
+\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 20 and 4) coloured in blue and green respectively and the target (at location 18) is orange. The grey states are not visible to either sensors, i.e, $\Vis((20,4,l_t)) = \false$ for all grey $l_t$  }
 \label{fig:simple-surveillance-game}
 \vspace{-.7cm}
 \end{figure}
@@ -80,10 +43,10 @@ $\succs(l_s,l_t,l_t') = \{l_s' \in L_s \mid  ((l_s,l_t),(l_s',l_t')) \in T\}$.
 
 We assume that, for every state $s\in \states$, there exists a state $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state). We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the sensors. Formally, we require that if $\Vis(l_s,l_t''') = \Vis(l_s,l_t'''')=\false$, then $\succs(l_s,l_t',l_t''') = \succs(l_s,l_t'',l_t'''')$ for all $l_t',l_t'',l_t''',l_t'''' \in L_t$. This assumption is natural in the setting where each of the  sensors can move in one step only to locations that are in its sight.
 
-\begin{example}\label{ex:simple-surveillance-game}\todo{make this for multiple sensors}
+\begin{example}\label{ex:simple-surveillance-game}
 Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_s$ and $L_t$ for the sensors and the target consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of all the sensors and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or an obstacle, is not allowed. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(4,18)$.
 
-In this example, the function $\vis_i$ encodes straight-line visibility: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $19$, then the blue sensor observes its location, but if it moves to one of the others, then neither sensor can observe it and its exact location will not be known. \qed
+In this example, the function $\vis_i$ encodes straight-line visibility with a range of 2: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them and the distance between the target and sensor $i$ is less than 2. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $19$, then the blue sensor observes its location, but if it moves to one of the others, then neither sensor can observe it and its exact location will not be known. \qed
 \end{example}
 
 
@@ -137,14 +100,14 @@ Condition (1) captures the successor locations of the target that can be observe
 \input{figs/simple-belief-transitions.tex}
 
 \vspace{-.3cm}
-\caption{Transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game} where $\vis(4,17) = \vis(4,23) = \false$. \todo{\textbf{Modify for 2 sensor example}}}
+\caption{Possible transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game}. Note that some transitions are not included for readability}
 \label{fig:simple-belief-game}
 \vspace{-.5cm}
 \end{figure}
 
 \begin{example}\label{ex:simple-belief-game}
-Consider the surveillance game structure from Example~\ref{ex:simple-surveillance-game}. The initial belief set is $\{18\}$, as the target's initial position is known. After the first move of the target, there are two possible belief sets: the set $\{19\}$ resulting from the move to a location in the area of sight of the blue sensor, and $\{17,23\}$ consisting of the two locations invisible to both sensors reachable in one step from location $18$.
-Figure~\ref{fig:simple-belief-game} shows the successor states of the initial state $((0,4),\{18\})$ in $G_\belief$. \qed
+Consider the surveillance game structure from Example~\ref{ex:simple-surveillance-game}. The initial belief set is $\{18\}$, as the target's initial position is known. After the first move of the target, there are two possible belief sets: the set $\{17\}$ resulting from the move to a location in the area of sight of the green sensor, and $\{19,23\}$ consisting of the two locations invisible to both sensors reachable in one step from location $18$.
+Figure~\ref{fig:simple-belief-game} shows some of the possible successor states of the initial state $((20,4),\{18\})$ in $G_\belief$. \qed
 \end{example}
 
 Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs : \states_\belief \times \beliefs \to \mathcal{P}(L)$ similarly to the corresponding functions defined for $G$. 
