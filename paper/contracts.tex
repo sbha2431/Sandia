@@ -1,3 +1,26 @@
+\subsection{Overview}
+We first provide an informal high level overview of the solution. We decentralize the synthesis process by solving each of the subgames separately. However, for a controller to be realizable, the sensors need to be aware of when targets are about to enter their region. To enforce this, we make use of \emph{contracts} between subgames. Each subgame must warn its neighbours if it is possible for the target to move in between them. We then synthesize a reactive controller for each sensor in its corresponding subgame. 
+
 \subsection{Border states}
-We say a state $l_t \in \widetilde{L}_t$ is a \emph{border state} of the subgame for sensor $i$ if $((l_i,l_t),(l_i',\hat{l}_t^i)) \in \widetilde{T}_i$
+We say a state $l_t \in \widetilde{L}$ is a \emph{border state} of the surveillance subgame $G^i$ for sensor $i$ if $((l_i,l_t),(l_i',k_i)) \in \widetilde{T}_i$. Intuitively, if the target can exit the states of the subgame, i.e, it can enter $L\setminus\widetilde{L}_i$, then the state is known as a border state. We define the set of such states as the \emph{bordering set} $C_i$ of subgame $G^1_{\tilde{S}}$. 
+
+We extend this definition to the belief subgame $G^i_{\tilde{S}_\belief}$ by saying $B_t$ is a \emph{belief border state} for sensor $i$ if $((l_i,B_t),(l_i',B_t')) \in \widetilde{T}_i$ and $B_t \cap C_i \neq \emptyset$ 
+
+\begin{example}
+In Figure \ref{part-grid}, $C_1 = \{10,14\}$. \qed
+\end{example}
+
+\subsection{Neighbouring subgames}
+We say subgames $G^i$ and $G^j$ are \emph{neighbouring} if in the global game $G$ there exists a transition from $S_i$ to $S_j$ and vice versa (we assume with loss of generality that if there exists a transition from $s$ to $s'$ then the backwards transition must also exist). More formally if there exists transition $((l_i,l_t),(l_i',l_t')) \in T$ such that $l_t \in \widetilde{L}_i$ and $l_t' \in \widetilde{L}_j$, then $G^i$ and $G^j_{\tilde{S}}$ are \emph{neighbouring subgames}.
+
+\begin{proposition}
+If $G^i$ and $G^j$ are \emph{neighbouring} subgames then exists a transition $((l_i,l_t),(l_i',l_t')) \in T$ such that $l_t \in C_i$ and $l_t' \in C_j$. We denote the set of states satisfying this $C_{i \rightarrow j} \subseteq C_i$.
+\end{proposition}
+
+Simply, if two subgames are neighbours then there must exist a way to move from the border states of one to the border states of the other. 
+
 \subsection{Contracts between subgames}
+In order for a sensor to be able to react to surveillance targets in its subgame, it is necessary for it to be made aware when a target has moved into its subgame. We enforce this assumption in the form of a \emph{contract} between neighbouring subgames. To do this, in each subgame $G^i$ we augment boolean variables $c_{ij}$ to the state where $c_{ij} = \true$ if $l_t \in C_{j \rightarrow i}$. Intuitively, $c_{ij}$ evaluating to $\true$ is sensor $j$ letting sensor $i$ know that it is possible for the target to enter the state space of subgame $G^i$. 
+\begin{example}
+Referring to Figure \ref{part-grid}, the new augmented state with the contract variable for $G^2$ is $s_2 = (4,k_2,\true)$. From this state, sensor $2$ is aware that the target can transition into $\widetilde{L}_2$ in the next step. The only possible transitions from $(l_2,k_2, \false)$ is $(l_2',k_2, \true)$ and $(l_2',k_2, \false)$. In other words the target cannot transition into $\widetilde{L}_2$ from a non-border state. 
+\end{example}

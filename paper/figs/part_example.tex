@@ -1,0 +1,41 @@
+
+\begin{minipage}{5.0cm}
+\vspace{-2.8cm}
+%{\fontsize{8}{10}\selectfont $\Vis((20,4),18) = \false,\vis(4,17) = \false,$ $\vis(4,19) = \true, \vis(4,23) = \false$}
+
+%\smallskip
+
+%\small \[\tilde{L} =\begin{cases}
+%\widetilde{L}_1 = \{0,1,2,3,4,5,6,7,8,9\} \\
+%\widetilde{L}_2 = \{10,11,12,13,14,\ldots,24\}
+%
+%\end{cases}\]
+
+
+\begin{tikzpicture}[node distance=.9 cm,auto,>=latex',line join=bevel,transform shape,scale=.75]
+\node at (0,0) (s0) {$G^1: (20,14)$};
+\node  [below left of=s0,yshift=-.5cm,xshift=-0.5cm] (s2) {$(21,k_1)$};
+\node  [below right of=s0,yshift=-.5cm,xshift=0.5cm] (s3) {$(15,k_1)$};
+\node  [left of=s2,xshift=-0.75cm] (s1) {$(21,\{19\})$};
+\node  [right of=s3,xshift=0.75cm] (s4) {$(15,\{19\})$};
+\draw [->] (s0) edge (s1.north);
+\draw [->] (s0) edge (s2.north);
+\draw [->] (s0) edge (s3.north);
+\draw [->] (s0) edge (s4.north);
+\end{tikzpicture}
+
+
+
+\begin{tikzpicture}[node distance=.9 cm,auto,>=latex',line join=bevel,transform shape,scale=.75]
+\node at (0,0) (s0) {$G^2: (4,k_1)$};
+\node  [below of=s0,yshift=-.5cm] (s1) {$(3,9)$};
+\node  [right of=s1,xshift=0.5cm] (s2) {$(9,k_2)$};
+\node  [left of=s1,xshift=-0.5cm] (s3) {$(3,k_2)$};
+\draw [->] (s0) edge (s1.north);
+\draw [->] (s0) edge (s2.north);
+\draw [->] (s0) edge (s3.north);
+\end{tikzpicture}
+
+
+
+\end{minipage}
