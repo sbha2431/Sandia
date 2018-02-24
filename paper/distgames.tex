@@ -17,7 +17,7 @@ A  \emph{state-space partition} of size $n$ of the set $L$ of locations in a gam
 \end{figure}
 
 \subsection{Surveillance subgames}
-We now describe how, given a state-space partition $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$, to construct a tuple of single-agent surveillance game structures $\widetilde G = (G_1,\ldots,G_n)$ that contains one  \emph{surveillance subgame} $G^i$ for each mobile sensor  $i$. Each subgame, $G^i$ is defined over the subset of locations $\widetilde{L}_i$. Since the target and sensor operate on the same state space we will have $\widetilde{L}^i_s = \widetilde{L}^i_t = \widetilde{L}_i$. Additionally, to each $\widetilde{L}^i_t$ we add an \emph{auxiliary location} $k_i$ that encapsulates all possible locations of the target that are outside of this subgame's region, i.e., all locations in $L \setminus \widetilde{L}_i$.  We then model transitions leaving or entering $\widetilde{L}^i_t$ as transitions to or from location $k_i$ respectively.
+We now describe how, given a state-space partition $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$, to construct a tuple of single-agent surveillance game structures $\widetilde G = (G^1,\ldots,G^n)$ that contains one  \emph{surveillance subgame} $G^i$ for each mobile sensor  $i$. Each subgame, $G^i$ is defined over the subset of locations $\widetilde{L}_i$. Since the target and sensor operate on the same state space we will have $\widetilde{L}^i_s = \widetilde{L}^i_t = \widetilde{L}_i$. Additionally, to each $\widetilde{L}^i_t$ we add an \emph{auxiliary location} $k_i$ that encapsulates all possible locations of the target that are outside of this subgame's region, i.e., all locations in $L \setminus \widetilde{L}_i$.  We then model transitions leaving or entering $\widetilde{L}^i_t$ as transitions to or from location $k_i$ respectively.
 
 More formally, given the subset  $\widetilde{L}_i \subseteq L$ we define the \emph{subgame} of $G$ corresponding to sensor $i$ as the tuple $G^i = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$  where
 \begin{itemize}
@@ -79,41 +79,55 @@ Strategies of sensor $i$ in the belief-set game $G^{i}_\belief$ depend only on t
 
 %\paragraph*{Remark}$B^k_{t_i}$ is the belief that sensor $i$ holds on the position of the target. Since the subgame for each sensor will be executing concurrently, the global belief on the location of the target will be a combination of the knowledge of the individual sensors. This is discussed in more detail in the sequel.
 
-\subsection{Composition of subgames}
-Given $n$ belief subgames $(G^{1}_{\tilde{S}_\belief},\ldots,G^{n}_{\tilde{S}_\belief})$ over state partition $\widetilde{L}$, we define a \emph{run} in the composed belief game $G_\belief$ as an infinite sequence $s_0,s_1,\ldots$ of states where $s_k = (\tilde{s}_{1_k} \ldots \tilde{s}_{n_k})$ is the combined state of all the subgames at timestep $k$, and  $(\tilde{s}_{i_k},\tilde{s}_{{i+1}_k}) \in \tilde{T}_{i_\belief}$ for all $k$. 
+\subsection{Distributed surveillance synthesis problem}\label{sec:distributed-problem}
+Given a state-space partitioning $\widetilde L$ and the corresponding tuple of subgames $\widetilde G = (G^1,\ldots,G^n)$
+we will define a distributed surveillance strategy synthesis problem, which, intuitively, asks to synthesize strategies for the sensors in the individual belief subgames, such that together they guarantee the global surveillance objective against every possible strategy of the target in the global belief game.  In this section we formalize this intuitive problem description. For this, we  need to define what it means for the individual sensor strategies to satisfy together some global requirement.
 
-Given a strategy for each sensor $f_{s_i}$ in the corresponding subgames, we compose the subgame strategies into a global strategy in the same way. 
+Our surveillance requirements are defined in terms of the belief-states in $G_\belief$, but strategies in the belief subgames are defined in terms of sequences of local belief-states. Hence, we need to define a mapping of states of the form $((l_1,\ldots,l_n),B_t)$ to elements of $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$ for each $i$. Since, by definition, a strategy for sensor $i$ in the corresponding belief subgame guarantees that it remains in $\widetilde L_i$, we only need to define the mapping for states with $l_i \in\widetilde{L}^i$.
 
+Formally, for a state $((l_1,\ldots,l_n),B_t)$  we define its projection on belief subgame $i$, as $((l_1,\ldots,l_n),B_t){\downarrow}i = (l_i,B_t{\downarrow}i)$, where
+\[B_t{\downarrow}i = \begin{cases}
+B_t& \text{if }  B_t \subseteq \widetilde L_i, \\
+(B_t \cap \widetilde L_i) \cup \{k_i\} & \text{otherwise}.
+\end{cases}\]
+The mapping extends to sequences of states in the usual way. 
 
-\subsection{Global belief vs local belief}
+Intuitively, this mapping projects the joint knowledge of the sensors in $G_\belief$ onto the local belief of each sensor, where sensors do not  share their local beliefs with each other, that is, sensors have no information about the target's position outside of their own region. The global, shared belief of the sensors is formed by the combination of their local beliefs. More precisely, this is the intersection of the  global interpretation of the local beliefs. Indeed, it is easy to see that the following property holds
+\[B_t = \bigcap_{i=1}^n \llbracket B_t{\downarrow}i\rrbracket.\]
 
-Given $n$ belief subgames, at timestep $k$, sensor $i$ holds belief $B^k_{t_i}$. This is the \emph{local} belief as it is held by a single sensor and is not shared with the others. We first present the following fact: \todo{\textbf{not sure if this is a theorem, but not sure what else to call it.}}
-\begin{theorem} 
-At timestep $k$, if there exists $i\in \{1\dots n\}$ such that $B^k_{t_i} = \{l_t\}$ for $l_t \in \widetilde{L}_i^t$, then for all $j \neq i$, we have $k_j \in B^k_{t_j}$.
-\end{theorem}
-\begin{proof}
-By construction of the subgames \textbf{more to come}
-\end{proof}
-\begin{corollary}\label{corr:uniqi}
-There can exist at most one $i\in \{1\dots n\}$ such that $B|^k_{t_i}| = 1$ and $k_j \in B^k_{t_j} \notin B|^k_{t_i}|$.
-\end{corollary}
-Intuitively, this states that if the target is in vision of sensor $i$, all the other sensors must have $k_j$ in their belief sets. Recall that $k_j$ indicates that the target is not in the state space of the subgame corresponding to sensor $j$. The corollary states that if the target is in vision of sensor $i$, then no other sensor can claim to see the same target. 
-The global belief is defined as:
-\[B^k_t \triangleq 
-\bigcap_{i}^n B^k_{t_i}
-\]
+Now we are ready to define the joint strategy of the sensors in $G_\belief$ obtained by executing together a given set of sensor strategies in the individual subgames. 
+Let $f_{s_1},\ldots,f_{s_n}$ be strategies for the sensors in the belief subgames $(G^{1}_{\tilde{S}_\belief},\ldots,G^{n}_{\tilde{S}_\belief})$. We define the \emph{composition} $f_{s_1} \otimes\ldots\otimes f_{s_n}$ of $f_{s_1},\ldots,f_{s_n}$, which is a joint strategy $f_s$ for the sensors in $G_\belief$, as follows:
+for every sequence $s_0,\ldots,s_k$ of states in $G_\belief$ and global belief $B_t \in \beliefs$, we let
+\[f_s(s_0,\ldots,s_k,B_t) = (l_1,\ldots,l_n),\]
+where $l_i = f_{s_i}((s_0,\ldots,s_k){\downarrow}i,B_t{\downarrow}i)$ for each sensor $i$. 
 
+\emph{Remark}. If for some $i$ the projection $(s_0,\ldots,s_k){\downarrow}i$ is undefined, then $f_s(s_0,\ldots,s_k,B_t)$ is undefined. However, by the definition of each $f_{s_i}$ we are guaranteed that the projection is defined for every prefix consistent with $f_{s_i}$.
+
+Intuitively, the joint strategy $f_{s_1} \otimes\ldots\otimes f_{s_n}$ makes decisions consistent with the choices of the individual strategies $f_{s_1}, \ldots, f_{s_n}$ in the respective belief subgames.
+
+%Given $n$ belief subgames, at timestep $k$, sensor $i$ holds belief $B^k_{t_i}$. This is the \emph{local} belief as it is held by a single sensor and is not shared with the others. We first present the following fact: \todo{\textbf{not sure if this is a theorem, but not sure what else to call it.}}
+%\begin{theorem} 
+%At timestep $k$, if there exists $i\in \{1\dots n\}$ such that $B^k_{t_i} = \{l_t\}$ for $l_t \in \widetilde{L}_i^t$, then for all $j \neq i$, we have $k_j \in B^k_{t_j}$.
+%\end{theorem}
+%\begin{proof}
+%By construction of the subgames \textbf{more to come}
+%\end{proof}
+%\begin{corollary}\label{corr:uniqi}
+%There can exist at most one $i\in \{1\dots n\}$ such that $B|^k_{t_i}| = 1$ and $k_j \in B^k_{t_j} \notin B|^k_{t_i}|$.
+%\end{corollary}
+%Intuitively, this states that if the target is in vision of sensor $i$, all the other sensors must have $k_j$ in their belief sets. Recall that $k_j$ indicates that the target is not in the state space of the subgame corresponding to sensor $j$. The corollary states that if the target is in vision of sensor $i$, then no other sensor can claim to see the same target. 
+%The global belief is defined as:
+%\[B^k_t \triangleq 
+%\bigcap_{i}^n B^k_{t_i}
+%\]
+
+Our goal is to synthesize of a joint strategy $f_s$ that enforces a given surveillance property in the belief-set game $G_\belief$ by synthesizing individual strategies for all the sensors in the corresponding belief subgames. That is, we want to solve the following \emph{distributed surveillance synthesis problem}. 
  
+\paragraph*{\textbf{Problem statement }}Given a multi-agent surveillance game $(G,\varphi)$ with $n$ sensors, and a state-space partition $\widetilde{L}$, compute strategies $f_{s_1},\ldots,f_{s_n}$ for the sensors in the belief subgames $G^1_\belief,\ldots,G^n_\belief$ respectively, such that the composed strategy $f_{s_1}\otimes\ldots\otimes f_{s_n}$ is a joint winning strategy for the sensors in the surveillance game $(G,\varphi)$.
 
+\smallskip
 
-
-
-\subsection{Distributed surveillance synthesis problem}
-\paragraph*{\textbf{Problem statement: }}Given a global surveillance game $(G,\varphi)$ with $n$ sensors and a state partition $\widetilde{L}$, compute a distributed strategy for the sensor in each subgame $G^i_\belief$ such that the composition of the $n$ subgame strategies guarantees that the global surveillance objective $\varphi$ is satisfied. Formally, compute the strategy $f_i$ for the sensor in each belief subgame such that $f_s = f_{s_1} \bigoplus f_{s_2} \dots \bigoplus f_{s_n}$ must be winning for the global property, i.e, $\outcome(G_{\belief},f_{s},f_{t}) \models \varphi$
-
-%if $\outcome(G^i_\belief},f_{s_i},f_{t_i}) \models \varphi_i$, then the composed strategy for all agents 
-%\Rayna{The definition above mixes up several things (1) the distributed surveillance synthesis problem where each sensor has only a local objective (2) the reduction from a given multi-agent surveillance synthesis problem (satisfying some restriction) to a distributed surveillance synthesis problem with local objectives such that  the composition of the resulting strategies satisfies the global objectives. This property of the reduction is something we have to prove.}
-
+Thus, in the distributed surveillance synthesis problem we have to compute strategies $f_{s_1},\ldots,f_{s_n}$  such that for every strategy $f_t$ for the target in $G_{\belief}$ it holds that $\outcome(G_{\belief},f_{s_1}\otimes\ldots\otimes f_{s_n},f_{t}) \models \varphi$. To this end, we have to provide \emph{local surveillance objectives} for all the sensors, such that if all strategies are winning with respect to their local objectives, then their composition is winning with respect to the original surveillance objective. In this way we will reduce the multi-agent surveillance synthesis problem to $n$ single-agent surveillance problems over smaller sets of locations. This reduction is the subject of the next section.
 
 
 
