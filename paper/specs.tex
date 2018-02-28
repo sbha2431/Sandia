@@ -23,4 +23,17 @@ We now turn to liveness surveillance objectives. It is easy to see that each sen
 Consider the global surveillance specification $\LTLglobally\LTLfinally p_5$ for a network with two sensors. Suppose $f_1$ is a strategy for the sensor in $G^1_\belief$,  which ensures that every even step the size of the local belief is $10$, and every odd step the local belief contains $k_1$ and its size is $3$. Strategy  $f_2$ in $G^2_\belief$,  is similar, but even and odd steps are interchanged: every even step the local belief contains $k_2$ and its size is $3$, and every odd step the size of the local belief is $10$.  Thus, while $f_1$ and $f_2$ guarantee that their local belief is "small enough" infinitely often, they do this at different steps.
 \end{example}
 
-We circumvent the problem illustrated in the previous example by requiring that each sensor satisfies the liveness guarantee on its own. \todo{continue...}
+We circumvent the problem illustrated in the previous example by requiring that each sensor satisfies the liveness guarantee on its own. For this, we have to consider two cases. First, if from some point on sensor $i$ always knows that the target is outside of its region, it has no obligation to satisfy the liveness surveillance guarantee. If, on the other hand, according to sensor $i$'s belief the target could be in $\widetilde L_i$ infinitely often (note that this is true for at least one sensor), then it has to satisfy the corresponding liveness guarantee.
+
+In order to capture this intuition, we need two additional types of surveillance predicates. First, we need to be able to express the negation of the property that the local belief of sensor $i$ is the singleton $\{k_i\}$ (which means that sensor $i$ knows that the target is outside $\widetilde L_i$). For this, we introduce the predicate $\mathit{belief} \neq \{k_i\}$. Second, in order to express that the local liveness guarantee, we need to be able to state that $k_i$ is not in $\widetilde L_i$ (which means that sensor $i$ knows that the target is in its region). The predicate we introduce for this property is $k_i \not\in\mathit{belief}$. Both predicates can be interpreted over belief sets similarly to $p_b$ and incorporated in LTL.
+ 
+Formally, we define the local liveness specification for sensor $i$ denoted $\locspec_i(\LTLglobally\LTLfinally p_b)$, as
+\[
+\begin{array}{lll}
+\locspec_i(\LTLglobally\LTLfinally p_b) & \triangleq &
+\big(\LTLglobally\LTLfinally (\mathit{belief} \neq \{k_i\} )\big)\rightarrow\\&& \big(\LTLglobally\LTLfinally p_b \wedge (k_i \not\in\mathit{belief})\big).
+\end{array}
+\]
+Notice that here we use implication, which is not part of the fragment to which we restrict the global surveillance specifications. This is not a problem, since our surveillance strategy synthesis procedure for single-sensor games is applicable to such surveillance formulas as well.
+
+This translation is again conservative, sincit suffices that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that every sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires hat if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
