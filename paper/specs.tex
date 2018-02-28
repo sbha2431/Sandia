@@ -37,3 +37,16 @@ Formally, we define the local liveness specification for sensor $i$ denoted $\lo
 Notice that here we use implication, which is not part of the fragment to which we restrict the global surveillance specifications. This is not a problem, since our surveillance strategy synthesis procedure for single-sensor games is applicable to such surveillance formulas as well.
 
 This translation is again conservative, sincit suffices that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that every sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires hat if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
+
+Finally, for a global surveillance specification $\LTLglobally p_a \vee \LTLglobally\LTLfinally p_b$, the local surveillance specification for sensor $i$ is
+\[\locspec_i(\LTLglobally p_a\wedge  \LTLglobally\LTLfinally p_b,n)\triangleq
+\locspec(\LTLglobally p_a,n) \wedge\locspec_i(\LTLglobally\LTLfinally p_b) .
+\]
+
+Slightly abusing the notation, we denote with $\locspec_i(\varphi,n)$ the local surveillance specification for sensor $i$ for any of the three types of global surveillance specifications.
+
+The next theorem, which follows  from the definition of the local specifications, states the soundness of the reduction.
+
+\begin{theorem}\label{thm:soundnes}
+Let  $(G,\varphi)$ be a multi-agent surveillance game with $n$ sensors, and $\widetilde{L}$ be a state-space partition. Suppose that $f_1,\ldots,f_n$ are strategies for the sensors in the subgames $G^1_\belief,\ldots,G^n_\belief$ respectively, such that for each sensor $i$ the strategy $f_i$ is winning in the surveillance game $(G^i,\locspec_i(\varphi,n))$. Then, it holds that the composed strategy $f_{s_1}\otimes\ldots\otimes f_{s_n}$ is a joint winning strategy for the sensors in the surveillance game $(G,\varphi)$.
+\end{theorem}
