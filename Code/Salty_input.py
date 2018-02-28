@@ -2,7 +2,6 @@ __author__ = 'sudab'
 
 import numpy as np
 import visibility
-import grid_partition
 import copy
 import itertools
 
@@ -453,7 +452,7 @@ def write_to_slugs_part_dist(infile,gw,init,initmovetarget,targets,vel=1,visdist
 
     return invisibilityset
 
-def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,targets,vel=1,visdist = 5,allowed_states = [],fullvis_states = [],partialvis_states = dict(), partitionGrid =dict(), belief_safety = 0, belief_liveness = 0, target_reachability = False):
+def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibilityset,targets,vel=1,visdist = 5,allowed_states = [],fullvis_states = [],partialvis_states = dict(), partitionGrid =dict(), belief_safety = 0, belief_liveness = 0, target_reachability = False):
     nonbeliefstates = gw.states
     beliefcombs = powerset(partitionGrid.keys())
 
@@ -462,12 +461,12 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,targets,ve
         allstates.append(i)
     allstates.append(len(allstates)) # nominal state if target leaves allowed region
 
-    invisibilityset = dict.fromkeys(set(gw.states),frozenset({gw.nrows*gw.ncols+1}))
-    for s in set(nonbeliefstates):
-        invisibilityset[s] = visibility.invis(gw,s,visdist).intersection(set(allowed_states))
-        invisibilityset[s] = invisibilityset[s] - set(fullvis_states)
-        if s in gw.obstacles:
-            invisibilityset[s] = {-1}
+    # invisibilityset = dict.fromkeys(set(gw.states),frozenset({gw.nrows*gw.ncols+1}))
+    # for s in set(nonbeliefstates):
+    #     invisibilityset[s] = visibility.invis(gw,s,visdist).intersection(set(allowed_states))
+    #     invisibilityset[s] = invisibilityset[s] - set(fullvis_states)
+    #     if s in gw.obstacles:
+    #         invisibilityset[s] = {-1}
     sensorcombos = list(itertools.product([0,1],repeat=len(partialvis_states.keys())))
 
 
@@ -780,4 +779,4 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,targets,ve
     # for t in targets:
     #     file.write('st = {}\n'.format(t+1))
 
-    return invisibilityset
+    # return invisibilityset

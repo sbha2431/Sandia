@@ -1,18 +1,9 @@
 __author__ = 'sudab'
 
-__author__ = 'sudab'
-
-
 from gridworld import *
-import grid_partition
-import Slugs_input
 import Salty_input
-import random
 import os
 import subprocess
-import visibility
-import simplejson as json
-import time
 import simulateController
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 # Define gridworld parameters
