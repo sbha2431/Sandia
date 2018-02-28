@@ -1,8 +1,9 @@
 In the sequel we assume that $L_1 = L_2 = \dots = L_t \triangleq L$  in the surveillance game structure, i.e, all $n$ sensors and the target operate in the same state space. For the remainder of the paper, let $G=(\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ be a multi-agent surveillance game structure  defined over  $L$.
-
-\begin{figure}
+\subsection{State space partition}
 A  \emph{state-space partition} of size $n$ of the set $L$ of locations in a game structure $G$ is tuple $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$ of subsets of $L$ such that  $\bigcup_i^n L_i = L $, and $\widetilde L_i \cap \widetilde L_j  = \emptyset$ for $i \neq j$. 
 
+
+\begin{figure}
 \subfloat[Surveillance game partitioned into two subgames \label{part-grid}]{
 \input{figs/distgames_fig.tex}
 \hspace{.3cm}}
