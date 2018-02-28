@@ -3,8 +3,6 @@ import random
 import simplejson as json
 import time
 import copy
-import visibility
-import grid_partition
 import itertools
 
 
