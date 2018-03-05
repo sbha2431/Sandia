@@ -23,9 +23,6 @@ def cartesian (lists):
     if lists == []: return [()]
     return [x + (y,) for x in cartesian(lists[:-1]) for y in lists[-1]]
 
-def write_to_slugs_belief(infile,gw,vel=1,belief_partitions=0,beliefconstraint = 1):
-    partitionGrid = grid_partition.partitionGrid(gw,belief_partitions)
-    write_to_slugs_part(infile,gw,gw.moveobstacles[0],vel,partitionGrid, belief_constraint,0,True)
 
 
 def write_to_slugs_part(infile,gw,init,initmovetarget,targets,vel=1,visdist = 5,groundstations = [],partitionGrid =[], belief_safety = 0, belief_liveness = 0, target_reachability = False):
@@ -469,14 +466,12 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
     #         invisibilityset[s] = {-1}
     sensorcombos = list(itertools.product([0,1],repeat=len(partialvis_states.keys())))
 
-
     filename = infile+'.structuredslugs'
     file = open(filename,'w')
     file.write('[INPUT]\n')
     file.write('st:0...{}\n'.format(len(allstates) -1))
     for n in partialvis_states.keys():
         file.write('sensor{}:0...1\n'.format(n))
-
 
     file.write('[OUTPUT]\n')
     # file.write('sane:0...1\n')
@@ -494,18 +489,17 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
     for n in partialvis_states.keys():
         file.write('sensor{}= 0\n'.format(n))
 
-
     file.write('[SYS_INIT] \n')
     # file.write('sane=0\n')
     file.write('s = {}\n'.format(init))
-
-
 
     # writing env_trans
     file.write('\n[ENV_TRANS]\n')
     for st in set(allstates) - (set(nonbeliefstates) - set(allowed_states)): #Only allowed states and belief states
         if st in allowed_states:
             for s in allowed_states:
+                if st== 50 and s == 44:
+                    asdf = 1
                 stri = "(s = {} /\\ st = {}) -> ".format(s,st)
                 beliefset = set()
                 for a in range(gw.nactions):
@@ -554,6 +548,8 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
             file.write(stri)
         else:
             for s in allowed_states:
+                if s == 40 and st == 72:
+                    asdf = 1
                 invisstates = invisibilityset[s]
                 visstates = set(nonbeliefstates) - invisstates
 
@@ -573,13 +569,15 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
                         escape = False
                         stri = "(s = {} /\\ st = {} ".format(s,st)
                         for n in sensorvals:
-                            stri += "/\\ sensor{} = {} ".format(sensorvals.index(n),n)
+                            stri += "/\\ sensor{} = {} ".format(partialvis_states.keys()[sensorvals.index(n)],n)
                         inactivesensors = [i for i, e in enumerate(sensorvals) if e == 0]
                         activesensordict = {i:set(partialvis_states[i]) for i in partialvis_states if i not in inactivesensors}
+
+
                         if len(activesensordict) == 0:
                             sensedbeliefstates = beliefstates - set.union(*partialvis_states.values())
                         else:
-                            sensedbeliefstates = set.intersection(*activesensordict.values()).intersection(beliefstates)
+                            sensedbeliefstates = set.intersection(*activesensordict.values()).intersection(beliefstates_invis)
                         stri += ") -> ("
                         beliefset = set()
                         for b in sensedbeliefstates:
@@ -589,8 +587,12 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
                                         if t in allowed_states:
                                             stri += ' st\' = {} \\/'.format(t)
                                         else:
-                                            if not escape:
-                                                stri += ' st\' = {} \\/'.format(allstates[-1])
+                                            if not escape and t not in gw.obstacles:
+                                                stri += ' (st\' = {} /\\ ('.format(allstates[-1])
+                                                for sensor in partialvis_states.keys():
+                                                    stri += 'sensor{}\' = 0 /\\'.format(sensor)
+                                                stri = stri[:-3]
+                                                stri += ')) \\/'
                                                 escape = True
                                     else:
                                         if t in gw.targets[0]:
@@ -628,7 +630,7 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
         if st in allowed_states:
             inactivesensors = [k for k,s in partialvis_states.items() if st not in set(s)]
         elif st == allstates[-1]:
-            inactivesensors = partialvis_states.keys()
+            inactivesensors = set() #partialvis_states.keys()
         else:
             beliefcombstate = beliefcombs[st - len(nonbeliefstates)]
             beliefstates = set()
@@ -745,7 +747,7 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
                 activesensordict = {i:set(partialvis_states[i]) for i in partialvis_states if i not in inactivesensors}
                 stri1 += '('
                 for n in sensorvals:
-                    stri1 += " sensor{} = {} /\\".format(sensorvals.index(n),n)
+                    stri1 += " sensor{} = {} /\\".format(partialvis_states.keys()[sensorvals.index(n)],n)
                 stri1 = stri1[:-3]
                 stri1 += ') /\\ ('
                 count = 0
@@ -766,7 +768,7 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
                 if count == len(allowed_states):
                     stri+= ' \\/ (st = {} /\\ '.format(len(nonbeliefstates)+beliefcombs.index(b))
                     for n in sensorvals:
-                        stri += " sensor{} = {} /\\".format(sensorvals.index(n),n)
+                        stri += " sensor{} = {} /\\".format(partialvis_states.keys()[sensorvals.index(n)],n)
                     stri = stri[:-3]
                     stri += ')'
         stri += ' \\/ st = {}'.format(allstates[-1])

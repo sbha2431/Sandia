@@ -13,6 +13,19 @@ def powerset(s):
         a.append({s[j] for j in range(x) if (i &(1<<j))})
     return a
 
+def dict_compare(d1, d2):
+    d1_keys = set(d1.keys())
+    d2_keys = set(d2.keys())
+    intersect_keys = d1_keys.intersection(d2_keys)
+    added = d1_keys - d2_keys
+    removed = d2_keys - d1_keys
+    modified = {o : (d1[o], d2[o]) for o in intersect_keys if d1[o] != d2[o]}
+    same = set(o for o in intersect_keys if d1[o] == d2[o])
+    return added, removed, modified, same
+
+
+
+
 def parseJson(filename):
     automaton = dict()
     file = open(filename)
@@ -33,14 +46,26 @@ def parseJson(filename):
                 variables[v] = [data['variables'].index(var), data['variables'].index(var)+1]
 
     for s in data['nodes'].keys():
-        automaton[int(s)] = dict.fromkeys(['State','Successors'])
+        automaton[int(s)] = dict.fromkeys(['State','Successors','Predecessors'])
         automaton[int(s)]['State'] = dict()
         automaton[int(s)]['Successors'] = []
+        automaton[int(s)]['Predecessors'] = []
         for v in variables.keys():
             bin = data['nodes'][s]['state'][variables[v][0]:variables[v][1]]
             automaton[int(s)]['State'][v] = int(''.join(str(e) for e in bin)[::-1], 2)
             automaton[int(s)]['Successors'] = data['nodes'][s]['trans']
+    for s in data['nodes'].keys():
+        for t in automaton[int(s)]['Successors']:
+            automaton[t]['Predecessors'].append(int(s))
     return automaton
+
+def findstate(automaton,statedict):
+    states = set()
+    for s in automaton:
+        added, removed, modified, same = dict_compare(automaton[s]['State'], statedict)
+        if len(modified) == 0:
+            states.add(s)
+    return states
 
 def getGridstate(gwg,currstate,dirn):
     if dirn == 'W':
@@ -303,7 +328,7 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
     beliefcombs = [[None]]*gwg.nagents
     xstates = list(set(gwg.states))
     activesensordict = [dict()]*gwg.nagents
-
+    globalinvisset = [None]*gwg.nagents
     for n in range(gwg.nagents):
         automaton[n] = parseJson(filename[n])
         automaton_state[n] = 0
@@ -320,6 +345,7 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
         for n in range(gwg.nagents):
             activesensordict.append(dict())
             activesensorlist.append(set(partialvis_states[n].keys()))
+            globalinvisset[n] = set()
         gwg.colorstates[0] = set()
         for n in range(gwg.nagents):
             agentstate[n] = automaton[n][automaton_state[n]]['State']['s']
@@ -329,9 +355,10 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
                     activesensorlist[n].remove(m)
 
             print 'Agent state is ', agentstate
-            gwg.colorstates[0] = gwg.colorstates[0].union(invisibilityset[n][agentstate[n]])
-
-
+            for m in range(gwg.nagents):
+                if m !=n:
+                    globalinvisset[n] = globalinvisset[n].union(invisibilityset[n][agentstate[n]].union(set(allowed_states[m]) - set(allowed_states[n])))
+        gwg.colorstates[0] = set.intersection(*globalinvisset)
         activeagents = set(range(gwg.nagents))
         for n in range(gwg.nagents):
             if targetstate[n] == allstates[n][-1]:
@@ -344,7 +371,7 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
         gwg.current = copy.deepcopy(agentstate)
 
         gwg.render()
-        # gwg.draw_state_labels()
+        gwg.draw_state_labels()
 
         while True:
             arrow = gwg.getkeyinput()
@@ -352,7 +379,7 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
                 nextgridstate = getGridstate(gwg,gridstate,arrow)
                 if nextgridstate not in gwg.obstacles and not any(nextgridstate in t for t in gwg.targets):
                     break
-
+        rt = findstate(automaton[1],{'st':415})
         for m in range(gwg.nagents):
             if nextgridstate in allowed_states[m]:
                 activesensorlist[m] = set([sensor for sensor, states in partialvis_states[m].iteritems() if nextgridstate in states])
@@ -491,79 +518,10 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
                 truebeliefstates[m] = set()
 
 
-        gwg.colorstates[1] = set()
-        for m in range(gwg.nagents):
-            gwg.colorstates[1] = gwg.colorstates[1].union(truebeliefstates[m])
+        gwg.colorstates[1] = set.union(*truebeliefstates)
 
         print 'Automaton state is ', nextautomatonstate
         automaton_state = copy.deepcopy(nextautomatonstate)
 
 
 
-
-
-
-
-
-
-
-
-        #         nexttargetstate[m] = automaton[m][n]['State']['st']
-        #         currentinvisstates = invisibilityset[m][agentstate[m]]
-        #         if nextgridstate in allowed_states[m]:
-        #             if nexttargetstate[m] != nextgridstate and nexttargetstate[m] in allowed_states[m]:
-        #                 continue
-        #             elif nexttargetstate[m] == nextgridstate and nextgridstate not in currentinvisstates:
-        #                 possiblenextgridstates[m].add(n)
-        #                 nextautomatonstate[m] = copy.deepcopy(n)
-        #                 gridstate = copy.deepcopy(nexttargetstate[m])
-        #                 print 'Environment state in automaton is', allstates[m].index(nexttargetstate[m])
-        #                 print 'Environment state in grid is', nexttargetstate[m]
-        #                 truebeliefstates[m] = set()
-        #                 gwg.render()
-        #                 break
-        #
-        #             elif nexttargetstate[m] == allstates[m][-1]:
-        #                 continue
-        #             else:
-        #                 if nextgridstate in currentinvisstates and nexttargetstate[m] not in (set(xstates)-set(allowed_states[m])):
-        #                     possiblenextbeliefstates[m].add(n)
-        #                     nextbeliefs = beliefcombs[m][nexttargetstate[m] - len(xstates)]
-        #                     if any(nextgridstate in partitionGrid[m][x] for x in nextbeliefs):
-        #                         nextautomatonstate[m] = copy.deepcopy(n)
-        #                         gridstate = copy.deepcopy(nextgridstate)
-        #                         print 'Environment state in automaton is', allstates[m].index(nexttargetstate[m])
-        #                         print 'Environment state in grid is', gridstate
-        #                         print 'Belief state is', beliefcombs[allstates[m].index(nexttargetstate[m]) - len(xstates)]
-        #                         nextagentstate[m] = automaton[m][n]['State']['s']
-        #                         invisstates = invisibilityset[m][nextagentstate[m]]
-        #                         visstates = set(xstates) - invisstates
-        #                         if nexttargetstate[m] not in xstates:
-        #                             beliefcombstate = beliefcombs[m][nexttargetstate[m] - len(xstates)]
-        #                             beliefstates = set()
-        #                             for b in beliefcombstate:
-        #                                 beliefstates = beliefstates.union(partitionGrid[m][b])
-        #                             truebeliefstates[m] = beliefstates - beliefstates.intersection(visstates)
-        #                             if len(activesensorlist[m]) > 0:
-        #                                 truebeliefstates[m] = set.intersection(*activesensordict[m].values()).intersection(frozenset(truebeliefstates[m]))
-        #                             else:
-        #                                 truebeliefstates[m] = truebeliefstates[m] - set.union(*partialvis_states[m].values())
-        #                         break
-        #
-        #         elif nextgridstate not in allowed_states[m]:
-        #             if nexttargetstate[m] == allstates[m][-1]:
-        #                 gridstate = copy.deepcopy(nextgridstate)
-        #                 nextautomatonstate[m] = copy.deepcopy(n)
-        #                 print 'Environment state in automaton is', allstates[m].index(nexttargetstate[m])
-        #                 print 'Environment state in grid is', gridstate
-        #                 truebeliefstates[m] = set()
-        #                 gwg.render()
-        #                 break
-        #
-        #
-        # gwg.colorstates[1] = set()
-        # for m in range(gwg.nagents):
-        #     gwg.colorstates[1] = gwg.colorstates[1].union(truebeliefstates[m])
-        #
-        # print 'Automaton state is ', nextautomatonstate
-        # automaton_state = copy.deepcopy(nextautomatonstate)

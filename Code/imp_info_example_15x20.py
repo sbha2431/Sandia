@@ -5,6 +5,7 @@ import Salty_input
 import os
 import subprocess
 import simulateController
+import visibility
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 # Define gridworld parameters
 nrows = 15
@@ -86,18 +87,18 @@ print 'Writing input file...'
 invisibilityset = []
 filename = []
 for n in range(gwg.nagents):
-    # iset = dict.fromkeys(set(gwg.states),frozenset({gwg.nrows*gwg.ncols+1}))
-    # for s in set(gwg.states):
-    #     iset[s] = visibility.invis(gwg,s,visdist[n]).intersection(set(allowed_states[n]))
-    #     iset[s] = iset[s] - set(fullvis_states[n])
-    #     if s in gwg.obstacles:
-    #         iset[s] = {-1}
+    iset = dict.fromkeys(set(gwg.states),frozenset({gwg.nrows*gwg.ncols+1}))
+    for s in set(gwg.states):
+        iset[s] = visibility.invis(gwg,s,visdist[n]).intersection(set(allowed_states[n]))
+        iset[s] = iset[s] - set(fullvis_states[n])
+        if s in gwg.obstacles:
+            iset[s] = {-1}
     outfile = 'test{}.json'.format(n)
     infile = 'test{}'.format(n)
     filename.append(outfile)
     print 'output file: ', outfile
     print 'input file name:', infile
-    iset = Salty_input.write_to_slugs_part_dist_impsensors(infile,gwg,initial[n],moveobstacles[0],targets[n],vel[n],visdist[n],allowed_states[n],fullvis_states[n],partialvis_states[n],
+    Salty_input.write_to_slugs_part_dist_impsensors(infile,gwg,initial[n],moveobstacles[0],iset,targets[n],vel[n],visdist[n],allowed_states[n],fullvis_states[n],partialvis_states[n],
                                                 pg[n], belief_safety = 0, belief_liveness = 4, target_reachability = True)
     invisibilityset.append(iset)
     print ('Converting input file...')
@@ -108,5 +109,3 @@ for n in range(gwg.nagents):
 
 
 simulateController.userControlled_partition_dist_imp_sensor(filename,gwg,pg,moveobstacles,allowed_states,invisibilityset,partialvis_states)
-
-
