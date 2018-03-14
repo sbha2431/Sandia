@@ -20,7 +20,7 @@ Additionally. we define the \emph{joint visibility function} $\Vis : \states \to
 \subfloat[Transitions from the initial state\label{fig:simple-transitions}]{
 \input{figs/simple-transitions.tex}
 }
-\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 20 and 4) coloured in blue and green respectively and the target (at location 18) is orange. The grey states are not visible to either sensors, i.e, $\Vis((20,4,l_t)) = \false$ for all grey $l_t$  }
+\caption{A simple surveillance game on a grid arena. Obstacles are shown in red. There are two sensors (at locations 20 and 4) coloured in blue and green respectively and the target (at location 18) is orange. The grey states are not visible to either sensor, i.e, $\Vis((20,4,l_t)) = \false$ for all grey $l_t$  }
 \label{fig:simple-surveillance-game}
 \vspace{-.7cm}
 \end{figure}
@@ -50,6 +50,10 @@ In this example, the function $\vis_i$ encodes straight-line visibility with a r
 \end{example}
 
 
+\subsection{Static sensors}
+We incorporate static sensors in the surveillance game framework in the following way. Given a surveillance game $G$ as defined previously, we define a static sensor $M$ as a boolean function operating over a state space $L$ as $M_{L} : l_t \rightarrow \mathbb{B}$. $M_L$ maps to $\true$ if the target is in the set of states $\Lambda$ and false otherwise. Formally, for a set $\Lambda \in L_t$, we define $M_{\Lambda}(l_t) = \true$ if $l_t \in \Lambda$. A surveillance game can have multiple (or none) static sensors. The set of $m$ static sensors are defined as $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$. We additionally define $J$ as the set of all indices corresponding to static sensors evaluating to $\true$, i.e, $J = \{i \mid M_{\Lambda_i}(l_t) = \true\}$. We refer to $J$ as the set of \emph{triggered static sensors}
+
+In this paper, we assume there are no false positives or negatives (that is an avenue for future work). Hence, given the set $J$ the target must lie in the intersection of their state spaces, i.e, $l_t \in \bigcap_{j\in J}\Lambda_j$. Additionally, if all static sensors evaluate to $\false$, then we know that the target cannot be in the union of the state spaces in which they operate. 
 
 
 \subsection{Belief-Set Game Structures}\label{sec:belief-gs}
@@ -58,14 +62,15 @@ In surveillance strategy synthesis we need to state properties of, and reason ab
 
 Given a set $B$, we denote with $\mathcal{P}(B) = \{B' \mid B'\subseteq B\}$ the powerset (set of all subsets) of $B$.
 
-For a surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n,\Vis)$ we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ with the following components:
+For a surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ with $m$ static sensors $\mathcal{M} = \{M_{L_1},\dots,M_{L_m}\}$ we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ with the following components:
 \begin{itemize}
 \item $\states_\belief = L_s \times \beliefs$ is the set of states, with $L$ the set of locations of the sensors, and $\beliefs$ the set of \emph{belief sets} describing information about the location of the target;
 \item $s^\init_\belief = (l^\init_1,\ldots,l^\init_n,\{l_t^\init\})$ is the initial state;
 \item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_s, B_t),(l_s', B_t')) \in \trans_\belief$ iff $l_s' \in  \succs(l_s,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
 \begin{itemize}
 \item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \post(l_s,B_t)$, $\Vis(l_s,l_t') = \true$;
-\item[(2)] $B_t' = \{l_t' \in \post(l_s,B_t)  \mid  \Vis(l_s,l_t') = \false \}$.
+\item[(2)] $B_t' = \{l_t' \in \post(l_s,B_t ) \setminus (\cup_{m}\Lambda_m)  \mid  \Vis(l_s,l_t') = \false, J(l_t') = \emptyset \}$.
+\item[(3)] $B_t' = \{l_t' \in \post(l_s,B_t) \cap_{j\in J}\Lambda_j  \mid  \Vis(l_s,l_t') = \false, J(l_t') \neq \emptyset \}$.
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
 %\item[(2)] $\begin{array}{lll}
@@ -75,7 +80,7 @@ For a surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\v
 %$
 \end{itemize}
 \end{itemize}
-Condition (1) captures the successor locations of the target that can be observed from one of the sensors' current location. Condition (2) corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from the current location of any of the sensors}. 
+Condition (1) captures the successor locations of the target that can be observed from one of the sensors' current location. Condition (2) corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from the current location of any of the sensors and not triggering any static sensors} Finally, condition (3) corresponds to moving to a belief set corresponding to the intersection of the states of all triggered static sensors. 
 %\begin{itemize}
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
@@ -123,8 +128,12 @@ The outcome of given strategies $f_s$ and $f_t$ for the sensors and the target i
 \subsection{Temporal Surveillance Objectives}
 Since the states of a belief-set game structure track the information that the sensors have, we can state and interpret surveillance objectives over its runs. We now formally define the surveillance properties in which we are interested. 
 
-We consider a set of \emph{surveillance predicates} $\SP = \{p_b \mid b \in \nats_{>0}\}$, where for $b \in \nats_{>0}$ we say that a state $(l_s,B_t)$ in the belief game structure satisfies $p_b$ (denoted $(l_s,B_t) \models p_b$) iff 
-$|\{l_t \in B_t \mid \Vis(l_s,l_t)  = \false \}| \leq b$. Intuitively, $p_b$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $b \in \nats_{>0}$.
+We consider a set of \emph{surveillance predicates} $\SP = \{p_b \mid b \in \nats_{>0}\}$, where for $b \in \nats_{>0}$ we say that a state $(l_s,B_t)$ in the belief game structure satisfies $p_b$ (denoted $(l_s,B_t) \models p_b$) iff one of the following conditions is true:
+\begin{itemize}
+\item[(1)] $|\{l_t \in B_t \setminus \cup_m{\Lambda_m} \mid \Vis(l_s,l_t)  = \false, J(l_t) = \emptyset \}| \leq b$;
+\item[(2)] $|\{l_t \in B_t \cap_{j\in J}{\Lambda_j} \mid \Vis(l_s,l_t)  = \false, J(l_t) \neq \emptyset \}| \leq b$;
+\end{itemize}
+The two conditions capture the cases when there respectively are and aren't triggered static sensors. Intuitively, $p_b$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $b \in \nats_{>0}$.
 
 We study surveillance objectives expressed in a fragment  of linear temporal logic (LTL) over surveillance predicates.  We consider  \emph{safety surveillance objectives} expressed using the temporal operator $\LTLglobally$ and \emph{liveness surveillance objectives} expressed using the temporal operators $\LTLglobally$ and $\LTLeventually$.
 
@@ -159,7 +168,7 @@ A more relaxed requirement is that the sensors' uncertainty never grows above $5
 %\end{example}
 
 \subsection{Multi-agent Surveillance Synthesis Problem}
-A \emph{multi-agent surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
+A \emph{multi-agent surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the mobile sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
 
 {\bf Multi-agent surveillance synthesis problem:} Given a multi-agent surveillance game $(G,\varphi)$, compute a joint winning strategy for the sensors for the game $(G,\varphi)$, or determine that such a strategy does not exist.
 

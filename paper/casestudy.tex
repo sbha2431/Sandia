@@ -16,8 +16,9 @@ Figure \ref{fig:casestudy} shows a section of the SGR that we represent as a gri
 \label{fig:casestudy}
 \end{figure}
 
-We model the mobile sensors as having an omnidirectional vision with limited range. Each static sensors have a set of states they can monitor. However, they are only able to detect the presence of a target in their set of states and cannot pinpoint the target's exact location. All the black states in the gridworld are states that are currently not in the range of any of the mobile sensors. 
+We model the mobile sensors as having an omnidirectional vision with limited range. 
+The static sensors are assumed to be imperfect in the sense that they cannot pinpoint the exact location of the target. Each static sensor has a set of states they can monitor and are only able to detect the presence of a target in their set of states, not the target's exact location. 
 
- We want to compute a surveillance strategy that \emph{always eventually} brings the belief of the target location to within 5 cells. In other words, even if the target escapes vision of all the sensors, we want to guarantee that one of the sensors can bring the belief of the location of the target to less than 5 cells of the grid. 
+We want to compute a surveillance strategy that \emph{always eventually} brings the belief of the target location to within 5 cells. In other words, even if the target escapes vision of all the sensors, we want to guarantee that one of the sensors can eventually bring the belief of the location of the target to less than 5 cells of the grid. 
 
 In the next sections we present the definitions that will allow us to state this problem more formally.
