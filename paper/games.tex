@@ -1,16 +1,15 @@
-We begin by defining a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors and a target, in which the sensors have only partial information about the target's location. 
-%For ease of notation the definitions are provided for the case of a single target. \Rayna{I think we should remove the last sentence, since we are not looking at multiple targets yet, and it is not just a simple extension of notation.}
+We begin by providing a formal model for describing multi-agent surveillance strategy synthesis problems, in the form of a two-player game between the mobile sensors in a network and a target, in which the sensors have partial information about the target's location. 
 
-\subsection{Surveillance Game Structures}\label{sec:surveillance-games}
-We define a \emph{multi-agent surveillance game structure} to be  a tuple $G  = (\states,s^\init,\trans,(\vis_1,\dots,\vis_n))$, with the following components:
+\subsection{Multi-Agent Surveillance Game Structures}\label{sec:surveillance-games}
+We define a \emph{multi-agent surveillance game structure} to be a tuple $G  = (\states,s^\init,\trans,\vis_1,\dots,\vis_n)$ where:
 \begin{itemize}
-\item $\states = L_s \times L_t$ is the set of states, where $L_{s} = L_1 \times L_2 \times\dots \times L_n$ is the set of joint locations of the $n$ sensors, $L_i$ is the set of possible locations of sensor $i$,  and $L_t$ is the set of possible locations of the target;
+\item $\states = L_s \times L_t$ is the set of states, where $L_{s} = L_1 \times L_2 \times\dots \times L_n$ is the set of joint locations of the $n$ mobile sensors, $L_i$ is the set of possible locations of sensor $i$,  and $L_t$ is the set of possible locations of the target;
 \item $s^\init = (l^{\init}_1,\ldots,l^{\init}_n,l_t^\init)$ is the initial state;
 \item $\trans \subseteq \states \times \states$ is the transition relation describing the possible joint moves of the sensors and the target;
-\item  $(\vis_1,\dots,\vis_n)$ are the \textit{visibility functions} for the $n$ agents, where $\vis_i: L_{i} \times L_t \to \bools$ maps a state $(l_{i},l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}; and
+\item  $\vis_1,\dots,\vis_n$ are the \textit{visibility functions} for the $n$ sensors, where $\vis_i: L_{i} \times L_t \to \bools$ maps a state $(l_{i},l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}.
 \end{itemize}
 
-Additionally. we define the \emph{joint visibility function} $\Vis : \states \to \bools$ that maps a state $(l,l_t)$ to $\true$ if the set $\mathcal{I} = \{i \mid \vis_i(l_i,l_t) = \true\}$ is non-empty. Informally, $\Vis(l_s,l_t)$ is $\true$ if the target is in view of \emph{at least one} of the sensors.
+Additionally, we define the \emph{joint visibility function} $\Vis : \states \to \bools$ that maps a state $(l,l_t)$ to $\true$ if the set $\mathcal{I} = \{i \mid \vis_i(l_i,l_t) = \true\}$ is non-empty. Informally, $\Vis(l_s,l_t)$ is $\true$ if the target is in view of \emph{at least one} of the sensors.
 
 \begin{figure}
 \subfloat[Surveillance arena \label{simple-grid}]{
@@ -26,14 +25,14 @@ Additionally. we define the \emph{joint visibility function} $\Vis : \states \to
 \end{figure}
 
 
-The transition relation $T$ encodes the one-step move of the target and the $n$ sensors: First, the target makes a move, after that, the sensors move jointly in a synchronized manner. 
+The transition relation $T$ encodes the one-step move of the target and the $n$ sensors: First, the target makes a move, and then, the sensors move jointly in a synchronized manner. 
 
-We denote with $T{\downarrow}i$ the projection of $T$ on the sets of locations of the target and the sensor with index $i$. Formally, we define
-$T{\downarrow }i = \{(l_i,l_t) \in L_i \times L_t \mid \exists l_1,\ldots,l_{i-1},l_{i+1},\ldots,l_n : (l_1,\ldots,l_n,l_t) \in T.\}$
+We denote with $T{\downarrow}i$ the projection of the transition relation $T$ on the sets of locations of the target and the sensor with index $i$. Formally, we define
+$T{\downarrow }i = \{(l_i,l_t) \in L_i \times L_t \mid \exists l_1,\ldots,l_{i-1},l_{i+1},\ldots,l_n : (l_1,\ldots,l_n,l_t) \in T\}.$ 
 
-For a state $(l_s,l_t)$ we denote $\succs_t(l,l_t)$ as the set of successor locations of the target:
+For a state $(l_s,l_t) \in \states$ we define $\succs_t(l_s,l_t)$ to be the set of possible successor locations of the target:
 
-$\succs_t(l_s,l_{t}) = \{l_{t}' \in L_t \mid \exists l'.\ ((l_s,l_t),(l_s',l_t')) \in T\}$.
+$\succs_t(l_s,l_{t}) = \{l_{t}' \in L_t \mid \exists l_s'.\ ((l_s,l_t),(l_s',l_t')) \in T\}$.
 
 We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_s,L)$ consists of all possible successor locations of the target for states in $\{l_s\} \times L_t$. Formally, let $\post(l_s, L_t) = \bigcup_{l_t \in L_t}\succs_t(l_s,l_t)$.
 
@@ -41,36 +40,40 @@ For a state $(l_s,l_t)$ and a successor location of the target $l_t'$, we denote
 
 $\succs(l_s,l_t,l_t') = \{l_s' \in L_s \mid  ((l_s,l_t),(l_s',l_t')) \in T\}$.
 
-We assume that, for every state $s\in \states$, there exists a state $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state). We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the sensors. Formally, we require that if $\Vis(l_s,l_t''') = \Vis(l_s,l_t'''')=\false$, then $\succs(l_s,l_t',l_t''') = \succs(l_s,l_t'',l_t'''')$ for all $l_t',l_t'',l_t''',l_t'''' \in L_t$. This assumption is natural in the setting where each of the  sensors can move in one step only to locations that are in its sight.
+We assume that, for every state $s\in \states$, there exists a state $s' \in \states$ such that $(s,s') \in T$, that is, from every state there is at least one move possible (this might be staying in the same state). We also assume that when the target moves to an invisible location, its position does not influence the possible one-step moves of the sensors. Formally, we require that if $\Vis(l_s,l_t') = \Vis(l_s,{\widehat l_t}')=\false$, then $\succs(l_s,l_t,l_t') = \succs(l_s,{\widehat l_t},\widehat{l_t}')$ for all $l_t,l_t',\widehat l_t,\widehat l_t' \in L_t$. This assumption is natural in the setting where each of the  sensors can move in one step only to locations that are in its sight.
 
 \begin{example}\label{ex:simple-surveillance-game}
-Figure~\ref{fig:simple-surveillance-game} shows an example of a surveillance game on a grid.  The sets of possible locations $L_s$ and $L_t$ for the sensors and the target consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of all the sensors and the target on the grid, and incorporates all desired constraints. For example, moving to an occupied location, or an obstacle, is not allowed. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(4,18)$.
+Figure~\ref{fig:simple-surveillance-game} shows an example of a multi-agent surveillance game on a grid.  The sets of possible locations $L_i$ and $L_t$ for the each of the sensors and for the target consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of all the sensors and the target on the grid, and incorporates all desired constraints. For example, moving to a location occupied by another sensor or the target, or to an obstacle, is not allowed. Figure~\ref{fig:simple-transitions} shows the possible transitions from the initial state $(4,18)$.
 
-In this example, the function $\vis_i$ encodes straight-line visibility with a range of 2: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them and the distance between the target and sensor $i$ is less than 2. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $19$, then the blue sensor observes its location, but if it moves to one of the others, then neither sensor can observe it and its exact location will not be known. \qed
+In this example, the function $\vis_i$ encodes straight-line visibility with a range of 2: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them and the distance between the target and sensor $i$ is not larger than 2. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $17$, then the green sensor observes its location, but if it moves to one of the other two locations, then neither sensor can observe it, and its exact location will not be known. \qed
 \end{example}
 
 
-\subsection{Static sensors}
-We incorporate static sensors in the surveillance game framework in the following way. Given a surveillance game $G$ as defined previously, we define a static sensor $M$ as a boolean function operating over a state space $L$ as $M_{L} : l_t \rightarrow \mathbb{B}$. $M_L$ maps to $\true$ if the target is in the set of states $\Lambda$ and false otherwise. Formally, for a set $\Lambda \in L_t$, we define $M_{\Lambda}(l_t) = \true$ if $l_t \in \Lambda$. A surveillance game can have multiple (or none) static sensors. The set of $m$ static sensors are defined as $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$. We additionally define $J(l_t)$ as the set of all indices corresponding to static sensors evaluating to $\true$ at state $l_t$, i.e, $J)l_t) = \{i \mid M_{\Lambda_i}(l_t) = \true\}$. We refer to $J(l_t)$ as the set of \emph{triggered static sensors} at $l_t$
+\subsection{Static Sensors}
+We now describe how we incorporate static sensors in the multi-agent surveillance game framework. Given a multi-agent surveillance game structure $G$ as defined previously, a \emph{static sensor $M$ operating over a set of locations $\Lambda$} is a function $M_{\Lambda} : L_t \rightarrow \mathbb{B}$ that maps the target location to $\true$ if and only if it belongs to the set  over which the sensor operates.  Formally, given a set $\Lambda \subseteq L_t$ of target locations, we define $M_{\Lambda}(l_t) = \true$ if and only if $l_t \in \Lambda$. 
 
-In this paper, we assume there are no false positives or negatives (that is an avenue for future work). Hence, given the set $J(l_t)$ the target must lie in the intersection of their state spaces, i.e, $l_t \in \bigcap_{j\in J}\Lambda_j$. Additionally, if all static sensors evaluate to $\false$, then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i}^m \Lambda_i$
+A surveillance game can have multiple (or none) static sensors. Let $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ be the set of $m$ static sensors for a multi-agent surveillance game structure. We define $J(l_t)$ to be the set of all indices of static sensors such that $l_t$ belongs to the corresponding set of locations, i.e, $J(l_t) = \{j \mid M_{\Lambda_j}(l_t) = \true\}$. We refer to $J(l_t)$ as the set of \emph{triggered static sensors} at location $l_t$
+
+In this paper, we assume that sensors do not suffer from  false positives or false negatives (studying these is an avenue for future work). Thus, by definition we have that the target must lie in the intersection of the state spaces of the triggered sensors, i.e., $l_t \in \bigcap_{j\in J(l_t)}\Lambda_j$. Also, when no static sensor is triggered,  then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i}^m \Lambda_i$
 
 
 \subsection{Belief-Set Game Structures}\label{sec:belief-gs}
 
-In surveillance strategy synthesis we need to state properties of, and reason about, the information which the sensors have, i.e. the \emph{belief} about the location of the target. To this end, we can employ a powerset construction which is commonly used to transform a partial-information game into a perfect-information one, by explicitly tracking the joint knowledge of the sensors as a set of possible states of the target. In that way we define a two-player game in which one player represents the whole sensor network, and the other player represents the target.
+In surveillance strategy synthesis we need to state properties of, and reason about, the information which the sensors have, i.e. the \emph{belief} about the location of the target. To this end, we can employ a powerset construction which is commonly used to transform a partial-information game into a perfect-information one, by explicitly tracking the joint knowledge of the sensors as a set of possible locations of the target. In that way we define a two-player game in which one player represents the whole sensor network, and the other player represents the target.
 
-Given a set $B$, we denote with $\mathcal{P}(B) = \{B' \mid B'\subseteq B\}$ the powerset (set of all subsets) of $B$.
+Given a set $A$, we denote with $\mathcal{P}(A) = \{A' \mid A'\subseteq A\}$ the powerset (set of all subsets) of $A$.
 
-For a surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ with $m$ static sensors $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ with the following components:
+Given a  multi-agent surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ with $m$ static sensors $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$, we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ with the following components:
 \begin{itemize}
-\item $\states_\belief = L_s \times \beliefs$ is the set of states, with $L$ the set of locations of the sensors, and $\beliefs$ the set of \emph{belief sets} describing information about the location of the target;
+\item $\states_\belief = L_s \times \beliefs$ is the set of \emph{belief states}, where $L_s$ is the set of joint locations of the sensors, and $\beliefs =  \{B \mid B\subseteq L_t\}$ the set of \emph{belief sets} describing information about the location of the target;
 \item $s^\init_\belief = (l^\init_1,\ldots,l^\init_n,\{l_t^\init\})$ is the initial state;
 \item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_s, B_t),(l_s', B_t')) \in \trans_\belief$ iff $l_s' \in  \succs(l_s,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ and one of these holds:
 \begin{itemize}
 \item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \post(l_s,B_t)$, $\Vis(l_s,l_t') = \true$;
-\item[(2)] $B_t' = \{l_t' \in \post(l_s,B_t ) \setminus (\cup_{i}^m\Lambda_i)  \mid  \Vis(l_s,l_t') = \false, J(l_t') = \emptyset \}$.
-\item[(3)] $B_t' = \{l_t' \in \post(l_s,B_t) \cap_{j\in J}\Lambda_j  \mid  \Vis(l_s,l_t') = \false, J(l_t') \neq \emptyset \}$.
+\item[(2)] $B_t' = \{l_t' \in \post(l_s,B_t)  \mid  \Vis(l_s,l_t') = \false \} \cap \\
+\phantom{B_t' = }\bigcap_{j\in J}\Lambda_j, \text{ for some } J \neq \emptyset $;
+\item[(3)] $B_t' = \{l_t' \in \post(l_s,B_t ) \mid  \Vis(l_s,l_t') = \false, \\
+\phantom{B_t' = \{l_t' \in \post(l_s,B_t ) \mid\ }J(l_t') = \emptyset \}$.
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
 %\item[(2)] $\begin{array}{lll}
@@ -80,7 +83,7 @@ For a surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\v
 %$
 \end{itemize}
 \end{itemize}
-Condition (1) captures the successor locations of the target that can be observed from one of the sensors' current location. Condition (2) corresponds to the belief set consisting of \emph{all possible successor locations of the target not visible from the current location of any of the sensors and not triggering any static sensors} Finally, condition (3) captures moving to a belief set corresponding to the intersection of the states of all triggered static sensors. 
+Condition (1) captures the successor locations of the target that can be observed from one of the mobile sensors' current locations. Condition (2) captures the cases when the target moves to a location that cannot be observed by the mobile sensors, but triggers some non-empty set $J$ of static sensors. Finally, condition (3) corresponds to the successor locations of the target not visible from the current location of any of the mobile sensors, and not triggering any static sensors.
 %\begin{itemize}
 %\item[(1)] $B_t' = \{l_t'\}$ for some $l_t'$ such that $\vis(l_a,l_t') = \true$ and
 %there exists $l_t \in B_t$ with $((l_a,l_t),(l_a',l_t')) \in \trans$;
@@ -105,35 +108,38 @@ Condition (1) captures the successor locations of the target that can be observe
 \input{figs/simple-belief-transitions.tex}
 
 \vspace{-.3cm}
-\caption{Possible transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game}. Note that some transitions are not included for readability}
+\caption{Some possible transitions from the initial state in the belief-set game from Example~\ref{ex:simple-belief-game}. Note that, for the sake of readability, some transitions are not included in the figure.}
 \label{fig:simple-belief-game}
 \vspace{-.5cm}
 \end{figure}
 
 \begin{example}\label{ex:simple-belief-game}
 Consider the surveillance game structure from Example~\ref{ex:simple-surveillance-game}. The initial belief set is $\{18\}$, as the target's initial position is known. After the first move of the target, there are two possible belief sets: the set $\{17\}$ resulting from the move to a location in the area of sight of the green sensor, and $\{19,23\}$ consisting of the two locations invisible to both sensors reachable in one step from location $18$.
-Figure~\ref{fig:simple-belief-game} shows some of the possible successor states of the initial state $((20,4),\{18\})$ in $G_\belief$. \qed
+Figure~\ref{fig:simple-belief-game} shows some of the possible successor states of the initial state $((20,4),\{18\})$  in the belief-set game $G_\belief$.\qed
 \end{example}
 
-Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs : \states_\belief \times \beliefs \to \mathcal{P}(L)$ similarly to the corresponding functions defined for $G$. 
+Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs)$ and  $\succs : \states_\belief \times \beliefs \to \mathcal{P}(L_s)$ similarly to the corresponding functions defined for $G$. 
 
 A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\belief^\init$,  $(s_i,s_{i+1}) \in T_\belief$ for all $i$. 
 
 A \emph{strategy for the target in $G_\belief$} is a function $f_t: \states_\belief^+ \to \beliefs$ such that $f_t(\pi\cdot s) = B_t$ implies $B_t \in \succs_t(s)$ for every $\pi \in \states_\belief^*$ and $s \in \states_\belief$. That is, a strategy for the target suggests a move resulting in some belief set reachable from some location in the current belief.
 
-A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S^+ \times \beliefs \to S$ such that $f_s(\pi\cdot s,B_t) = (l_s',B_t')$ implies $B_t' = B_t$ and $l_a' \in \succs_s(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play and the current belief about the target's position.
+A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S_\belief^+ \times \beliefs \to S_\belief$ such that $f_s(\pi\cdot s,B_t) = (l_s',B_t')$ implies $B_t' = B_t$ and $l_s' \in \succs_s(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play and the current belief about the target's position.
 
 The outcome of given strategies $f_s$ and $f_t$ for the sensors and the target in $G_\belief$, denoted $\outcome(G_\belief,f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G_\belief$ such that for every $i \geq 0$, we have $s_{i+1} = f_s(s_0,\ldots,s_i,B_t^i)$, where $B_t^i = f_t(s_0,\ldots,s_i)$.
 
 \subsection{Temporal Surveillance Objectives}
 Since the states of a belief-set game structure track the information that the sensors have, we can state and interpret surveillance objectives over its runs. We now formally define the surveillance properties in which we are interested. 
 
-We consider a set of \emph{surveillance predicates} $\SP = \{p_b \mid b \in \nats_{>0}\}$, where for $b \in \nats_{>0}$ we say that a state $(l_s,B_t)$ in the belief game structure satisfies $p_b$ (denoted $(l_s,B_t) \models p_b$) iff one of the following conditions is true:
-\begin{itemize}
-\item[(1)] $|\{l_t \in B_t \setminus \cup_i^m{\Lambda_i} \mid \Vis(l_s,l_t)  = \false, J(l_t) = \emptyset \}| \leq b$;
-\item[(2)] $|\{l_t \in B_t \cap_{j\in J}{\Lambda_j} \mid \Vis(l_s,l_t)  = \false, J(l_t) \neq \emptyset \}| \leq b$;
-\end{itemize}
-The two conditions capture the cases when there respectively are and aren't triggered static sensors. Intuitively, $p_b$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $b \in \nats_{>0}$.
+We consider a set of \emph{surveillance predicates} $\SP = \{p_b \mid b \in \nats_{>0}\}$, where for $b \in \nats_{>0}$ we say that a state $(l_s,B_t)$ in the belief game structure satisfies $p_b$ (denoted $(l_s,B_t) \models p_b$) iff 
+$|\{l_t \in B_t  \mid \Vis(l_s,l_t)  = \false \}| \leq b$.
+%iff one of the following conditions is true:
+%\begin{itemize}
+%\item[(1)] $|\{l_t \in B_t \setminus \cup_i^m{\Lambda_i} \mid \Vis(l_s,l_t)  = \false, J(l_t) = \emptyset \}| \leq b$;
+%\item[(2)] $|\{l_t \in B_t \cap_{j\in J}{\Lambda_j} \mid \Vis(l_s,l_t)  = \false, J(l_t) \neq \emptyset \}| \leq b$;
+%\end{itemize}
+%The two conditions capture the cases when there respectively are and aren't triggered static sensors. 
+Intuitively, $p_b$ is satisfied by the states in the belief game structure where the size of the belief set does not exceed the threshold $b \in \nats_{>0}$.
 
 We study surveillance objectives expressed in a fragment  of linear temporal logic (LTL) over surveillance predicates.  We consider  \emph{safety surveillance objectives} expressed using the temporal operator $\LTLglobally$ and \emph{liveness surveillance objectives} expressed using the temporal operators $\LTLglobally$ and $\LTLeventually$.
 
@@ -153,7 +159,7 @@ Using these equivalences, we can restrict our attention to surveillance objectiv
 \begin{example}
 We can specify that the sensors are required to always know with certainty the location of the target as
 $\LTLglobally p_1$.
-A more relaxed requirement is that the sensors' uncertainty never grows above $5$ locations, and it infinitely often reduces this uncertainty to at most $2$ locations: $\LTLglobally p_5 \wedge \LTLglobally\LTLfinally p_2$.
+A more relaxed requirement is that the sensors' uncertainty never grows above $5$ locations, and is infinitely often reduced to at most $2$ locations: $\LTLglobally p_5 \wedge \LTLglobally\LTLfinally p_2$.
 \qed
 \end{example}
 
@@ -168,8 +174,9 @@ A more relaxed requirement is that the sensors' uncertainty never grows above $5
 %\end{example}
 
 \subsection{Multi-agent Surveillance Synthesis Problem}
-A \emph{multi-agent surveillance game} is a pair $(G,\varphi)$, where $G$ is a surveillance game structure and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the mobile sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
+A \emph{multi-agent surveillance game} is a triple $(G,\mathcal M,\varphi)$, where $G$ is a surveillance game structure, $\mathcal M$ is a set of static sensors,  and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\mathcal M,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\mathcal M,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the mobile sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
 
-\paragraph*{\bf Multi-agent surveillance synthesis problem} Given a multi-agent surveillance game $(G,\varphi)$, with $m$ static sensors $\mathcal{M} = (M_{\Lambda_1}),\dots,M_{\Lambda_m}$ compute a joint winning strategy for the mobile sensors for the game $(G,\varphi)$.
+{\textit{\textbf{Problem statement: }}} Given a multi-agent surveillance game $(G,\mathcal M,\varphi)$,  compute a joint strategy for the mobile sensors that is winning for the game $(G,\mathcal M,\varphi)$.
 
-The key idea is to decompose the multi-agent surveillance synthesis problem into a set of single-sensor surveillance games over smaller sets of locations. To achieve this, we make use of a compositionality property of surveillance games. Intuitively, by partitioning the set of locations into $n$ regions and allocating one mobile sensor per region we can, under certain conditions, solve the global surveillance game by solving $n$ smaller \emph{surveillance subgames}. 
+In the remainder of the paper we show how to solve the multi-agent surveillance synthesis problem in a compositional manner.  The key idea is to decompose the problem into a set of single-sensor surveillance games over smaller sets of locations, and solve each of these games separately. 
+
