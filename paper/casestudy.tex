@@ -1,6 +1,10 @@
-First, we present the problem informally in the context of a case study to demonstrate the application of the decentralized surveillance strategy synthesis procedure presented in this paper. We look at wildlife conservation in Africa. Specifically, we look at the Selous Game Reserve (SGR) located in Tanzania. A World Heritage Centre report released in 2013 \cite{UN13} outlines the seriousness of the threat to the African Black Rhinoceros population native to the SGR. Recommendations of the report include, inter alia, an anti-poaching initiative focused in the SGR. This is a very large environment and so we propose a method using multiple mobile sensors that work with static sensors.  If a surveillance strategy can be synthesized for all the mobile sensors then the location of any potential poachers can be tracked to a user specified requirement. This will allow the authorities to narrow down the position of the target until the situation can be dealt with. 
+First, we describe the mult-agent surveillance synthesis problem informally, in the context of a motivating case study. 
 
-Figure \ref{fig:casestudy} shows a section of the SGR that we represent as a gridworld which will form the states of the game. 
+We consider wildlife conservation in Africa, in particular, at the Selous Game Reserve (SGR) located in Tanzania, where the African Black Rhinoceros population is under a serious threat due to poaching. 
+
+As an answer to a recommended anti-poaching initiative in the SGR by the World Heritage Centre,  we propose using a sensor network for tracking the position of a potential poacher  with user-specified precision. Since the SGR is a very large area, the network consists of both mobile ans static sensors. We apply the  distributed synthesis method proposed in this paper to synthesize surveillance strategies for the mobile sensors that satisfy the desired tracking requirement.
+
+%Recommendations of the report include, inter alia, an anti-poaching initiative focused in the SGR. This is a very large environment and so we propose a method using multiple mobile sensors that work with static sensors.  If a surveillance strategy can be synthesized for all the mobile sensors then the location of any potential poachers can be tracked to a user specified requirement. This will allow the authorities to narrow down the position of the target until the situation can be dealt with. 
 
 \begin{figure}
 \subfloat[SGR interior landscape \cite{UN13} \label{fig:SGR-map}]{
@@ -12,12 +16,10 @@ Figure \ref{fig:casestudy} shows a section of the SGR that we represent as a gri
 }
 
 
-\caption{The landscape in \ref{fig:SGR-map} is coarsely represented as a gridworld in \ref{fig:SGR-grid}. Yellow cells are areas covered by static sensors.}
+\caption{The landscape in \ref{fig:SGR-map} is coarsely represented as the gridworld in \ref{fig:SGR-grid}. The yellow areas covered by static sensors.}
 \label{fig:casestudy}
 \end{figure}
 
-We model the mobile sensors as having an omnidirectional vision with limited range. Each static sensor monitors a set of states (shown in yellow). The static sensor can detect the presence of a target in these states though it cannot pinpoint the target's exact location. 
+Figure \ref{fig:casestudy} shows a section of the SGR that we represent as a gridworld which will form the state space of the game. We model the mobile sensors as having an omnidirectional vision with limited range. Each static sensor monitors a given area of the grid (shown in yellow) and detects any presence of the target (i.e., threat) in these states. It cannot however determine the target's exact location. The tracking requirement is to ensure that over and over again, the set of potential location of the target is reduced to $5$ cells. In other words, every time the target escapes from the vision of all the sensors, the network guarantees that eventually the uncertainty about its position will be reduced to $5$ grid cells.
 
-We want to compute a surveillance strategy that \emph{always eventually} brings the belief of the target location to within 5 cells. In other words, even if the target escapes vision of all the sensors, we want to guarantee that one of the sensors can eventually bring the belief of the location of the target to less than 5 cells of the grid. 
-
-In the next sections we present the definitions that will allow us to state this problem formally.
+In the next sections we  define this problem formally.
