@@ -1,7 +1,4 @@
-In the sequel we assume that $L_1 = L_2 = \dots = L_t \triangleq L$  in the surveillance game structure, i.e, all $n$ sensors and the target operate in the same state space. For the remainder of the paper, let $G=(\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ be a multi-agent surveillance game structure  defined over  $L$, and let $\mathcal M = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ be a set of static sensors.
-
-\subsection{State-Space Partition}
-A  \emph{state-space partition} of size $n$ of the set $L$ of locations in a game structure $G$ is tuple $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$ of subsets of $L$ such that  $\bigcup_i^n \widetilde L_i = L $, and $\widetilde L_i \cap \widetilde L_j  = \emptyset$ for $i \neq j$. 
+In the sequel we assume that $L_1 = L_2 = \dots = L_t \triangleq L$  in the surveillance game structure, i.e, all $n$ sensors and the target operate in the same state space. For the remainder of the paper, let $G=(\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ be a multi-agent surveillance game structure  defined over  $L$, and let $\mathcal M = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ be a set of static sensors. We define a  \emph{state-space partition} of size $n$ of the set $L$ of locations in a game structure $G$ to be a tuple $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$ of subsets of $L_i$ such that  $\bigcup_i^n \widetilde L_i = L $, and $\widetilde L_i \cap \widetilde L_j  = \emptyset$ for $i \neq j$. 
 
 
 \begin{figure}
@@ -12,22 +9,23 @@ A  \emph{state-space partition} of size $n$ of the set $L$ of locations in a gam
 \subfloat[Transitions from initial state in subgames. \label{part-grid-trans}]{
 \input{figs/part_example.tex}
 }
+\hspace{0.2cm}
 
-
-\caption{Partitioning of the state space of a surveillance game into two subgames with locations $\widetilde{L}_1$ - green and $\widetilde{L}_2$ - blue. }
+\caption{Partitioning of the state space of a surveillance game into two subgames with locations $\widetilde{L}_1$ (green) and $\widetilde{L}_2$ (blue). }
 \label{fig:simple-dist-game}
+\vspace{-0.6cm}
 \end{figure}
 
 \subsection{Surveillance Subgames}
 We now describe how, given a state-space partition $\widetilde L =  (\widetilde L_1,\ldots,\widetilde L_n)$, to construct a tuple of single-agent surveillance game structures $\widetilde G = (G^1,\ldots,G^n)$ that contains one  \emph{surveillance subgame} $G^i$ for each mobile sensor  $i$. Each subgame, $G^i$ is defined over the subset of locations $\widetilde{L}_i$. Since the target and sensors operate on the same state space we will have $\widetilde{L}^i_s = \widetilde{L}^i_t = \widetilde{L}_i$. Additionally, to each $\widetilde{L}^i_t$ we add an \emph{auxiliary location} $k_i$ that encapsulates all possible locations of the target that are outside of this subgame's region, i.e., all locations in $L \setminus \widetilde{L}_i$.  We then model transitions leaving or entering $\widetilde{L}^i_t$ as transitions to or from location $k_i$ respectively.
 We require that the initial location $l_i^\init$ of sensor $i$ is in $\widetilde{L}_i$.
 
-Formally, given a subset  $\widetilde{L}_i \subseteq L$ we define the \emph{subgame} of $G$ corresponding to sensor $i$ as the tuple $G^i = (\widetilde{S}_i,\widetilde{s}_i^{\init},\widetilde{T}_i,\widetilde{\vis}_i)$  where
+Formally, given a subset  $\widetilde{L}_i \subseteq L$ we define the \emph{subgame} of $G$ corresponding to sensor $i$ as the tuple $G^i = (\widetilde{S}_i,\widetilde{s}_i^{\init},\widetilde{T}_i,\widetilde{\vis}_i)$  where:
 \begin{itemize}
 \item $\widetilde{S}_i= \widetilde{L}_i \times (\widetilde{L}^i_t \cup k_i)$ is the set of states.
 \item $\widetilde s_i^\init = (l_i^\init,\widetilde l_t)$ is the initial state, where $\widetilde l_t =  l_t^\init$, if
 $ l_t^\init \in \widetilde L_i$, and $\widetilde l_t = k_i$ otherwise.
-\item The set $\widetilde{T}_i$ consists of two types of transitions: the transitions in $T{\downarrow } i$ that originate and end in locations that are part of the subgame's region are preserved as they are, while the transitions of the target exiting or entering $\widetilde{L}^i_t$ are replaced by transitions to and from location $k_i$ respectively, since $k_i$ represents all target locations outside of  $\widetilde{L}^i_t$. 
+\item The set $\widetilde{T}_i$ consists of two types of transitions: the transitions in $T{\downarrow } i$ that originate and end in the subgame's region are preserved as they are. Transitions of the target exiting or entering $\widetilde{L}^i_t$ are replaced by transitions to and from location $k_i$ respectively, since $k_i$ represents all target locations outside of  $\widetilde{L}^i_t$. 
 Formally, for every pair of states $(\widetilde{l}_i,\widetilde{l}_t) \in \widetilde{S}_i$ and $(\widetilde{l}_i',\widetilde{l}_t') \in \widetilde{S}_i$ we have that $((\widetilde{l}_i,\widetilde l_t),(\widetilde{l}_i',\widetilde l_t')) \in \widetilde T_i$ if and only if there exists a transition
  $((\widetilde{l}_i,l_t),(\widetilde{l}_i',l_t')) \in T{\downarrow}i$ for which the following conditions are satisfied:
  \begin{itemize}
@@ -41,30 +39,30 @@ Formally, for every pair of states $(\widetilde{l}_i,\widetilde{l}_t) \in \widet
  $l_t \not \in \widetilde L_t^i$ and $l_t' \not\in \widetilde L_t^i$, that is, we have a \emph{transition completely outside $\widetilde L_t^i$}.
 \end{itemize}  
 
-  \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^i$ agrees with the visibiity function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$  (summarized by location $k_i$) are invisible to the sensor in the subgame. Formally, 
- \[\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \begin{cases}
-\vis_i(\widetilde{l}_i,l_t) & \text{if } l_t \in \widetilde{L}_t^i, \\
-\false & \text{if } l_t  = k_i.
-\end{cases}
-\]
+  \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^i$ agrees with the visibility function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$  (summarized by location $k_i$) are invisible to the sensor in the subgame. Formally, $\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \vis_i(\widetilde{l}_i,l_t)$  $l_t \in \widetilde{L}_t^i$ and $\false$ if $l_t  = k_i$
+% \[\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \begin{cases}
+%\vis_i(\widetilde{l}_i,l_t) & \text{if } l_t \in \widetilde{L}_t^i, \\
+%\false & \text{if } l_t  = k_i.
+%\end{cases}
+%\]
 \end{itemize}
 \begin{example}
-In Figure \ref{part-grid}, we have two subgames: $G^1$ for the green mobile sensor and $G^2$ for the blue one. The states in the subgames are $s_1 = (20,14)$, and $s_2 = (4,k_2)$ . Recall that $k_i$ is an indicator state to represent that the target is not subgame $i$. The possible transitions shown in \ref{part-grid-trans} show that the target has the ability to leave $G^1$ and enter $G^2$. 
+In Figure \ref{part-grid}, we have two subgames: $G^1$ for the green mobile sensor and $G^2$ for the blue one. The states in the subgames are $s_1 = (20,14)$, and $s_2 = (4,k_2)$ . Recall that $k_i$ is an indicator state to represent that the target is not subgame $i$. The possible transitions shown in Figure \ref{part-grid-trans} show that the target has the ability to leave $G^1$ and enter $G^2$. 
 %Finally recall that in example \ref{ex:simple-surveillance-game}, we had state $Vis((20,4),14) = \true$. This is no longer the case as although we have $\vis_1(4,14) = \true$ in the global game (i.e, it is visible to sensor 1 and hence also visible to the entire sensor network), state 14 does not lie in $\widetilde{L}_1$ which means it is not visible in the subgame for sensor 1.
 \qed
 \end{example}
 
 Note that in this construction, sensor $i$ is not able to leave the region of locations $\widetilde{L}_i$. Furthermore, all the information about the target's behaviour outside of  the subgame's region is completely hidden from the mobile sensor controller, since all locations outside of  $\widetilde{L}_t^i$ are represented by the single location $k_i$.
 %Finally we remark that the previously defined notions of $\succs_t(\widetilde{l}_i,\widetilde{l}^i_{t})$, $\succs_t(\widetilde{l}_i,\widetilde{L}^i_{t})$, and $\succs(\widetilde{l}_i,\widetilde{l}^{t},\widetilde{l}_{t}')$ for the global game structure $G$ follow analogously in this construction for $\widetilde{T}$ which we denote as $\widetilde{\succs}$.
-In section \ref{sec:local-games} we discuss the local knowledge (belief)  of sensor $i$ in the game structure $G^i$.
+In section \ref{sec:local-games}, we discuss the local knowledge (belief)  of sensor $i$ in the game structure $G^i$.
  
 \subsection{Static Sensors in Subgames}
-We assumed that all information about the target's behaviour outside of subgame $G^i$ is completely  hidden to sensor $i$. Hence, sensor $i$ is only privy to static sensors that operate in the state space of the subgame $G^i$, i.e static sensors $M_{\Lambda_m}$ where $\Lambda_m \cap \widetilde{L}_i \neq \emptyset$. We define $Q_i = \{i \mid \Lambda_{i} \cap \widetilde{L}_i \neq \emptyset\}$ to be the set of static sensors operating in subgame $G^i$. We denote $\widetilde{\Lambda}_q = \Lambda_{q} \cap \widetilde{L}_i$ and define $J_i(\widetilde l_t)\subseteq Q_i$ as the set of triggered static sensors in location $\widetilde l_t \in \widetilde L_i$ in region $i$.
+We assumed that all information about the target's behaviour outside of subgame $G^i$ is completely  hidden to sensor $i$. Hence, sensor $i$ is only privy to static sensors that operate in the state space of the subgame $G^i$, i.e, static sensors $M_{\Lambda_m}$ where $\Lambda_m \cap \widetilde{L}_i \neq \emptyset$. We define $Q_i = \{i \mid \Lambda_{i} \cap \widetilde{L}_i \neq \emptyset\}$ to be the set of static sensors operating in subgame $G^i$. We denote $\widetilde{\Lambda}_q = \Lambda_{q} \cap \widetilde{L}_i$ and define $J_i(\widetilde l_t)\subseteq Q_i$ as the set of triggered static sensors in location $\widetilde l_t \in \widetilde L_i$ in region $i$.
 
 \subsection{Local Beliefs in Surveillance Subgames}\label{sec:local-games}
 A surveillance subgame is a game structure with a single mobile sensor and some number of static sensors, and thus, is  a special case of multi-agent surveillance game structure. With this, the definition of  belief-set game structures from Section~\ref{sec:belief-gs} directly applies to surveillance subgames.
 
-In the belief-set game structure for a surveillance subgame $G^{i} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$ with static sensors $Q_i$, the belief sets represent the local belief of sensor $i$. More specifically, a belief set in $G^{i}_\belief$ is an element of  $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$, and can thus contain the auxiliary location. Intuitively, if $ k_i$ is present in the sensor's current belief, then the target could possibly be outside of the local set of locations $\widetilde L_i$ , or if the belief is the singleton $\{k_i\}$, then sensor $i$ knows for sure that the target is outside of its region. Additionally, if there a triggered static sensor in the region, the sensor will know that the target must be in the state space of the static sensor and $k_i$ cannot be in the belief.
+In the belief-set game structure for a surveillance subgame $G^{i} = (\widetilde{S}_i,\widetilde{s}_i^{init},\widetilde{T}_i,\widetilde{\vis}_i)$ with static sensors $Q_i$, the belief sets represent the local belief of sensor $i$. More specifically, a belief set in $G^{i}_\belief$ is an element of  $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$, and can thus contain the auxiliary location. Intuitively, if $ k_i$ is present in the sensor's current belief, then the target could possibly be outside of the local set of locations $\widetilde L_i$, or if the belief is the singleton $\{k_i\}$, then sensor $i$ knows for sure that the target is outside of its region. Additionally, if there is a triggered static sensor in the region, the sensor will know that the target must be in the state space of the static sensor and $k_i$ cannot be in the belief.
 We define the \emph{global interpretation} $\llbracket B_t\rrbracket$ of a belief set $B_t$ in $G^{i}_\belief$, which is a set of locations in $G$, as
  \[\llbracket B_t\rrbracket = \begin{cases}
 B_t & \text{if } k_i \not\in B_t\\
@@ -95,19 +93,18 @@ Strategies of sensor $i$ in the belief-set game $G^{i}_\belief$ depend only on t
 
 \subsection{Distributed Surveillance Synthesis Problem}\label{sec:distributed-problem}
 Given a state-space partitioning $\widetilde L$ and the corresponding tuple of subgames $\widetilde G = (G^1,\ldots,G^n)$
-we will define a distributed surveillance strategy synthesis problem, which, intuitively, asks to synthesize strategies for the sensors in the individual belief subgames, such that together they guarantee the global surveillance objective against every possible strategy of the target in the global belief game.  In this section we formalize this intuitive problem description. For this, we  need to define what it means for the individual sensor strategies to satisfy together some global requirement.
+we will define a distributed surveillance strategy synthesis problem, which, intuitively, asks to synthesize strategies for the sensors in the individual belief subgames, such that together they guarantee the global surveillance objective.  In this section we formalize this intuitive problem description. We first need to define what it means for the individual sensor strategies to jointly satisfy together a global requirement.
 
-Our surveillance requirements are defined in terms of the belief-states in $G_\belief$, but strategies in the belief subgames are defined in terms of sequences of local belief-states. Hence, we need to define a mapping of states of the form $((l_1,\ldots,l_n),B_t,J)$ to elements of $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$ for each $i$. Since, by definition, a strategy for sensor $i$ in the corresponding belief subgame guarantees that it remains in $\widetilde L_i$, we only need to define the mapping for states  $l_i \in\widetilde{L}_i$.
+The surveillance requirements are defined in terms of the belief-states in $G_\belief$, but strategies in the belief subgames are defined in terms of sequences of local belief states. Hence, we need to define a mapping of states of the form $((l_1,\ldots,l_n),B_t,J)$ to elements of $\mathcal{P}(\widetilde{L}^i_t \cup \{k_i\})$ for each $i$. Since, by definition, a strategy for sensor $i$ in the corresponding belief subgame guarantees that it remains in $\widetilde L_i$, we only need to define the mapping for states  $l_i \in\widetilde{L}_i$.
 
-Formally, for a state $((l_1,\ldots,l_n),B_t,J)$  we define its projection on belief subgame $i$, as $((l_1,\ldots,l_n),B_t,J){\downarrow}i = (l_i,B_t{\downarrow}i,J \cap Q_i)$, where
+Formally, for a state $((l_1,\ldots,l_n),B_t,J)$  we define its projection on belief subgame $i$ as $((l_1,\ldots,l_n),B_t,J){\downarrow}i = (l_i,B_t{\downarrow}i,J \cap Q_i)$, where
 \[B_t{\downarrow}i = \begin{cases}
 B_t& \text{if }  B_t \subseteq \widetilde L_i, \\
 (B_t \cap \widetilde L_i) \cup \{k_i\} & \text{otherwise}.
 \end{cases}\]
 The mapping extends to sequences of states in the usual way. 
 
-Intuitively, this mapping projects the joint knowledge of the sensors in $G_\belief$ onto the local belief of each sensor, where sensors do not  share their local beliefs with each other, that is, sensors have no information about the target's position outside of their own region. The global, shared belief of the sensors is formed by the combination of their local beliefs. More precisely, this is the intersection of the  global interpretation of the local beliefs. Indeed, it is easy to see that the following property holds
-\[B_t = \bigcap_{i=1}^n \llbracket B_t{\downarrow}i\rrbracket.\]
+Intuitively, this mapping projects the joint knowledge of the sensors in $G_\belief$ onto the local belief of each sensor, where the sensors do not share their local beliefs with each other, that is, the sensors have no information about the target's position outside of their own region. The global, shared belief of the sensors is formed by the combination of their local beliefs. More precisely, this is the intersection of the  global interpretation of the local beliefs. Indeed, it is easy to see that the property $B_t = \bigcap_{i=1}^n \llbracket B_t{\downarrow}i\rrbracket$ holds.
 
 Now we are ready to define the joint strategy of the sensors in $G_\belief$ obtained by executing together a given set of sensor strategies in the individual subgames. 
 Let $f_{s_1},\ldots,f_{s_n}$ be strategies for the sensors in the belief subgames $(G^{1}_{\tilde{S}_\belief},\ldots,G^{n}_{\tilde{S}_\belief})$. We define the \emph{composition} $f_{s_1} \otimes\ldots\otimes f_{s_n}$ of $f_{s_1},\ldots,f_{s_n}$, which is a joint strategy $f_s$ for the sensors in $G_\belief$, as follows:
@@ -115,7 +112,7 @@ for every sequence $s_0,\ldots,s_k$ of states in $G_\belief$ and global belief $
 \[f_s(s_0,\ldots,s_k,B_t,J) = (l_1,\ldots,l_n),\]
 where $l_i = f_{s_i}((s_0,\ldots,s_k){\downarrow}i,B_t{\downarrow}i, J \cap Q_i)$ for each $i$. 
 
-\emph{Remark}. If for some $i$ the projection $(s_0,\ldots,s_k){\downarrow}i$ is undefined, then $f_s(s_0,\ldots,s_k,B_t)$ is undefined. However, by the definition of each $f_{s_i}$ we are guaranteed that the projection is defined for every prefix consistent with $f_{s_i}$.
+\emph{Remark}. If, for some $i$, the projection $(s_0,\ldots,s_k){\downarrow}i$ is undefined, then $f_s(s_0,\ldots,s_k,B_t)$ is undefined. However, by the definition of each $f_{s_i}$ we are guaranteed that the projection is defined for every prefix consistent with $f_{s_i}$.
 
 Intuitively, the joint strategy $f_{s_1} \otimes\ldots\otimes f_{s_n}$ makes decisions consistent with the choices of the individual strategies $f_{s_1}, \ldots, f_{s_n}$ in the respective belief subgames.
 
