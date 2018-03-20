@@ -25,16 +25,21 @@
 \end{tikzpicture}
 
 
-
+\begin{center}
 \begin{tikzpicture}[node distance=.9 cm,auto,>=latex',line join=bevel,transform shape,scale=.75]
-\node at (0,0) (s0) {$G^2: (4,k_1)$};
+\node at (0,0) (s0) {$G^2: (4,k_2)$};
 \node  [below of=s0,yshift=-.5cm] (s1) {$(3,9)$};
 \node  [right of=s1,xshift=0.5cm] (s2) {$(9,k_2)$};
 \node  [left of=s1,xshift=-0.5cm] (s3) {$(3,k_2)$};
+\node  [left of=s3,xshift=-0.5cm] (s4) {$(3,5)$};
+\node  [right of=s2,xshift=0.5cm] (s5) {$(9,5)$};
 \draw [->] (s0) edge (s1.north);
 \draw [->] (s0) edge (s2.north);
 \draw [->] (s0) edge (s3.north);
+\draw [->] (s0) edge (s4.north);
+\draw [->] (s0) edge (s5.north);
 \end{tikzpicture}
+\end{center}
 
 
 
