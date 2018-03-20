@@ -1,6 +1,7 @@
-We now return to the case study outlined in section \ref{sec:casestudy}. We analyze two scenarios. In figure \ref{fig:experiment}, we have 6 available mobile sensors. We compare the surveillance strategy with the situation in figure \ref{fig:3experiment} where we have only 3. Our surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
+We now return to the case study outlined in section \ref{sec:casestudy}. We analyze two scenarios. In figure \ref{fig:experiment}, we have 6 available mobile sensors. We compare the surveillance strategy with the situation in figure \ref{fig:3experiment} where we have only 3. Our global surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
 
 \begin{figure}
+	\centering
 \subfloat[The gridworld in \ref{fig:SGR-grid} partitioned into 6 subgames. \label{fig:experiment}]{
 \includegraphics[scale=0.18]{figs/SGR-grid-vis-part.png}
 \hspace{.3cm}}
@@ -9,10 +10,12 @@ We now return to the case study outlined in section \ref{sec:casestudy}. We anal
 \includegraphics[scale=0.18]{figs/SGR-grid-vis-part_3.png}
 \hspace{.3cm}}
 
-\caption{We look at the case where we have 6 mobile sensors in \ref{fig:experiment} and 3 mobile sensors \ref{fig:3experiment}\label{fig:bigexp}}. The mobile sensors or UAVs are blue circles and the target is represented in orange. The red cells represent impassable terrain (such as dense foliage) that cannot be seen through by the sensors. Black cells are locations not visible to any sensor.
+\caption{We look at the case where we have 6 mobile sensors in \ref{fig:experiment} and 3 mobile sensors \ref{fig:3experiment}\label{fig:bigexp}. The mobile sensors or UAVs are blue circles and the target is represented in orange. The red cells represent impassable terrain (such as dense foliage) that cannot be seen through by the sensors. Black cells are locations not visible to any sensor.}\vspace{-0.5cm}
 \end{figure} 
 
-Solving either case centralized is not computationally feasible as the state space grows exponentially with the number of sensors. We partition the multi-agent surveillance game into subgames as shown in Figures \ref{fig:experiment} and \ref{fig:3experiment}. We then solve each game individually in report the synthesis times in table \ref{tab:synthtime}.
+Solving either case centralized is not computationally feasible as the state space grows exponentially with the number of sensors. We partition the multi-agent surveillance game into subgames as shown in Figures \ref{fig:experiment} and \ref{fig:3experiment}. We then solve each game individually with local specifications $\locspec_i(\square \lozenge p_5)$
+
+We report the synthesis times in table \ref{tab:synthtime}.
 
 \begin{table}[h!]
 	\centering
