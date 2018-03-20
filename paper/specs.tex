@@ -38,7 +38,7 @@ Notice that here we use implication, which is not part of the fragment to which 
 
 This translation is again conservative, since it suffices that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that every sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires hat if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
 
-Finally, for a global surveillance specification $\LTLglobally p_a \vee \LTLglobally\LTLfinally p_b$, the local surveillance specification for sensor $i$ is
+Finally, for a global surveillance specification $\LTLglobally p_a \wedge \LTLglobally\LTLfinally p_b$, the local surveillance specification for sensor $i$ is
 \[\locspec_i(\LTLglobally p_a\wedge  \LTLglobally\LTLfinally p_b,n)\triangleq
 \locspec(\LTLglobally p_a,n) \wedge\locspec_i(\LTLglobally\LTLfinally p_b) .
 \]
