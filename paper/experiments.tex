@@ -1,4 +1,4 @@
-We now return to the case study outlined in section \ref{sec:casestudy}. We analyze two scenarios. In figure \ref{fig:experiment}, we have 6 available mobile sensors. We compare the surveillance strategy with the situation in figure \ref{fig:3experiment} where we have only 6. Our surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
+We now return to the case study outlined in section \ref{sec:casestudy}. We analyze two scenarios. In figure \ref{fig:experiment}, we have 6 available mobile sensors. We compare the surveillance strategy with the situation in figure \ref{fig:3experiment} where we have only 3. Our surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
 
 \begin{figure}
 \subfloat[The gridworld in \ref{fig:SGR-grid} partitioned into 6 subgames. \label{fig:experiment}]{
@@ -16,22 +16,23 @@ Solving either case centralized is not computationally feasible as the state spa
 
 \begin{table}[h!]
 	\centering
-	\caption{Synthesis times for surveillance games}
+	\caption{Synthesis times for each surveillance subgame}
 	\label{tab:synthtime}
-	\begin{tabular}{c|l|l}
-		\multicolumn{1}{l|}{}                                    & \textbf{Subgame} & \textbf{Synthesis time (s)} \\ \hline \hline
-		\multirow{7}{*}{\textbf{6 sensors}}                     & Subgame 1        & 40                          \\
-		& Subgame 2        & 38                          \\
-		& Subgame 3        & 49                          \\
-		& Subgame 4        & 44                          \\
-		& Subgame 5        & 33                          \\
-		& Subgame 6        & 39                          \\ \hline
-		& \textbf{Total}            & 245                         \\ \hline
-		\multicolumn{1}{l|}{\multirow{4}{*}{\textbf{3 sensors}}} & Subgame 1        & 187                         \\
-		\multicolumn{1}{l|}{}                                    & Subgame 2        & 251                         \\
-		\multicolumn{1}{l|}{}                                    & Subgame 3        & 211                         \\
-		\multicolumn{1}{l|}{}                                    & \textbf{Total}            & 684                        
+	\begin{tabular}{c|l|l|l}
+		\multicolumn{1}{l|}{}                                    & \textbf{Subgame} & \textbf{Number of states} & \textbf{Synthesis time (s)} \\ \hline \hline
+		\multirow{7}{*}{\textbf{6 sensors}}
+		& Subgame 1   & 69     & 101                          \\
+	    & Subgame 2   & 74     & 206                          \\
+		& Subgame 3   & 62     & 111                          \\
+		& Subgame 4   & 52     & 88                          \\
+		& Subgame 5   & 77     & 285                          \\
+		& Subgame 6   & 66     & 64                          \\ \hline
+		& \textbf{Total}   & \textbf{400}         & \textbf{855}                         \\ \hline
+		\multicolumn{1}{l|}{\multirow{4}{*}{\textbf{3 sensors}}} & Subgame 1        & 142 & 473                         \\
+		\multicolumn{1}{l|}{}                                    & Subgame 2        & 113 & 306                         \\
+		\multicolumn{1}{l|}{}                                    & Subgame 3        & 145 & 372                         \\ \hline
+		\multicolumn{1}{l|}{}                                    &  \textbf{Total} & \textbf{400}            & \textbf{1151}                        
 	\end{tabular}
 \end{table}
 
-The multi-agent surveillance game in figure \ref{fig:experiment} results in more sub-games compared to the game in \ref{fig:experiment}. However, each game is much smaller and results in a much faster synthesis time individually. 
+The multi-agent surveillance game in figure \ref{fig:experiment} results in more subgames compared to the game in \ref{fig:experiment}. However, each game is much smaller and strategies can be synthesized faster in each subgame. 
