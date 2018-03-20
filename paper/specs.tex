@@ -13,7 +13,7 @@ To see why, consider the two possible cases of local belief set of sensor $1$ wh
 Local specifications $\LTLglobally p_4$, on the other hand do not imply the global specification. Indeed, if at a given point in time both sensors have local beliefs of size $4$, each of which contains the corresponding location $k_i$, the resulting global belief will be of size $6$ and thus violate the global specification.\qed
 \end{example}
 
-Generalizing the observations made in this example, for any number of sensors $n \geq 2$ and global safety surveillance objective $\LTLglobally p_b$, we define the local safety surveillance objective for each of the sensors, denoted $\locspec(\LTLglobally p_b,n)$, as \[\locspec(\LTLglobally p_b,n) \triangleq \LTLglobally p_c,\] where $c = \lfloor{\frac{b}{n}}\rfloor+1$. Since $n \geq 2$ and $b >0$, we have $c \leq b$.
+Generalizing the observations made in this example, for any number of sensors $n \geq 2$ and global safety surveillance objective $\LTLglobally p_b$, we define the local safety surveillance objective for each of the sensors, denoted $\locspec(\LTLglobally p_b,n)$, as $\locspec(\LTLglobally p_b,n) \triangleq \LTLglobally p_c,$ where $c = \lfloor{\frac{b}{n}}\rfloor+1$. Since $n \geq 2$ and $b >0$, we have $c \leq b$.
 
 Note that this translation is conservative, since if according to the belief of sensor $i$ the target could be outside its region, it should guarantee that the number of locations in its own region the target could be in is at most  $\lfloor{\frac{b}{n}}\rfloor$, even if the target can possibly be in only one of the other regions. This conservativeness is necessary to guarantee soundness in the absence of communication between the sensors.
 

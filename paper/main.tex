@@ -14,7 +14,7 @@
 \pdfminorversion=4
 \input{macros}
 
-\title{\LARGE \bf Distributed Synthesis of Surveillance Strategies}
+\title{\LARGE \bf Distributed Synthesis of Surveillance Strategies for Mobile Sensors}
 
 \author{Suda Bharadwaj$^{1}$ and Rayna Dimitrova$^{2}$ and Ufuk Topcu$^{1}$% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
@@ -33,7 +33,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-
+We study the problem of synthesizing strategies for a mobile sensor network to conduct surveillance in partnership with static alarm triggers. We formulate the problem as a multi-agent reactive synthesis problem with surveillance objectives specified in linear temporal logic (LTL). In order to avoid the state space blow-up arising from a centralized strategy computation, we propose a method to \emph{decentralize} the surveillance strategy synthesis by decomposing the multi-agent game into subgames that can be solved independently. We also decompose the global surveillance specification into local specifications for each subgame and show that satisfaction of the local specifications guarantees satisfaction of the global one. Thus, our method is able to guarantee global surveillance properties in a mobile sensor network while synthesizing completely decentralized strategies with no need for communication between the sensors. We also present a case study where we demonstrate an application of decentralized surveillance strategy synthesis.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
