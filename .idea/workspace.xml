@@ -4,9 +4,6 @@
     <list default="true" id="99965ad5-12fd-43bf-a676-0fdc8f4e1a67" name="Default" comment="Added case study">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/CaseStudy_20x20.py" afterPath="$PROJECT_DIR$/Code/CaseStudy_20x20.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/Salty_input.py" afterPath="$PROJECT_DIR$/Code/Salty_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/casestudy.tex" afterPath="$PROJECT_DIR$/paper/casestudy.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/distgames.tex" afterPath="$PROJECT_DIR$/paper/distgames.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/figs/distgames_fig.tex" afterPath="$PROJECT_DIR$/paper/figs/distgames_fig.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/experiments.tex" afterPath="$PROJECT_DIR$/paper/experiments.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/games.tex" afterPath="$PROJECT_DIR$/paper/games.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/impinfotest0.slugsin" afterPath="$PROJECT_DIR$/Code/impinfotest0.slugsin" />
@@ -20,7 +17,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/figs/part_example.tex" afterPath="$PROJECT_DIR$/paper/figs/part_example.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/figs/simple-transitions.tex" afterPath="$PROJECT_DIR$/paper/figs/simple-transitions.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/simulateController.py" afterPath="$PROJECT_DIR$/Code/simulateController.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/paper/specs.tex" afterPath="$PROJECT_DIR$/paper/specs.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/test0.json" afterPath="$PROJECT_DIR$/Code/test0.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/test0.slugsin" afterPath="$PROJECT_DIR$/Code/test0.slugsin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Code/test0.structuredslugs" afterPath="$PROJECT_DIR$/Code/test0.structuredslugs" />
@@ -109,8 +105,8 @@
       <file leaf-file-name="simulateController.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Code/simulateController.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.5997854">
-              <caret line="445" column="0" selection-start-line="445" selection-start-column="0" selection-end-line="445" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.27329192">
+              <caret line="476" column="72" selection-start-line="476" selection-start-column="72" selection-end-line="476" selection-end-column="72" />
               <folding>
                 <element signature="e#125#245#0" expanded="false" />
                 <element signature="e#277#623#0" expanded="false" />
@@ -563,12 +559,6 @@
       <option name="number" value="Default" />
       <updated>1489509899765</updated>
     </task>
-    <task id="LOCAL-00020" summary="fully refined belief states only update from invisible states">
-      <created>1494356622015</created>
-      <option name="number" value="00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1494356622015</updated>
-    </task>
     <task id="LOCAL-00021" summary="fully refined belief states only update from invisible states">
       <created>1501091776590</created>
       <option name="number" value="00021" />
@@ -857,7 +847,13 @@
       <option name="project" value="LOCAL" />
       <updated>1521528807066</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Ufuk edits + making space">
+      <created>1521569742286</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1521569742286</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -875,23 +871,23 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24727075" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32778355" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298647" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33506763" sideWeight="0.5021834" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21852237" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33506763" sideWeight="0.4978166" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29968783" sideWeight="0.4978166" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24984913" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32882413" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40686783" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298647" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29968783" sideWeight="0.4978166" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40686783" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32778355" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -927,7 +923,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Deleted function" />
     <MESSAGE value="Multiple target simulation" />
     <MESSAGE value="Removed old functions&#10;Removed belief subset check in simulation" />
     <MESSAGE value="Minor text fixes&#10;" />
@@ -952,7 +947,8 @@
     <MESSAGE value="added exp details" />
     <MESSAGE value="Added figures for results" />
     <MESSAGE value="Added figs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added figs" />
+    <MESSAGE value="Ufuk edits + making space" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ufuk edits + making space" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1423,8 +1419,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Code/simulateController.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5997854">
-          <caret line="445" column="0" selection-start-line="445" selection-start-column="0" selection-end-line="445" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.27329192">
+          <caret line="476" column="72" selection-start-line="476" selection-start-column="72" selection-end-line="476" selection-end-column="72" />
           <folding>
             <element signature="e#125#245#0" expanded="false" />
             <element signature="e#277#623#0" expanded="false" />

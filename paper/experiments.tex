@@ -5,11 +5,11 @@ We now return to the case study outlined in section \ref{sec:casestudy}. We have
 \begin{figure}
 	\centering
 \subfloat[The gridworld in \ref{fig:SGR-grid} partitioned into 6 subgames. \label{fig:experiment}]{
-\includegraphics[scale=0.14]{figs/SGR-grid-vis-part.png}
+\includegraphics[scale=0.18]{figs/SGR-grid-vis-part.png}
 \hspace{1.5cm}}
 %\hfill
 \subfloat[The gridworld in \ref{fig:SGR-grid} partitioned into 3 subgames. \label{fig:3experiment}]{
-\includegraphics[scale=0.14]{figs/SGR-grid-vis-part_3.png}
+\includegraphics[scale=0.18]{figs/SGR-grid-vis-part_3.png}
 \hspace{.3cm}}
 
 \caption{Cases with 6 mobile sensors in Fig \ref{fig:experiment} and 3 mobile sensors in Fig \ref{fig:3experiment}. The mobile sensors are blue circles and the target is represented in orange. The red cells represent impassable terrain (such as dense foliage) that cannot be seen through by the sensors. Black cells are locations not visible to any sensor.}\label{fig:bigexp}\vspace{-0.5cm}
@@ -75,6 +75,6 @@ The multi-agent surveillance game in Figure \ref{fig:experiment} results in more
 	
 \end{figure}
 
- We see, in Figures \ref{fig:case1t2} - \ref{fig:case1t4}, that the target is in the subgame corresponding to sensor 2. Hence, only sensor 2 is moving and trying to lower its belief to below 5 cells (which it does in Figure \ref{fig:case1t5}). In Figures \ref{fig:case1t3} - \ref{fig:case1t5}, the target moves into subgame 3 at which point sensor 3 takes over. There is no communication between any of the agents, and each satisfy only their local surveillance specification. However, our construction guarantees that the global specification of $\square \lozenge p_5$ will be satisfied. We include a link to a video of the simulation at \url{google.com}
+ We see, in Figures \ref{fig:case1t2} - \ref{fig:case1t4}, that the target is in the subgame corresponding to sensor 2. Hence, only sensor 2 is moving and trying to lower its belief to below 5 cells (which it does in Figure \ref{fig:case1t5}). In Figures \ref{fig:case1t3} - \ref{fig:case1t5}, the target moves into subgame 3 at which point sensor 3 takes over. There is no communication between any of the agents, and each satisfy only their local surveillance specification. However, our construction guarantees that the global specification of $\square \lozenge p_5$ will be satisfied. %We include a link to a video of the simulation at \url{google.com}
  
  %In figure \ref{fig:case1t2}, the target is in the region of a static sensor. Hence, the global belief is restricted to the region that sensor operates. 
