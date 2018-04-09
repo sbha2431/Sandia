@@ -23,9 +23,6 @@ def dict_compare(d1, d2):
     same = set(o for o in intersect_keys if d1[o] == d2[o])
     return added, removed, modified, same
 
-
-
-
 def parseJson(filename):
     automaton = dict()
     file = open(filename)
@@ -263,7 +260,7 @@ def userControlled_partition_dist(filename,gwg,partitionGrid,moveobstacles,allow
                                 if any(gridstate in partitionGrid[m][x] for x in nextbeliefs):
                                     nextstate[m] = copy.deepcopy(n)
                                     print 'Environment state in automaton is', allstates[m].index(nexttargetstate[m])
-                                    print 'Belief state is', beliefcombs[allstates[m].index(nexttargetstate[m]) - len(xstates)]
+                                    print 'Belief state is', beliefcombs[m][allstates[m].index(nexttargetstate[m]) - len(xstates)]
                                     nextagentstate[m] = automaton[m][n]['State']['s']
                                     invisstates = invisibilityset[m][nextagentstate[m]]
                                     visstates = set(xstates) - invisstates
@@ -355,9 +352,12 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
                     activesensorlist[n].remove(m)
 
             print 'Agent state is ', agentstate
-            for m in range(gwg.nagents):
-                if m !=n:
-                    globalinvisset[n] = globalinvisset[n].union(invisibilityset[n][agentstate[n]].union(set(allowed_states[m]) - set(allowed_states[n])))
+            if gwg.nagents > 1:
+                for m in range(gwg.nagents):
+                    if m !=n:
+                        globalinvisset[n] = globalinvisset[n].union(invisibilityset[n][agentstate[n]].union(set(allowed_states[m]) - set(allowed_states[n])))
+            else:
+                globalinvisset[n] = globalinvisset[n].union(invisibilityset[n][agentstate[n]])
         gwg.colorstates[0] = set.intersection(*globalinvisset)
         activeagents = set(range(gwg.nagents))
         for n in range(gwg.nagents):
@@ -371,7 +371,8 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
         gwg.current = copy.deepcopy(agentstate)
 
         gwg.render()
-        gwg.draw_state_labels()
+        # gwg.draw_state_labels()
+        gazeboOutput(gwg)
 
         while True:
             arrow = gwg.getkeyinput()
@@ -379,7 +380,6 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
                 nextgridstate = getGridstate(gwg,gridstate,arrow)
                 if nextgridstate not in gwg.obstacles and not any(nextgridstate in t for t in gwg.targets):
                     break
-        rt = findstate(automaton[1],{'st':415})
         for m in range(gwg.nagents):
             if nextgridstate in allowed_states[m]:
                 activesensorlist[m] = set([sensor for sensor, states in partialvis_states[m].iteritems() if nextgridstate in states])
@@ -523,5 +523,18 @@ def userControlled_partition_dist_imp_sensor(filename,gwg,partitionGrid,moveobst
         print 'Automaton state is ', nextautomatonstate
         automaton_state = copy.deepcopy(nextautomatonstate)
 
+def gazeboOutput(gwg):
+    for n in range(len(gwg.current)):
+        filename = 'statehistory{}.txt'.format(n)
+        with open(filename,'a') as file:
+            s = gwg.current[n]
+            file.write('{},{}\n'.format(gwg.coords(s)[1],gwg.coords(s)[0]))
+            file.close()
+    for n in range(len(gwg.moveobstacles)):
+        filename = 'statehistory_target{}.txt'.format(n)
+        y_obs,x_obs = gwg.coords(gwg.moveobstacles[n])
+        with open(filename,'a') as file:
+            file.write('{},{}\n'.format(x_obs,y_obs))
+            file.close()
 
 

@@ -597,8 +597,11 @@ def write_to_slugs_part_dist_impsensors(infile,gw,init,initmovetarget,invisibili
                                     else:
                                         if t in gw.targets[0]:
                                             continue
-                                        t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
-                                        beliefset.add(t2)
+                                        try:
+                                            t2 = partitionGrid.keys()[[inv for inv in range(len(partitionGrid.values())) if t in partitionGrid.values()[inv]][0]]
+                                            beliefset.add(t2)
+                                        except:
+                                            print t
                         if len(beliefset) > 0:
                             b2 = allstates[len(nonbeliefstates) + beliefcombs.index(beliefset)]
                             stri += ' (st\' = {} /\\'.format(b2)

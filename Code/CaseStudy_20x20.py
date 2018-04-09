@@ -7,7 +7,7 @@ import subprocess
 import simulateController
 import pickle
 import visibility
-
+import time
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 # Define gridworld parameters
 nrows = 20
@@ -101,20 +101,20 @@ print 'Writing input file...'
 invisibilityset = []
 filename = []
 for n in range(gwg.nagents):
-    # iset = dict.fromkeys(set(gwg.states),frozenset({gwg.nrows*gwg.ncols+1}))
-    # for s in set(gwg.states):
-    #     iset[s] = visibility.invis(gwg,s,visdist[n]).intersection(set(allowed_states[n]))
-    #     iset[s] = iset[s] - set(fullvis_states[n])
-    #     if s in gwg.obstacles:
-    #         iset[s] = {-1}
-    # pickle_out = open("dict{}.pickle".format(n),"wb")
-    # pickle.dump(iset, pickle_out)
-    # pickle_out.close()
+    iset = dict.fromkeys(set(gwg.states),frozenset({gwg.nrows*gwg.ncols+1}))
+    for s in set(gwg.states):
+        iset[s] = visibility.invis(gwg,s,visdist[n]).intersection(set(allowed_states[n]))
+        iset[s] = iset[s] - set(fullvis_states[n])
+        if s in gwg.obstacles:
+            iset[s] = {-1}
+    pickle_out = open("dict{}.pickle".format(n),"wb")
+    pickle.dump(iset, pickle_out)
+    pickle_out.close()
     pickle_in = open("dict{}.pickle".format(n),"rb")
     iset = pickle.load(pickle_in)
     invisibilityset.append(iset)
-    outfile = 'test3{}.json'.format(n)
-    infile = 'test3{}'.format(n)
+    outfile = 'finalcdc_6sensor{}.json'.format(n)
+    infile = 'finalcdc_6sensor{}'.format(n)
     filename.append(outfile)
     print 'output file: ', outfile
     print 'input file name:', infile
@@ -123,9 +123,11 @@ for n in range(gwg.nagents):
     # # #
     print ('Converting input file...')
     os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
+    start = time.time()
     print('Computing controller...')
     sp = subprocess.Popen(slugs + ' --explicitStrategy --jsonOutput ' + infile + '.slugsin > '+ outfile,shell=True, stdout=subprocess.PIPE)
     sp.wait()
+    print 'Synthesis time for agent {} is {}'.format(n,time.time() - start)
 
 
 simulateController.userControlled_partition_dist_imp_sensor(filename,gwg,pg,moveobstacles,allowed_states,invisibilityset,partialvis_states)
