@@ -142,7 +142,7 @@ Intuitively, $p_b$ is satisfied by the states in the belief game structure where
 We study surveillance objectives expressed in a fragment  of linear temporal logic (LTL) over surveillance predicates.  We consider  \emph{safety surveillance objectives} expressed using the temporal operator $\LTLglobally$ and \emph{liveness surveillance objectives} expressed using the temporal operators $\LTLglobally$ and $\LTLeventually$.
 
 A \emph{safety surveillance objective} $\LTLglobally p_b$ requires that the size of the belief-set never exceeds the given threshold $b$. More formally, an infinite sequence of states $s_0,s_1,\ldots$ in $G_\belief$ satisfies the safety property $\LTLglobally p_b$ if and only if for every $i\geq 0$ it holds that $s_i \models p_b$.  A \emph{liveness surveillance objective} $\LTLglobally\LTLfinally p_b$, on the other hand, requires that 
-the size of the belief is smaller or equal to the bound $b$  infinitely often. That is, $s_0,s_1,\ldots$ in $G_\belief$ satisfies $\LTLglobally\LTLfinally p_b$ if for every $i \geq 0$ there exists $j >i$ such that $s_j\models p_b$. 
+the size of the belief is smaller or equal to the bound $b$  infinitely often. That is, $s_0,s_1,\ldots$ in $G_\belief$ satisfies $\LTLglobally\LTLfinally p_b$ if for every $i \geq 0$ there exists $j \geq i$ such that $s_j\models p_b$. 
 
 In this paper we consider safety and liveness surveillance objectives, as well as conjunctions of such objectives. We remark the following equivalences of surveillance objectives:
 \begin{itemize}
