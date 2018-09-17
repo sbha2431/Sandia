@@ -64,11 +64,11 @@ In surveillance strategy synthesis, we need to state properties of, and reason a
 
 Given a set $A$, we denote with $\mathcal{P}(A) = \{A' \mid A'\subseteq A\}$ the powerset (set of all subsets) of $A$.
 
-Given a  multi-agent surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ with $m$ static sensors $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$, we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ where:
+Given a  multi-agent surveillance game structure $G  = (\states,s^\init,\trans,\vis_1,\ldots,\vis_n)$ with $m$ static sensors $\mathcal{M} = \{\Lambda_1,\dots,\Lambda_m\}$, we define the corresponding \emph{belief-set game structure} $G_\belief  = (\states_\belief,s^\init_\belief,\trans_\belief)$ where:
 \begin{itemize}
 \item $\states_\belief = L_s \times \beliefs\times \mathcal{P}(\{1,\ldots,m\})$ is the set of states, where $L_s$ is the set of joint locations of the sensors, and $\beliefs$ the set of \emph{belief sets} describing information about the location of the target, and $\mathcal{P}(\{1,\ldots,m\})$ is the set of possible sets of triggered sensors;
-\item $s^\init_\belief = (l^\init_1,\ldots,l^\init_n,\{l_t^\init\},J(l_t^\init))$ as initial state;
-\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_s, B_t,J),(l_s', B_t',J')) \in \trans_\belief$ iff $l_s' \in  \succs(l_s,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ , $J' \subseteq J(B_t')$, and one of these following conditions is satisfied:
+\item $s^\init_\belief = (l^\init_1,\ldots,l^\init_n,\{l_t^\init\},J(l_t^\init))$ is  initial state;
+\item $\trans_\belief \subseteq \states_\belief \times \states_\belief$ is the transition relation where $((l_s, B_t,J),(l_s', B_t',J')) \in \trans_\belief$ iff $l_s' \in  \succs(l_s,l_t,l_t')$ for some $l_t \in B_t$ and $l_t' \in B_t'$ , $J' \subseteq J(B_t')$, and one of the following three conditions is satisfied:
 \begin{itemize}
 \item[(1)] $B_t' = \{l_t'\}$, $l_t' \in \post(l_s,B_t)$, $\Vis(l_s,l_t') = \true$;
 \item[(2)] $B_t' = \{l_t' \in \post(l_s,B_t)  \mid  \Vis(l_s,l_t') = \false \} \cap \\
@@ -120,11 +120,11 @@ Consider the surveillance game structure from Example~\ref{ex:simple-surveillanc
 
 Based on  $T_\belief$, we can define the functions $\succs_t : \states_\belief \to \mathcal{P}(\beliefs \times  \mathcal{P}(\{1,\ldots,m\}))$ and  $\succs : \states_\belief \times \beliefs \times  \mathcal{P}(\{1,\ldots,m\}) \to \mathcal{P}(L_s)$ similarly to the corresponding functions defined for $G$. 
 
-A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\belief^\init$,  $(s_i,s_{i+1}) \in T_\belief$ for all $i$. 
+A \emph{run} in $G_\belief$ is an infinite sequence $s_0,s_1,\ldots$ of states in $\states_\belief$, where $s_0 = s_\belief^\init$ and $(s_i,s_{i+1}) \in T_\belief$ for all $i$. 
 
 A \emph{strategy for the target in $G_\belief$} is a function $f_t: \states_\belief^+ \to \beliefs \times \mathcal{P}(\{1,\ldots,m\})$ such that $f_t(\pi\cdot s) = (B_t, J)$ implies $(B_t ,J)\in \succs_t(s)$  for every $\pi \in \states_\belief^*$ and $s \in \states_\belief$. That is, a strategy for the target suggests a move resulting in some belief set reachable from a location in the current belief, and a set of triggered sensors.
 
-A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S_\belief^+ \times \beliefs \to S_\belief$ such that, if, $f_s(\pi\cdot s,B_t,J) = (l_s',B_t,J'')$ then, $B_t' = B_t$, $J' = J$, and $l_s' \in \succs_s(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play, the current belief about the target's position, and the set of currently triggered sensors.
+A \emph{joint strategy for the sensors in $G_\belief$} is a function $f_s : S_\belief^+ \times \beliefs \to S_\belief$ such that, if, $f_s(\pi\cdot s,B_t,J) = (l_s',B_t,J')$ then, $B_t' = B_t$, $J' = J$, and $l_s' \in \succs_s(s,B_t)$ for every $\pi \in \states_\belief^*$, $s \in \states_\belief$ and $B_t \in \beliefs$. Intuitively, a strategy for the sensors suggests a joint move based on the observed history of the play, the current belief about the target's position, and the set of currently triggered sensors.
 
 The outcome of given strategies $f_s$ and $f_t$ for the sensors and the target in $G_\belief$, denoted $\outcome(G_\belief,f_s,f_t)$, is a run $s_0,s_1,\ldots$ of $G_\belief$ such that for every $i \geq 0$, we have $s_{i+1} = f_s(s_0,\ldots,s_i,B_t^i)$, where $B_t^i = f_t(s_0,\ldots,s_i)$.
 
