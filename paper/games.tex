@@ -34,7 +34,7 @@ For a state $(l_s,l_t) \in \states$ we define $\succs_t(l_s,l_t)$ to be the set 
 
 $\succs_t(l_s,l_{t}) = \{l_{t}' \in L_t \mid \exists l_s'.\ ((l_s,l_t),(l_s',l_t')) \in T\}$.
 
-We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_s,L)$ consists of all possible successor locations of the target for states in $\{l_s\} \times L_t$. Formally, let $\post(l_s, L_t) = \bigcup_{l_t \in L_t}\succs_t(l_s,l_t)$.
+We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_s,L_t)$ consists of all possible successor locations of the target for states in $\{l_s\} \times L_t$. Formally, let $\post(l_s, L_t) = \bigcup_{l_t \in L_t}\succs_t(l_s,l_t)$.
 
 For a state $(l_s,l_t)$ and a successor location of the target $l_t'$, we denote with $\succs(l_s,l_t,l_t')$ the set of successor locations of the sensors, given that the target moves to $l_t'$: 
 
@@ -53,7 +53,7 @@ We now describe how we incorporate static sensors in the multi-agent surveillanc
 
 A surveillance game can have multiple (or none) static sensors. Let $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ be the set of $m$ static sensors for a multi-agent surveillance game structure. We define $J(l_t)$ to be the set of all indices of static sensors such that $l_t$ belongs to the corresponding set of locations, i.e, $J(l_t) = \{j \mid M_{\Lambda_j}(l_t) = \true\}$. We refer to $J(l_t)$ as the set of \emph{triggered static sensors} at location $l_t$. We also define $J(L) = \bigcup_{l_t \in L} J(l_t)$ for a set of locations $L \subseteq L_t$. 
 
-We assume that sensors do not suffer from  false positives or negatives (studying these is an avenue for future work). Thus, by definition we have that the target must lie in the intersection of the state spaces of the triggered sensors, i.e., $l_t \in \bigcap_{j\in J(l_t)}\Lambda_j$. Also, when no static sensor is triggered,  then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i}^m \Lambda_i$.
+We assume that sensors do not suffer from  false positives or negatives (studying these is an avenue for future work). Thus, by definition we have that the target must lie in the intersection of the state spaces of the triggered sensors, i.e., $l_t \in \bigcap_{j\in J(l_t)}\Lambda_j$. Also, when no static sensor is triggered,  then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i=1}^m \Lambda_i$.
 
 
 \subsection{Belief-Set Game Structures}\label{sec:belief-gs}
@@ -170,7 +170,7 @@ Using these equivalences, we can restrict our attention to surveillance objectiv
 %\end{example}
 
 \subsection{Multi-Agent Surveillance Synthesis Problem}
-A \emph{multi-agent surveillance game} is a triple $(G,\mathcal M,\varphi)$, where $G$ is a surveillance game structure, $\mathcal M$ is a set of static sensors,  and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\mathcal M,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\mathcal M,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the mobile sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
+A \emph{multi-agent surveillance game} is a triple $(G,\mathcal M,\varphi)$, where $G$ is a surveillance game structure, $\mathcal M$ is a set of static sensors,  and $\varphi$ is a surveillance objective. A \emph{winning strategy for the sensors for $(G,\mathcal M,\varphi)$} is a joint strategy $f_s$ for the sensors in the corresponding belief-set game structure $G_\belief$ such that for every strategy $f_t$ for the target in $G_\belief$ it holds that $\outcome(G_\belief,f_s,f_t) \models \varphi$. Analogously, a \emph{winning strategy for the target for $(G,\mathcal M,\varphi)$} is a strategy $f_t$ such that, for every strategy $f_s$ for the mobile sensors in $G_\belief$, it holds that $\outcome(G_\belief,f_s,f_t) \not\models \varphi$.
 
 {\textit{\textbf{Problem statement: }}} Given a multi-agent surveillance game $(G,\mathcal M,\varphi)$,  compute a joint strategy for the mobile sensors that is winning for the game $(G,\mathcal M,\varphi)$.
 
