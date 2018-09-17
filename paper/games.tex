@@ -49,11 +49,13 @@ In this example, the function $\vis_i$ encodes straight-line visibility with a r
 
 
 \subsection{Static Sensors}
-We now describe how we incorporate static sensors in the multi-agent surveillance game framework. Given a multi-agent surveillance game structure $G$ as defined previously, a \emph{static sensor $M$ operating over a set of locations $\Lambda$} is a function $M_{\Lambda} : L_t \rightarrow \mathbb{B}$ that maps the target location to $\true$ iff it belongs to the set  over which the sensor operates.  Formally, given a set $\Lambda \subseteq L_t$ of target locations, we define $M_{\Lambda}(l_t) = \true$ iff $l_t \in \Lambda$. 
+We now describe a way to incorporate static sensors in the multi-agent surveillance game framework. Let $G$ be a multi-agent surveillance game structure as defined previously.  
 
-A surveillance game can have multiple (or none) static sensors. Let $\mathcal{M} = \{M_{\Lambda_1},\dots,M_{\Lambda_m}\}$ be the set of $m$ static sensors for a multi-agent surveillance game structure. We define $J(l_t)$ to be the set of all indices of static sensors such that $l_t$ belongs to the corresponding set of locations, i.e, $J(l_t) = \{j \mid M_{\Lambda_j}(l_t) = \true\}$. We refer to $J(l_t)$ as the set of \emph{triggered static sensors} at location $l_t$. We also define $J(L) = \bigcup_{l_t \in L} J(l_t)$ for a set of locations $L \subseteq L_t$. 
+We identify a \emph{static sensor} with a \emph{set of locations $\Lambda \subseteq L_t$ over which it operates}. 
+A surveillance game can have multiple static sensors (or none). Let $\mathcal{M} = \{\Lambda_1,\dots,\Lambda_m\}$ be a given set of $m$ static sensors for $G$. For each location $l_t \in L_t$ we define  $J(l_t)$ to be the set of all indices of static sensors such that $l_t$ belongs to the corresponding set of locations, i.e, $J(l_t) = \{j \in \{1,\ldots,m\}\mid l_t\in \Lambda_j\}$. We refer to $J(l_t)$ as the set of \emph{triggered static sensors} at location $l_t$. We also define $J(L) = \bigcup_{l_t \in L} J(l_t)$ for a set of locations $L \subseteq L_t$. 
 
-We assume that sensors do not suffer from  false positives or negatives (studying these is an avenue for future work). Thus, by definition we have that the target must lie in the intersection of the state spaces of the triggered sensors, i.e., $l_t \in \bigcap_{j\in J(l_t)}\Lambda_j$. Also, when no static sensor is triggered,  then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i=1}^m \Lambda_i$.
+We assume that sensors do not suffer from  false positives or negatives (studying these is an avenue for future work). 
+%Thus, by definition we have that the target must lie in the intersection of the state spaces of the triggered sensors, i.e., $l_t \in \bigcap_{j\in J(l_t)}\Lambda_j$. Also, when no static sensor is triggered,  then we know that the target cannot be in the union of the state spaces in which they operate, i.e, $l_t \notin \bigcup_{i=1}^m \Lambda_i$.
 
 
 \subsection{Belief-Set Game Structures}\label{sec:belief-gs}
