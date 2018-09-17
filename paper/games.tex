@@ -9,7 +9,7 @@ We define a \emph{multi-agent surveillance game structure} to be a tuple $G  = (
 \item  $\vis_1,\dots,\vis_n$ are the \textit{visibility functions} for the $n$ sensors, where $\vis_i: L_{i} \times L_t \to \bools$ maps a state $(l_{i},l_t)$ to $\true$ iff \emph{ position $l_t$ is in the area of sight of $l_i$}.
 \end{itemize}
 
-Additionally, we define the \emph{joint visibility function} $\Vis : \states \to \bools$ that maps a state $(l,l_t)$ to $\true$ if the set $\mathcal{I} = \{i \mid \vis_i(l_i,l_t) = \true\}$ is non-empty. Informally, $\Vis(l_s,l_t)$ is $\true$ if the target is in view of \emph{at least one} of the sensors.
+Additionally, we define the \emph{joint visibility function} $\Vis : \states \to \bools$ that maps a state $(l,l_t)$ to $\true$ iff the set $\mathcal{I} = \{i \mid \vis_i(l_i,l_t) = \true\}$ is non-empty. Informally, $\Vis(l_s,l_t)$ is $\true$ if the target is in view of \emph{at least one} of the sensors.
 
 \begin{figure}
 \subfloat[Surveillance arena \label{fig:simple-transitions}]{
@@ -28,13 +28,13 @@ Additionally, we define the \emph{joint visibility function} $\Vis : \states \to
 The transition relation $T$ encodes the one-step move of the target and the $n$ sensors: First, the target makes a move, and then, the sensors move jointly in a synchronized manner. 
 
 We denote with $T{\downarrow}i$ the projection of the transition relation $T$ on the sets of locations of the target and the sensor with index $i$. Formally, we define
-$T{\downarrow }i = \{(l_i,l_t) \in L_i \times L_t \mid \exists l_1,\ldots,l_{i-1},l_{i+1},\ldots,l_n : (l_1,\ldots,l_n,l_t) \in T\}.$ 
+$T{\downarrow }i = \{((l_i,l_t),(l_i',l_t')) \in (L_i \times L_t)^2 \mid \exists l_1,l_1',\ldots,l_{i-1},l_{i-1}',l_{i+1},l_{i+1}',\ldots,l_n,l_n' : ((l_1,\ldots,l_n,l_t),(l_1',\ldots,l_n',l_t')) \in T\}.$ 
 
 For a state $(l_s,l_t) \in \states$ we define $\succs_t(l_s,l_t)$ to be the set of possible successor locations of the target:
 
 $\succs_t(l_s,l_{t}) = \{l_{t}' \in L_t \mid \exists l_s'.\ ((l_s,l_t),(l_s',l_t')) \in T\}$.
 
-We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_s,L_t)$ consists of all possible successor locations of the target for states in $\{l_s\} \times L_t$. Formally, let $\post(l_s, L_t) = \bigcup_{l_t \in L_t}\succs_t(l_s,l_t)$.
+We extend $\succs_t$ to sets of locations of the target by stipulating that the set $\post(l_s,L)$ consists of all possible successor locations of the target for states in $\{l_s\} \times L$. Formally, let $\post(l_s, L) = \bigcup_{l_t \in L}\succs_t(l_s,l_t)$.
 
 For a state $(l_s,l_t)$ and a successor location of the target $l_t'$, we denote with $\succs(l_s,l_t,l_t')$ the set of successor locations of the sensors, given that the target moves to $l_t'$: 
 
@@ -44,7 +44,7 @@ We assume that, for every state $s\in \states$, there exists a state $s' \in \st
 
 \begin{example}\label{ex:simple-surveillance-game}
 Figure~\ref{fig:simple-surveillance-game} shows an example of a multi-agent surveillance game on a grid.  The sets of possible locations $L_i$ and $L_t$ for the each of the sensors and for the target consist of the squares of the  grid. The transition relation $T$ encodes the possible one-step moves of all the sensors and the target on the grid, and incorporates all desired constraints. For example, moving to a location occupied by another sensor or the target, or to an obstacle, is not allowed.
-In this example, the function $\vis_i$ encodes straight-line visibility with a range of 2: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them and the distance between the target and sensor $i$ is not larger than 2. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $\{17,19,23\}$, this might no longer be the case. More precisely, if the target moves to location $17$, then the green sensor observes its location, but if it moves to one of the other two locations, then neither sensor can observe it, and its exact location will not be known. \qed
+In this example, the function $\vis_i$ encodes straight-line visibility with a range of 2: a location $l_t$ is visible to sensor $i$ from location $l_i$ if there is no obstacle on the straight line between them and the distance between the target and sensor $i$ is not larger than 2. Initially the target is not in the area of sight of the sensors, but the initial position of the target is known. However, once the target moves to one of the locations reachable in one step, in this case, locations $17,18,19 \text{ and } 23$, this might no longer be the case. More precisely, if the target moves to location $17$, then the green sensor observes its location, but if it moves to one of the other locations, then neither sensor can observe it, and its exact location will not be known. \qed
 \end{example}
 
 
