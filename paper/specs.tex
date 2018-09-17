@@ -26,18 +26,18 @@ Consider the global surveillance specification $\LTLglobally\LTLfinally p_5$ for
 
 We circumvent the problem illustrated in this example by requiring that each sensor satisfies the liveness guarantee on its own. For this, we have to consider two cases. First, if from some point on sensor $i$ always knows that the target is outside of its region, it has no obligation to satisfy the liveness surveillance guarantee. If, on the other hand, according to sensor $i$'s belief the target could be in $\widetilde L_i$ infinitely often (note that this is true for at least one sensor), then it has to satisfy the corresponding liveness guarantee.
 
-In order to capture this intuition, we need two additional types of surveillance predicates. First, we need to be able to express the negation of the property that the local belief of sensor $i$ is the singleton $\{k_i\}$ (which means that sensor $i$ knows that the target is outside $\widetilde L_i$). For this, we introduce the predicate $\mathit{belief} \neq \{k_i\}$. Second, in order to express that the local liveness guarantee, we need to be able to state that $k_i$ is not in $\widetilde L_i$ (which means that sensor $i$ knows that the target is in its region). The predicate we introduce for this property is $k_i \not\in\mathit{belief}$. Both predicates can be interpreted over belief sets similarly to $p_b$ and incorporated in LTL.
+In order to capture this intuition, we need two additional types of surveillance predicates. First, we need to be able to express the negation of the property that the local belief of sensor $i$ is the singleton $\{k_i\}$ (which means that sensor $i$ knows that the target is outside $\widetilde L_i$). For this, we introduce the predicate $\mathit{belief} \neq \{k_i\}$. Second, in order to express the local liveness guarantee, we need to be able to state that $k_i$ is not in $\widetilde L_i$ (which means that sensor $i$ knows that the target is in its region). The predicate we introduce for this property is $k_i \not\in\mathit{belief}$. Both predicates can be interpreted over belief sets similarly to $p_b$ and incorporated in LTL.
  
 Formally, we define the local liveness specification for sensor $i$ denoted $\locspec_i(\LTLglobally\LTLfinally p_b)$ as
 \[
 \begin{array}{lll}
 \locspec_i(\LTLglobally\LTLfinally p_b) & \triangleq &
-\big(\LTLglobally\LTLfinally (\mathit{belief} \neq \{k_i\} )\big)\rightarrow\\&& \big(\LTLglobally\LTLfinally p_b \wedge (k_i \not\in\mathit{belief})\big).
+\big(\LTLglobally\LTLfinally (\mathit{belief} \neq \{k_i\} )\big)\rightarrow\\&& \big(\LTLglobally\LTLfinally (p_b \wedge (k_i \not\in\mathit{belief}))\big).
 \end{array}
 \]
 Notice that here we use implication, which is not part of the fragment to which we restrict the global surveillance specifications. This is not a problem, since our surveillance strategy synthesis procedure for single-sensor games is applicable to such surveillance formulas as well.
 
-This translation is again conservative, since it suffices that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that every sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires that if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
+This translation is again conservative, since it would suffice that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that \emph{every} sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires that if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
 
 Finally, for a global surveillance specification $\LTLglobally p_a \wedge \LTLglobally\LTLfinally p_b$, the local surveillance specification for sensor $i$ is
 \[\locspec_i(\LTLglobally p_a\wedge  \LTLglobally\LTLfinally p_b,n)\triangleq
