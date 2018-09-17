@@ -1,6 +1,6 @@
-We now return to the case study outlined in section \ref{sec:casestudy}. We have implemented the simulation in \texttt{Python}, using the \texttt{slugs} reactive synthesis tool~\cite{EhlersR16}. The experiments were performed on an Intel i5-5300U 2.30 GHz CPU with 8 GB of RAM.
+We now return to the case study outlined in Section~\ref{sec:casestudy}. We have implemented the proposed method in \texttt{Python}, using the \texttt{slugs} reactive synthesis tool~\cite{EhlersR16}, and evaluated it on the multi-agent surveillance game modelling the problem described in Section~\ref{sec:casestudy}. The experiments were performed on an Intel i5-5300U 2.30 GHz CPU with 8 GB of RAM.
 
- We analyze two scenarios. In Figure \ref{fig:experiment}, we have six available mobile sensors. We compare the surveillance strategy with the situation in Figure \ref{fig:3experiment} where we have three. Our global surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
+ We analyzed two scenarios. In Figure \ref{fig:experiment}, we have six available mobile sensors. We compare the surveillance strategy with the situation in Figure \ref{fig:3experiment} where we have three. Our global surveillance task is $\LTLsquare \LTLdiamond p_5$, i.e, we need to infinitely often bring the belief of the target location to 5 cells or lower. 
 
 \begin{figure}
 	\centering
@@ -15,7 +15,7 @@ We now return to the case study outlined in section \ref{sec:casestudy}. We have
 \caption{Cases with 6 mobile sensors in Fig \ref{fig:experiment} and 3 mobile sensors in Fig \ref{fig:3experiment}. The mobile sensors are blue circles and the target is represented in orange. The red cells represent impassable terrain (such as dense foliage) that cannot be seen through by the sensors. Black cells are locations not visible to any sensor.}\label{fig:bigexp}\vspace{-0.5cm}
 \end{figure} 
 
-Solving either case centralized is not computationally feasible as the state space grows exponentially with the number of sensors - we will have in the order of $400^6$ and $400^3$ states respectively. Thus, we partition the multi-agent surveillance game into subgames as shown in Figures \ref{fig:experiment} and \ref{fig:3experiment}. We then solve each game individually with local specifications $\locspec_i(\square \lozenge p_5)$. We solve these \emph{single-agent} surveillance game using an abstraction-based method detailed in a companion submission to CDC 2018. We refer the reader to \cite{arxiv} for more details on this method. We report the synthesis times in Table \ref{tab:synthtime}.
+Solving either case centralized is not computationally feasible as the state space grows exponentially with the number of sensors - we will have in the order of $400^6$ and $400^3$ states respectively. Thus, we partition the multi-agent surveillance game into subgames as shown in Figures \ref{fig:experiment} and \ref{fig:3experiment}. We then solve each game individually with local specifications $\locspec_i(\LTLglobally\LTLfinally p_5)$. We solve these \emph{single-agent} surveillance games using an abstraction-based method detailed in a companion publication at CDC 2018. We refer the reader to \cite{arxiv} for more details on this method. We report the synthesis times in Table \ref{tab:synthtime}.
 
 \begin{table}[h!]
 \vspace{-0.2cm}
@@ -39,7 +39,7 @@ Solving either case centralized is not computationally feasible as the state spa
 	\end{tabular}
 \end{table}
 \vspace{-0.2cm}
-The multi-agent surveillance game in Figure \ref{fig:experiment} results in more subgames compared to the game in \ref{fig:experiment}. However, each game is much smaller and strategies can be synthesized faster in each subgame. Figure \ref{fig:case1exp} shows snapshots in time of the simulation of the 3 sensor surveillance game in Figure \ref{fig:3experiment}. The target is being controlled by a human and the sensors are following their synthesized local surveillance strategies. The global belief is depicted in Figure \ref{fig:case1exp} as grey cells, meaning that the combined knowledge of all the sensors has restricted the location of the target into one of the grey cells.
+The multi-agent surveillance game in Figure \ref{fig:experiment} results in more subgames compared to the game in \ref{fig:3experiment}. However, each game is much smaller and strategies can be synthesized faster in each subgame. Figure \ref{fig:case1exp} shows snapshots in time of the simulation of the 3 sensor surveillance game in Figure \ref{fig:3experiment}. The target is being controlled by a human and the sensors are following their synthesized local surveillance strategies. The global belief is depicted in Figure \ref{fig:case1exp} as grey cells, meaning that the combined knowledge of all the sensors has restricted the location of the target into one of the grey cells.
 \begin{figure}
 	
 	\begin{minipage}{5.0cm}
@@ -69,12 +69,12 @@ The multi-agent surveillance game in Figure \ref{fig:experiment} results in more
 	\end{minipage}
 	
 	
-	\caption{Figures \ref{fig:case1t2} - \ref{fig:case1t7} are chronological snapshots at various points in time during the simulation of the surveillance game in Figure \ref{fig:3experiment}. Grey states represent the global belief of the target's location.  
+	\caption{Figures \ref{fig:case1t2} - \ref{fig:case1t7} are chronological snapshots at various points in time during the simulation of the surveillance game in Figure \ref{fig:3experiment}. Grey regions represent the global belief of the target's location.  
 	}\vspace{-0.5cm}
 	\label{fig:case1exp}
 	
 \end{figure}
 
- We see, in Figures \ref{fig:case1t2} - \ref{fig:case1t4}, that the target is in the subgame corresponding to sensor 2. Hence, only sensor 2 is moving and trying to lower its belief to below 5 cells (which it does in Figure \ref{fig:case1t5}). In Figures \ref{fig:case1t3} - \ref{fig:case1t5}, the target starts moving towards subgame 3 at which point sensor 3 takes over in figures \ref{fig:case1t6} - \ref{fig:case1t7}. There is no communication between any of the agents, and each satisfy only their local surveillance specification. However, our construction guarantees that the global specification of $\square \lozenge p_5$ will be satisfied. %We include a link to a video of the simulation at \url{google.com}
+ We see, in Figures \ref{fig:case1t2} - \ref{fig:case1t4}, that the target is in the subgame corresponding to sensor 2. Hence, only sensor 2 is moving and trying to lower its belief to below 5 cells (which it does in Figure \ref{fig:case1t5}). In Figures \ref{fig:case1t3} - \ref{fig:case1t5}, the target starts moving towards subgame 3 at which point sensor 3 takes over in figures \ref{fig:case1t6} - \ref{fig:case1t7}. There is no communication between any of the agents, and each satisfy only their local surveillance specification. However, our construction guarantees that the global specification of $\LTLfinally \LTLglobally p_5$ will be satisfied. %We include a link to a video of the simulation at \url{google.com}
  
  %In figure \ref{fig:case1t2}, the target is in the region of a static sensor. Hence, the global belief is restricted to the region that sensor operates. 
