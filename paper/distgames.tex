@@ -39,7 +39,7 @@ Formally, for every pair of states $(\widetilde{l}_i,\widetilde{l}_t) \in \widet
  $l_t \not \in \widetilde L_t^i$ and $l_t' \not\in \widetilde L_t^i$, that is, we have a \emph{transition completely outside $\widetilde L_t^i$}.
 \end{itemize}  
 
-  \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^i$ agrees with the visibility function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$  (summarized by location $k_i$) are invisible to the sensor in the subgame. Formally, $\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \vis_i(\widetilde{l}_i,l_t)$  when $l_t \in \widetilde{L}_t^i$ and $\false$ if $l_t  = k_i$
+  \item The visibility function $\widetilde{\vis}_i$ in the subgame $G^i$ agrees with the visibility function $\vis_i$ of sensor $i$ in the original game when the target's location is in the subgame's region. Target locations outside of the region $\widetilde L_t^i$  (summarized by location $k_i$) are invisible to the sensor in the subgame. Formally, $\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \vis_i(\widetilde{l}_i,l_t)$  when $l_t \in \widetilde{L}_t^i$, and $\false$ if $l_t  = k_i$
 % \[\widetilde{\vis}_i(\widetilde{l}_i,l_t) = \begin{cases}
 %\vis_i(\widetilde{l}_i,l_t) & \text{if } l_t \in \widetilde{L}_t^i, \\
 %\false & \text{if } l_t  = k_i.
