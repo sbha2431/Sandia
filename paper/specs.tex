@@ -35,7 +35,8 @@ Formally, we define the local liveness specification for sensor $i$ denoted $\lo
 \big(\LTLglobally\LTLfinally (\mathit{belief} \neq \{k_i\} )\big)\rightarrow\\&& \big(\LTLglobally\LTLfinally (p_b \wedge (k_i \not\in\mathit{belief}))\big).
 \end{array}
 \]
-Notice that here we use implication, which is not part of the fragment to which we restrict the global surveillance specifications. This is not a problem, since our surveillance strategy synthesis procedure for single-sensor games is applicable to such surveillance formulas as well.
+%Notice that here we use implication, which is not part of the fragment to which we restrict the global surveillance specifications. This is not a problem, since our surveillance strategy synthesis procedure for single-sensor games is applicable to such surveillance formulas as well.
+Note that the agent cannot trivially satisfy $\locspec_i(\LTLglobally\LTLfinally p_b)$, since the belief set is defined precisely by it's sequence of observations and is not under the agent's direct control.
 
 This translation is again conservative, since it would suffice that the liveness guarantee is satisfied by a single sensor. However, these can be different sensors for different behaviours of the target. Thus, we require that \emph{every} sensor $i$ satisfies $\locspec_i(\LTLglobally\LTLfinally p_b)$. This requires that if the target crosses from one region to another infinitely often, then both sensors have to satisfy the liveness surveillance objective.
 
@@ -49,5 +50,5 @@ Slightly abusing the notation, we denote with $\locspec_i(\varphi,n)$ the local 
 The next theorem, which follows  from the definition of the local specifications, states the soundness of the reduction.
 
 \begin{theorem}\label{thm:soundnes}
-Let  $(G,\mathcal M,\varphi)$ be a multi-agent surveillance game with $n$ sensors, and $\widetilde{L}$ be a state-space partition. Suppose that $f_1,\ldots,f_n$ are strategies for the sensors in the subgames $G^1_\belief,\ldots,G^n_\belief$ respectively, such that for each sensor $i$ the strategy $f_i$ is winning in the surveillance game $(G^i,Q_i,\locspec_i(\varphi,n))$. Then, it holds that the composed strategy $f_{s_1}\otimes\ldots\otimes f_{s_n}$ is a joint winning strategy for the sensors in the surveillance game $(G,\mathcal M,\varphi)$.
+Let  $(G,\mathcal M,\varphi)$ be a multi-agent surveillance game with $n$ sensors, where $\varphi$ is of the form $\LTLglobally p_b$, or $\LTLglobally\LTLfinally p_b$, or $\LTLglobally p_a \wedge \LTLglobally\LTLfinally p_b$, where $a > b$. Let $\widetilde{L}$ be a state-space partition. Suppose that $f_1,\ldots,f_n$ are strategies for the sensors in the subgames $G^1_\belief,\ldots,G^n_\belief$ respectively, such that for each sensor $i$ the strategy $f_i$ is winning in the surveillance game $(G^i,Q_i,\locspec_i(\varphi,n))$. Then, it holds that the composed strategy $f_{s_1}\otimes\ldots\otimes f_{s_n}$ is a joint winning strategy for the sensors in the surveillance game $(G,\mathcal M,\varphi)$.
 \end{theorem}
