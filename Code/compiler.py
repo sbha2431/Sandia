@@ -11,7 +11,7 @@ import signal
 from Parser import Parser
 from re import match
 import StringIO
-
+from tqdm import *
 # =====================================================
 # Allocate global parser and parser context variables:
 # - which APs there are
@@ -487,7 +487,7 @@ def performConversion(inputFile,thoroughly):
     mode = ""
     lines = {"[ENV_TRANS]":[],"[ENV_INIT]":[],"[INPUT]":[],"[OUTPUT]":[],"[SYS_TRANS]":[],"[SYS_INIT]":[],"[ENV_LIVENESS]":[],"[SYS_LIVENESS]":[],"[OBSERVABLE_INPUT]":[],"[UNOBSERVABLE_INPUT]":[],"[CONTROLLABLE_INPUT]":[] }
 
-    for line in specFile.readlines():
+    for line in tqdm(specFile.readlines()):
         line = line.strip()
         if line.startswith("["):
             mode = line
@@ -508,7 +508,7 @@ def performConversion(inputFile,thoroughly):
     # encodes the possible values
     # ---------------------------------------    
     translatedIOLines = {"[INPUT]":[],"[OUTPUT]":[],"[OBSERVABLE_INPUT]":[],"[UNOBSERVABLE_INPUT]":[],"[CONTROLLABLE_INPUT]":[]}
-    for variableType in ["[INPUT]","[OUTPUT]","[OBSERVABLE_INPUT]","[UNOBSERVABLE_INPUT]","[CONTROLLABLE_INPUT]"]: 
+    for variableType in ["[INPUT]","[OUTPUT]","[OBSERVABLE_INPUT]","[UNOBSERVABLE_INPUT]","[CONTROLLABLE_INPUT]"]:
         for line in lines[variableType]:
             if line=="" or line.startswith("#"):
                 translatedIOLines[variableType].append(line.strip())
@@ -592,7 +592,7 @@ def performConversion(inputFile,thoroughly):
     # ---------------------------------------    
     # Output new input/output lines
     # ---------------------------------------    
-    for variableType in ["[INPUT]","[OUTPUT]","[OBSERVABLE_INPUT]","[UNOBSERVABLE_INPUT]","[CONTROLLABLE_INPUT]"]: 
+    for variableType in ["[INPUT]","[OUTPUT]","[OBSERVABLE_INPUT]","[UNOBSERVABLE_INPUT]","[CONTROLLABLE_INPUT]"]:
         if len(translatedIOLines[variableType])>0:
             print variableType
             for a in translatedIOLines[variableType]:
@@ -607,7 +607,7 @@ def performConversion(inputFile,thoroughly):
             print propertyType
 
             # Test for conformance with recursive definition
-            for a in lines[propertyType]:
+            for a in tqdm(lines[propertyType]):
                 # print >>sys.stderr, a.strip().split(" ")
                 if (len(a.strip())==0) or a.strip()[0:1] == "#":
                     print a

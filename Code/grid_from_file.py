@@ -4,27 +4,41 @@ import os, sys, getopt, pdb, string
 import random
 import numpy as np
 import pygame
+from skimage import io
+import cv2
 import pygame.locals as pgl
 
 class Gridworld():
     # a gridworld with uneven terrain
-    def __init__(self, initial, nrows=8, ncols=8, nagents=1, targets=[], obstacles=[], moveobstacles = [], regions=dict(),size=30):
+    def __init__(self, filename=None, initial=0, nrows=8, ncols=8, nagents=1, targets=[], obstacles=[], moveobstacles = [], regions=dict()):
         # walls are the obstacles. The edges of the gridworld will be included into the walls.
         # region is a string and can be one of: ['pavement','gravel', 'grass', 'sand']
+        if filename != None:
+            data = io.imread(filename)
+            data = cv2.resize(data, dsize=(16, 16), interpolation=cv2.INTER_AREA)
+            regionkeys = {'pavement', 'gravel', 'grass', 'sand', 'deterministic'}
+            (nrows,ncols) = data.shape
+            data = data.flatten()
+            obstacles = list(np.where(data==0)[0])
+            regions = dict.fromkeys(regionkeys, {-1})
+            regions['deterministic'] = range(nrows * ncols)
+
         self.current = initial
-        self.nrows = nrows  
+        self.nrows = nrows
         self.ncols = ncols
+        self.obstacles = obstacles
+        self.regions = regions
         self.nagents = nagents
         self.nstates = nrows * ncols
         self.nactions = 5
-        self.regions = regions
-        self.actlist = ['N', 'S', 'W', 'E', 'R']
+        self.obstacles = obstacles
+        self.actlist = ['R','N', 'S', 'W', 'E']
         self.targets = targets
         self.left_edge = []
         self.right_edge = []
         self.top_edge = []
         self.bottom_edge = []
-        self.obstacles = obstacles
+        self.regions = regions
         self.moveobstacles = moveobstacles
         self.states = range(nrows*ncols)
         self.colorstates = set()
@@ -115,16 +129,6 @@ class Gridworld():
         southwestState = self.isAllowedState((row+1,col-1),state)
         westState = self.isAllowedState((row,col-1),state)
         eastState = self.isAllowedState((row,col+1),state)
-        # northState = (self.isAllowed(state - self.ncols) and state - self.ncols) or state
-        # northwestState = (self.isAllowed(state - 1 - self.ncols) and state - 1 - self.ncols) or state
-        # northeastState = (self.isAllowed(state + 1 - self.ncols) and state - self.ncols + 1) or state
-        #
-        # southState = (self.isAllowed(state + self.ncols) and state + self.ncols) or state
-        # southeastState = (self.isAllowed(state + 1 + self.ncols) and state + 1 + self.ncols) or state
-        # southwestState = (self.isAllowed(state - 1 + self.ncols) and state - 1 + self.ncols) or state
-        #
-        # westState = (self.isAllowed(state - 1) and state - 1) or state
-        # eastState = (self.isAllowed(state + 1) and state + 1) or state
 
         reg = self.getStateRegion(state)
         if action == 'N':
@@ -171,7 +175,7 @@ class Gridworld():
 
     ## Everything from here onwards is for creating the image
 
-    def render(self, size=30):
+    def render(self, size=10):
         self.height = self.nrows * size + self.nrows + 1
         self.width = self.ncols * size + self.ncols + 1
         self.size = size
@@ -294,7 +298,7 @@ class Gridworld():
 
         for n in range(self.nagents):
             x, y = self.indx2coord(state[n], center=True)
-            pygame.draw.circle(self.surface, (0, 0, 255), (y, x), self.size / 2)
+            pygame.draw.circle(self.surface, (0+(50*n), 0+(20*n), 255.0/(n+1)), (y, x), self.size / 2)
         if len(self.moveobstacles) > 0:
             for s in self.moveobstacles:
                 x, y = self.indx2coord(s, center=True)
@@ -364,17 +368,11 @@ class Gridworld():
                 coords = pygame.Rect(y, x, self.size, self.size)
                 pygame.draw.rect(self.bg, ((250, 250, 250)), coords)
             for n in range(self.nagents):
+
                 for t in self.targets[n]:
                     x, y = self.indx2coord(t, center=True)
                     coords = pygame.Rect(y - self.size / 2, x - self.size / 2, self.size, self.size)
-                    pygame.draw.rect(self.bg, (0, 204, 102), coords)
-
-                # Draw Wall in black color.
-            # for s in self.edges:
-            #     (x, y) = self.indx2coord(s)
-            #     coords = pygame.Rect(y - self.size / 2, x - self.size / 2, self.size, self.size)
-            #     coords = pygame.Rect(y, x, self.size, self.size)
-            #     pygame.draw.rect(self.bg, (192, 192, 192), coords)  # the obstacles are in color grey
+                    pygame.draw.rect(self.bg, (0+(50*n), 204.0/(n+1), 102.0+(50*n)/(n+1)), coords)
 
             for s in self.obstacles:
                 (x, y) = self.indx2coord(s)
@@ -392,7 +390,7 @@ class Gridworld():
             statecols = [(0,0,0),(150,150,150)]
             for i in range(len(self.colorstates)):
                 for s in self.colorstates[i]:
-                    if not any(s in x for x in self.targets) and s not in self.obstacles:
+                    if s not in self.edges and not any(s in x for x in self.targets) and s not in self.obstacles:
                         (x, y) = self.indx2coord(s)
                         coords = pygame.Rect(y, x, self.size, self.size)
                         pygame.draw.rect(self.bg, statecols[i], coords)  # the obstacles are in color grey

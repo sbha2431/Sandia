@@ -42,8 +42,12 @@ fullvis_states = [[],[],[],
 # partialvis_states = [{0:{10,30},1:{90,110,130}} ,{0:{10,30},1:{90,110,130},2:{152,153}}, {0:{152,153},1:{209,210,211,212}},
 #                      {0:{209,210,211,212},1:{305,306,307}}, {0:{305,306,307},1:{353,373,393}} ,{0:{353,373,393}} ]
 
-partialvis_states = [{0:{10,30,90,110,130,152,153}}, {0:{152,153,305,306,307}},
-                      {0:{305,306,307,353,373,393}} ]
+# partialvis_states = [{0:{10,30,90,110,130,152,153}}, {0:{152,153,305,306,307}},
+#                       {0:{305,306,307,353,373,393}} ]
+
+partialvis_states = [{0:set()}, {0:set()},
+                      {0:set()} ]
+
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
 regions = dict.fromkeys(regionkeys,{-1})
@@ -82,19 +86,19 @@ partitionGrid1[(8,0)] = [245,263,264,265,283,284,285,303,
                          262,280,281,282,300,301,302,320,321,322,340,341,360]
 # partitionGrid1[(9,0)] = []
 partitionGrid2[(0,0)] = [195,214,215,216,233,234,235,252,253,254,271,272,273,291,292,293,311,312,331,332]
-partitionGrid2[(5,0)] = [351,352,353,371,372,373,391,392,393,289,290,308,309,310,328,329,330,348,349,350,368,369,370,388,389,390]
-partitionGrid2[(3,0)] = [305,306,307,325,326,327,345,346,347,365,366,367,385,386,387,324,343,344,362,363,364,381,382,383,384]
 partitionGrid2[(1,0)] = [176,177,178,179,197,198,199,218,219,237,238,239]
 partitionGrid2[(2,0)] = [256,257,258,259,275,276,277,278,279,295,296,297,298,299]
+partitionGrid2[(3,0)] = [305,306,307,325,326,327,345,346,347,365,366,367,385,386,387,324,343,344,362,363,364,381,382,383,384]
 partitionGrid2[(4,0)] = [314,315,334,335,353,354,355,373,374,375,393,394,395]
+partitionGrid2[(5,0)] = [351,352,353,371,372,373,391,392,393,289,290,308,309,310,328,329,330,348,349,350,368,369,370,388,389,390]
 partitionGrid2[(6,0)] = [316,317,318,319,336,337,338,339,356,357,358,359,376,377,378,379,396,397,398,399]
 
 pg = [partitionGrid0,partitionGrid1,partitionGrid2]
 
 # gwg.save('gridworldfig.png')
-visdist = [5,4,4]
+visdist = [15,15,15]
 vel = [2,2,2,2,2,2]
-print 'Writing input file...'
+
 invisibilityset = []
 filename = []
 for n in [0,1,2]:
@@ -104,20 +108,21 @@ for n in [0,1,2]:
     #     iset[s] = iset[s] - set(fullvis_states[n])
     #     if s in gwg.obstacles:
     #         iset[s] = {-1}
-    # pickle_out = open("dict_test5{}.pickle".format(n),"wb")
+    # pickle_out = open("dict_test6{}.pickle".format(n),"wb")
     # pickle.dump(iset, pickle_out)
     # pickle_out.close()
-    pickle_in = open("dict_test5{}.pickle".format(n),"rb")
+    pickle_in = open("dict_test5{}.pickle".format(n),"rb") #'Test5 was a working one with [5,4,4] visibility'
     iset = pickle.load(pickle_in)
     invisibilityset.append(iset)
     outfile = 'finalcdc_3sensors{}.json'.format(n)
-    infile = 'finalcdc_3sensors'.format(n)
+    infile = 'finalcdc_3sensors{}'.format(n)
     filename.append(outfile)
     print 'output file: ', outfile
     print 'input file name:', infile
-    # Salty_input.write_to_slugs_part_dist_impsensors(infile,gwg,initial[n],moveobstacles[0],iset,targets[n],vel[n],visdist[n],allowed_states[n],fullvis_states[n],partialvis_states[n],
-    #                                             pg[n], belief_safety = 0, belief_liveness = 3, target_reachability = False)
-    # # # #
+    print 'Writing input file...'
+    # Salty_input.write_to_slugs_part_dist_impsensors_boundaries(infile,gwg,initial[n],moveobstacles[0],iset,targets[n],vel[n],visdist[n],allowed_states[n],fullvis_states[n],partialvis_states[n],
+    #                                             pg[n], belief_safety = 0, belief_liveness = 15, target_reachability = False)
+    # #
     # print ('Converting input file...')
     # os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')
     # print('Computing controller...')
@@ -126,4 +131,4 @@ for n in [0,1,2]:
     # sp.wait()
     # end = time.time()
     # print 'Time taken for game {} is {} s'.format(n,end-start)
-simulateController.userControlled_partition_dist_imp_sensor(filename,gwg,pg,moveobstacles,allowed_states,invisibilityset,partialvis_states)
+simulateController.userControlled_partition_dist_imp_sensor_2(filename,gwg,pg,moveobstacles,allowed_states,invisibilityset,partialvis_states)

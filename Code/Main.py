@@ -1,8 +1,6 @@
 __author__ = 'sudab'
 
 from gridworld import *
-import grid_partition
-import Slugs_input
 import Salty_input
 import random
 import os
@@ -13,27 +11,27 @@ import time
 import simulateController
 slugs = '/home/sudab/Applications/slugs/src/slugs'
 # Define gridworld parameters
-nrows = 7
-ncols = 10
-nagents = 2
-initial = [0,6]
-targets = [[11,50],[46,18]]
-obstacles = [4,14,24,44,54,64]
-moveobstacles = [1]
-
-allowed_states = [None]*nagents
-allowed_states[0] = [0,1,2,3,10,11,12,13,20,21,22,23,30,31,32,33,34,40,41,42,43,50,51,52,53,60,61,62,63]
-allowed_states[1] = [5,6,7,8,9,15,16,17,18,19,25,26,27,28,29,34,35,36,38,39,45,46,47,48,49,55,56,57,58,59,65,66,67,68,69]
-# allowed_states[2] = [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]
-fullvis_states = [[34],[34]]
-# nrows = 15
-# ncols = 20
+# nrows = 5
+# ncols = 5
 # nagents = 1
-# initial = [237]
-# targets = [[ncols+1]]
-# obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
-# moveobstacles = [197]
-
+# initial = [0]
+# targets = [[11,50]]
+# obstacles = [2,7,12]
+# moveobstacles = [1]
+#
+# allowed_states = [None]*nagents
+# allowed_states[0] = range(25)
+# # allowed_states[2] = [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]
+# fullvis_states = [[34],[34]]
+nrows = 15
+ncols = 20
+nagents = 1
+initial = [237]
+targets = [[ncols+1]]
+obstacles = [153,154,155,173,174,175,193,194,195,213,214,215,233,234,235,68,69,88,89,108,109,128,129,183,184,185,186,187,203,204,205,206,207,223,224,225,226,227]
+moveobstacles = [197]
+allowed_states = [None]*nagents
+allowed_states[0] = range(15*20)
 
 
 regionkeys = {'pavement','gravel','grass','sand','deterministic'}
@@ -59,15 +57,14 @@ partitionGrid = dict()
 #                         230,231,232,236,237,238,239,250,251,252,253,254,255,256,257,258,259,270,271,272,273,274,275,276,277,278,279,
 #                         290,291,292,293,294,295,296,296,297,298,299]
 
-partitionGrid[(0,0)] = [0,1,2,3,10,11,12,13,20,21,22,23,30,31,32,33,34,40,41,42,43,50,51,52,53,60,61,62,63]
-partitionGrid[(0,1)] = [5,6,7,8,9,15,16,17,18,19,25,26,27,28,29,34,35,36,37,38,39,45,46,47,48,49,55,56,57,58,59,65,66,67,68,69]
+partitionGrid[(0,0)] = range(24)
 # partitionGrid[(1,0)] = [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]
 
 pg = [dict.fromkeys((0,0),partitionGrid[(0,0)]),dict.fromkeys((0,0),partitionGrid[(0,1)])]
 
 # gwg.save('gridworldfig.png')
-visdist = [3,2]
-vel = [1,2]
+visdist = [10]
+vel = [1]
 gs = [12,25]
 print 'Writing input file...'
 # invisibilityset = Salty_input.write_to_slugs_part(infile,gwg,initial[0],moveobstacles[0],targets[0],2,visdist,gs, partitionGrid, belief_safety = 0, belief_liveness = 10, target_reachability = True)
@@ -78,7 +75,7 @@ for n in range(1):
     print 'output file: ', outfile
     print 'input file name:', infile
     iset = Salty_input.write_to_slugs_part_dist(infile,gwg,initial[n],moveobstacles[0],targets[n],vel[n],visdist[n],
-                                                allowed_states[n],fullvis_states[n], pg[n], belief_safety = 0, belief_liveness = 10, target_reachability = True)
+                                                allowed_states[n],fullvis_states[n], pg[n], belief_safety = 0, belief_liveness = 30, target_reachability = True)
     invisibilityset.append(iset)
     print ('Converting input file...')
     os.system('python compiler.py ' + infile + '.structuredslugs > ' + infile + '.slugsin')

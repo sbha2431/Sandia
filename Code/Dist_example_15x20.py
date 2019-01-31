@@ -2,8 +2,8 @@ __author__ = 'sudab'
 
 
 from gridworld import *
-import grid_partition
-import Slugs_input
+# import grid_partition
+# import Slugs_input
 import Salty_input
 import random
 import os
