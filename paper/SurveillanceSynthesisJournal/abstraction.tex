@@ -1,0 +1,89 @@
+We used the belief-set game structure in order to state the surveillance objective of the agent. While in principle it is possible to solve the surveillance strategy synthesis problem on this game, this is in most cases computationally infeasible, since the size of this game is exponential in the size of the original game. To circumvent this construction when possible, we propose an abstraction-based method, that given a surveillance game structure and a partition of the set of the target's locations, yields an approximation that is sound with respect to surveillance objectives for the agent.
+
+
+An \emph{abstraction partition} is a family $\part = \{Q_i\}_{i=1}^n$ of subsets of $L_t$, $Q_i \subseteq L_t$ such that the following hold:
+\begin{itemize}
+\item $\bigcup_{i=1}^n Q_i = L_t$ and $Q_i \cap Q_j = \emptyset$ for all $i \neq j$;
+\item For each $p \in \AP$, $Q \in \part$ and $l_a \in L_a$, it holds that $(l_a,l_t') \models p$ iff $(l_a,l_t'') \models p$ for every $l_t',l_t'' \in Q$.
+\end{itemize}
+Intuitively, these conditions mean that $\mathcal Q$ partitions the set of locations of the target, and the concrete locations in each of the sets in $\part$ agree on the value of the  propositions in $\AP$.
+
+If $\part' =  \{Q_i'\}_{i=1}^m$ is a family of subsets of $L_t$ such that $\bigcup_{i=1}^m Q_i' = L_t$ and for each $Q_i' \in \part'$ there exists $Q_j \in \part$ such that $Q_i' \subseteq Q_j$, then $\part'$ is also an abstraction partition, and we say that $\part'$ \emph{refines} $\part$, denoted $\part' \preceq \part$.
+
+For $\part = \{Q_i\}_{i=1}^n$,  we define a function $\alpha_\part : L_t \to \part$ by $\alpha(l_t) = Q$ for the unique $Q \in \part$ with $l_t \in Q$. We denote also with $\alpha_{\part} : \mathcal{P}(L_t) \to \mathcal{P}(\part)$ the \emph{abstraction function} defined by $\alpha_{\part}(L) = \{\alpha_\part(l) \mid l \in L\}$.
+We define a \emph{concretization function} $\gamma :  \mathcal{P}(\part) \cup L_t \to \mathcal{P}(L_t)$ such that 
+$\gamma(A) = \{l_t\}$ if $A = l_t \in L_t$, and  $\gamma(A) = \bigcup_{Q \in A} Q$ if $A \in \mathcal{P}(\part)$.
+%$
+%\gamma(A) =
+%\begin{cases}
+%\{l_t\} &\text{if } A = l_t \in L_t,\\
+%\bigcup_{Q \in A} Q &\text{if } A \in \mathcal{P}(\mathcal{Q}).\\
+%\end{cases}
+%$
+
+Given a surveillance game structure $G  = (\states,s^\init,\trans,\vis)$ and an abstraction partition $\part = \{Q_i\}_{i=1}^n$ of the set $L_t$, we define the \emph{abstraction of $G$ w.r.t.\ $\part$} to be the game structure 
+$G_\abstr  = \alpha_{\part}(G)= (\states_\abstr,s^\init_\abstr,\trans_\abstr)$, where
+
+\begin{itemize}
+\item $\states_\abstr = (L_a \times \mathcal P(\part)) \cup (L_a \times L_t)$  is the set of \emph{abstract states}, consisting of states approximating the belief sets in the game structure $G_\belief$, as well as the states $\states$;
+\item $s^\init_\abstr = (l_a^\init,l_t^\init)$ is the \emph{initial abstract state};
+%, where we let $A_t^{\init} = l_t^\init$ if $\vis(l_a,l_t) = \true$, and we define $A_t^{\init} = \{\alpha_{\part}(l_t^\init)\}$ in case $\vis(l_a,l_t) = \false$.
+\item $\trans_\abstr \subseteq \states_\abstr \times \states_\abstr$ is the transition relation such that $((l_a, A_t),(l_a', A_t')) \in \trans_\abstr$ if and only if one of the following two conditions is satisfied:
+\begin{itemize}
+\item[(1)] $A_t' = l_t'$, $l_t' \in \post(\gamma(A_t))$ and $\vis(l_a,l_t') = \true$, and
+$l_a' \in \succs_a(l_a,l_t,l_t')$ for some $l_t \in \gamma(A_t)$.
+\item[(2)] $A_t' = \alpha_{\part}(\{l_t' \in \post(\gamma(A_t))  |  \vis(l_a,l_t') = \false\})$, and
+$l_a' \in \succs_a(l_a,l_t,l_t')$ for some $l_t \in \gamma(A_t)$ and some
+$l_t' \in \post(\gamma(A_t))$ with $\vis(l_a,l_t') = \false$.
+%\item[(1)] $A_t' = l_t'$ for some $l_t' \in L_t$, where $\vis(l_a,l_t') = \true$, and $((l_a,l_t),(l_a',l_t')) \in \trans$ for some $l_t \in \gamma(A_t)$;
+
+%\item[(2)] $A_t' = \alpha_{\part}(B_t')$, where 
+
+%$\begin{array}{lll}
+%B_t' = \{l_t' & \mid & \vis(l_a,l_t') = \false \text{ and } \\
+%&& \exists l_t \in \gamma(A_t).\ ((l_a,l_t),(l_a',l_t')) \in \trans\}.
+%\end{array}
+%$
+\end{itemize}
+\end{itemize}
+
+As for the belief-set game structure, the first condition captures the successor locations of the target, which can be observed from the agent's current location $l_a$. Condition (2) corresponds to the \emph{abstract belief set} whose concretization  consists of all possible successors of all positions in $\gamma(A_t)$, which are  not visible from $l_a$. Since the belief abstraction overapproximates the agent's belief, that is, $\gamma(\alpha_{\part}(B)) \supseteq B$, the next-state abstract belief $\gamma(A_t')$ may include positions in $L_t$ that are not successors of positions in $\gamma(A_t)$.
+
+%\begin{itemize}
+%\item[(1)] $A_t' = l_t'$ for some $l_t' \in L_t$, where $\vis(l_a,l_t') = \true$, and $((l_a,l_t),(l_a',l_t')) \in \trans$ for some $l_t \in \gamma(A_t)$;
+%\item[(2)] there exists $l_t \in \gamma(A_t)$ with $\vis(l_a,l_t) = \true$, and $A_t' = \alpha_{\part}(B_t')$, where
+%
+%$\begin{array}{lll}
+%B_t' = \{l_t' & \mid & \vis(l_a,l_t') = \false \text{ and } \\
+%&& ((l_a,l_t),(l_a',l_t')) \in \trans\};
+%\end{array}
+%$
+%
+%\item[(3)] $A_t' = \alpha_{\part}(B_t')$, where 
+%
+%$\begin{array}{lll}
+%B_t' = \{l_t' & \mid & \vis(l_a,l_t') = \false \text{ and } \\
+%&& \exists l_t \in \gamma(A_t): \vis(l_a,l_t') = \false \\
+%&& \text{and }  ((l_a,l_t),(l_a',l_t')) \in \trans\}.
+%\end{array}
+%$
+%\end{itemize}
+%As for the belief-set game structure, the first condition captures of target that can be observed from the agent's current location $l_a$. Conditions (2) and (3) correspond to \emph{abstract} belief sets whose concretization includes all possible successor locations of the target not visible from $l_a$. In (2) those are successors of a single possible current position $l_t$ of the target that is visible from $l_a$, while in (3) the belief consist of  successors of all positions in $B_t$ not visible from $l_a$. Since the belief-abstraction overapproximates the agent's belief, that is, $\gamma(\alpha_{\part}(B)) \supseteq B$, the abstract belief $\gamma(A_t')$ may include positions that are not successors of positions in $\gamma(A_t)$.
+
+\begin{figure}
+\input{figs/simple-abstr-transitions.tex}
+\vspace{-.2cm}
+\caption{Transitions from the initial state in the abstract game from Example~\ref{ex:simple-abstr-game} where $\alpha_\part(17) = Q_4$ and $\alpha_\part(23) = Q_5$.}
+\label{fig:simple-abstr-game}
+\vspace{-.7cm}
+\end{figure}
+
+
+\begin{example}\label{ex:simple-abstr-game}
+Consider again the surveillance game from Example~\ref{ex:simple-surveillance-game}, and the abstraction partition $\part = \{Q_1,\ldots,Q_5\}$, where the set $Q_i$ corresponds to the $i$-th row of the grid. For location $17$ of the target we have $\alpha_\part(17) = Q_4$, and for  $23$ we have $\alpha_\part(23) = Q_5$. Thus, the belief set $B = \{17,23\}$ is covered by the abstract belief set $\alpha_Q(B) = \{Q_4,Q_5\}$. Figure~\ref{fig:simple-abstr-game} shows the successors of the initial state $(4,18)$ of the abstract belief-set game structure. The concretization of the abstract belief set $\{Q_4,Q_5\}$ is the set $\{15,16,17,18,19,20,21,22,23,24\}$ of target locations.\qed
+\end{example}
+
+An abstract state $(l_a,A_t)$ \emph{satisfies a surveillance predicate $p_k$}, denoted $(l_a,A_t) \models p_k$, iff 
+$|\{l_t \in \gamma(A_t) \mid \vis(l_a,l_t)  = \false \}| \leq k$. Simply, the number of states in the concretized belief set has to be less than or equal to $k$. Similarly, for a predicate $p \in \AP$, we define $(l_a,A_t) \models p$ iff for every $l_t \in \gamma(A_t)$ it holds that $(l_a,l_t) \models p$. With these definitions, we can interpret surveillance objectives over runs of $G_\abstr$.
+
+Strategies (and wining strategies) for the agent and the target in an abstract belief-set game $(\alpha_\part(G),\varphi)$ are defined analogously to strategies (and winning strategies) in $G_\belief$.

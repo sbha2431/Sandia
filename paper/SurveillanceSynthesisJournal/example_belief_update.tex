@@ -1,0 +1,36 @@
+\begin{example}[Belief-update with intermediate states]
+Consider agent locations $l_a,l_a^1,l_a^2$ and target locations 
+$l_t^1,l_t^2,l_t^3,l_t^4,l_t^5,l_t^6$ with the following visibility:
+\begin{itemize}
+\item $\vis(l_a,l_t) =\false$ for all $l_t \in \{l_t^,\ldots,l_t^6\}$,
+\item $\vis(l_a^1,l_t^3) =\true$ and $\vis(l_a,l_t^i) =\false$ if $i \neq 3$,
+\item $\vis(l_a^2,l_t^4) =true$, $\vis(l_a^2,l_t^5) =\true$ and\\ $\vis(l_a,l_t^i) =\false$ if $i \not \in \{4,5\}$.
+\end{itemize}
+In the game the following transitions are possible:
+\begin{itemize}
+\item the agent can go from $l_a$ to $l_a^1$ and $l_a^2$,
+\item the environment can go from $l_t^1$ to $l_t^3$ and to $l_t^4$,
+\item the environment can go from $l_t^2$ to $l_t^5$ and to $l_t^6$.
+\end{itemize}
+
+
+We will consider states consisting of the location of the agent, the belief set (consisting of the possible locations of the target), and an extra bit controlled by the environment.
+
+We have the following  possible transitions in the corresponding belief-set game:
+\begin{itemize}
+\item from $(l_a,\{l_t^1,l_t^2\},0)$ to $(l_a^1,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$,
+\item from $(l_a,\{l_t^1,l_t^2\},0)$ to $(l_a^2,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$,
+\item from $(l_a^1,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$ to $(l_a^1,\{l_t^3\},0)$,
+\item from $(l_a^1,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$ to $(l_a^1,\{l_t^4,l_t^5,l_t^6\},0)$,
+\item from $(l_a^2,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$ to $(l_a^2,\{l_t^3,l_t^6\},0)$,
+\item from $(l_a^2,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$ to $(l_a^2,\{l_a^4\},0)$,
+\item from $(l_a^2,\{l_t^3,l_t^4,l_t^5,l_t^6\},1)$ to $(l_a^2,\{l_a^5\},0)$.
+
+Thus, in states of the from $(...,...,0)$ normal transitions take place, \emph{without} splitting the belief state according to the visibility from the new location of the agent, but setting the auxiliary bit to $1$. Transitions emanating from states of the form $(...,...,1)$ leave the location of the agent and the target unchanged, but the environment updates the belief sets according to the current visibility of the agent and sets the auxiliary bit to $1$, so that from the successor state normal transitions can be taken.
+
+
+
+
+\end{itemize}
+
+\end{example}

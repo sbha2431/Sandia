@@ -1,0 +1,5 @@
+In the construction of the abstract  game structure, we overapproximate the belief-set of the agent at each step. Since we consider surveillance predicates that impose upper bounds on the size of the belief, such an abstraction  gives more power to the target (and, dually less power to the agent).  This construction guarantees that the abstraction is \emph{sound}, meaning that an abstract strategy for the agent that achieves a surveillance objective corresponds to a winning strategy in the concrete game. This is stated in the following theorem.
+
+\begin{theorem}
+Let $G$ be a surveillance game structure, $\part = \{Q_i\}_{i=1}^n$ be an abstraction partition, and $G_\abstr = \alpha_\part(G)$. For every surveillance objective $\varphi$, if there exists a wining strategy for the agent in the abstract belief-set game $(\alpha_\part(G),\varphi)$, then there exists a winning strategy for the agent in the concrete surveillance game $(G,\varphi)$.
+\end{theorem}
